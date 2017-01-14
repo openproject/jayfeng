@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="keywords" content="">
+    <meta name="description" itemprop="description" content="">
+    <title>Monking - 猴王计划</title>
+<style type="text/css">
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;font-family:Helvetica, Tahoma, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", STXihei, STHeiti, Heiti, SimSun, sans-serif; font-size:100%;}
+html,body{color:#333}
+body{background:#fff;}
+ul,ol,li{ list-style:none;}
+a:link, a:visited{ color:#333; text-decoration:none;}
+a:hover{ color:#12b7f5;}
+img{ border:none;}
+em{ font-style:normal;}
+h1,h2,h3,h4,h5{ font-weight:normal;}
+.clearfloat:after{ content:'.';display:block;overflow:hidden;visibility:hidden;font-size:0;line-height:0;width:0;height:0;}
+.clearfloat{zoom:1;}
+/* top */
+.max1600{max-width:1600px; min-width:1007px; margin:0 auto;}
+.topbar{ position: absolute; left: 0; top: 0; width:100%; height:150px; z-index: 900;}
+.toppic{ max-width:1170px; min-width:980px; width:80%; height:75px; margin:0 auto;}
+.toppic a:link, .toppic a:visited{ color: #fff;}
+
+.topicfixed{ position: fixed; left: 0; top: 0; background: #fff; border-bottom: 1px solid #f1f1f1;}
+.topicfixed a:link, .topicfixed a:visited{ color: #333;}
+.topside{ float:left; width:59%;}
+.logoLink{ float:left; display:block; width:152px; height:0px; overflow:hidden; padding-top:76px; font-size:0; background:transparent url(./img/logo.png) no-repeat left 15px;}
+
+.topicfixed { height: 75px;}
+.topicfixed .logoLink{ background-image: url(./img/logo.png);}
+.topicfixed li.current a{ background: none; color: #12b7f5;}
+
+.topTool{ float:right; font-size:0.875em; margin-top: 27px;}
+.topTool ul{ float: right; height: 40px; padding-top: 6px;}
+.topTool li{ float: right; margin-left: 30px; position: relative; line-height: 40px;}
+.topTool a:hover{ color:#12b7f5;}
+.flashData{ float: right; line-height:17px; text-align: right; letter-spacing: 0.04em;}
+.flashData a:hover{ text-decoration:underline;}
+.topicfixed a.barzc{ display: inline;}
+
+.topTool a.btnd_top {
+    border-radius: 50px;
+    border: 1px solid white;
+    padding: 10px 40px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+.topTool a.btnd_top:hover {
+    background-color: white;
+    color: #8C9095;
+}
+
+.topicfixed a.btnd_top {
+    border: 1px solid #8C9095;
+    color: #8C9095;
+}
+.topicfixed a.btnd_top:hover {
+    background-color: #8C9095;
+    color: white;
+}
+
+/* banner */
+.crossbanenr{ width: 100%; height: 778px;}
+.crossbanenr ul{ position: relative; width: 100%; height: 100%; overflow: hidden; /*max-width: 1920px; */min-width: 1007px; margin: 0 auto;}
+.crossbanenr li{ position: absolute; left: 50%; top: 0; width: 1920px; height: 100%; margin: 0 0 0 -960px; display: none; z-index: 1;}
+.crossbanenr li:first-child{ display: block;}
+.crossbanenr li.current{ z-index: 2;}
+.crossbanenr li.pcqqbg{
+    background: transparent url(./img/bg0_b.jpg) no-repeat center center;
+}
+
+.bncont{ position: relative;width: 1109px; height: 100%; margin: 0 auto;}
+.bntxt{ position: absolute;  top: 50%; width: 500px; height: 390px; margin-top: -195px; z-index: 10;}
+.bntxt h2{ width: 100%; height: 0; color: white; font-size: 26px;}
+.bntxt a:link, .bntxt a:visited{ color: #fff;}
+.bntxt a.bnzc{ background-position: 0 0;}
+.bntxt a.bnzc:hover{ background-position: 0 -77px;}
+.bntxt a.bnxz{ background-position: 0 0; margin-top: 200px;}
+.bntxt a.bnxz:hover{background-position: 0 -77px;}
+
+.bntxt p.title {font-size: 26px; color: white; padding: 10px 0;}
+.bntxt p.desc {font-size: 14px; color: white; padding: 15px 0; font-weight: normal;}
+
+.bnimg2 { position: absolute; top: 50%; margin-top: -320px; z-index: 10; margin-left: 620px;}
+
+.content{ width: 100%;}
+.content h1{ width: 100%; height: 0; overflow: hidden; padding-top: 280px; background: #fff url(./img/brand.png) no-repeat center top;}
+.activebg{ position: relative; width: 100%; height: 600px; background: #fff; background-attachment: fixed;background-position: center 0; background-repeat: no-repeat;}
+.fisrtbg{ background-image: url(./img/bg1.jpg);}
+.secondbg{ background-image: url(./img/bg2.jpg);}
+.thirdbg{ background-image: url(./img/bg3.jpg);}
+.txtwrap p{ font-size: 14px; letter-spacing: 0.1em;}
+.qfigure{ width: 100%; height: 584px; background: #fff;}
+.qw960{ position: relative; width: 960px; height: 584px; margin: 0 auto;}
+.qcallAnimate{ position: absolute; right: -80px; top: 70px; width: 500px; height: 420px; background: transparent url(./img/pt1.png) no-repeat 0 0;}
+.qcall .txtwrap{ position: absolute; left: -0px;top: 185px; width: 487px;}
+.qcall h2{ width: 100%; height: 0; overflow: hidden; padding-top: 50px; background: transparent url(./img/title_1.png) no-repeat 0 0;}
+.qcall p{ width: 100%; margin-bottom: 12px; line-height: 28px; opacity: 0.6;}
+
+/*qfile*/
+.qfileAnimate{ position: absolute; right: -160px; bottom: 136px; width: 597px; height: 330px; background: transparent url(./img/pt3.png) no-repeat 0 0;}
+.qfile .txtwrap{ position: absolute; left: 7px; top: 185px; width: 450px;}
+.qfile h2{ width: 100%; height: 0; overflow: hidden; padding-top: 50px; background: transparent url(./img/title_3.png) no-repeat 0 0;}
+.qfile p{ width: 90%; margin-bottom: 12px; padding-left: 5px; line-height: 28px; opacity: 0.6;}
+
+.qfbar{ position: absolute; left: 78px; top: 71px; width: 194px; height: 3px; overflow: hidden; background: #e6e6e6; opacity: 0;}
+.qfbar .bar{ width: 30%; height: 3px; background: #5be10b;}
+/*qblog*/
+.qblogAnimate{ position: absolute; right:0px; bottom: 0; width: 344px; height: 506px; background: transparent url(./img/pt2.png) no-repeat 0 0;}
+.qblog .txtwrap{ position: absolute; left: -10px; top: 250px; width: 495px;}
+.qblog h2{ width: 100%; height: 0; overflow: hidden; padding-top: 50px; background: transparent url(./img/title_2.png) no-repeat 0 0;}
+.qblog p{ width: 100%; margin-bottom: 12px; opacity: 0.6; line-height: 28px;}
+
+.qblogWrap{ position: relative; left: 8px; top: 217px; width: 291px; height: 150px;}
+.qblogWrap div{ position: absolute; top: 0; width: 150px; height: 150px;}
+.qblogWrap .pic1{ left: -122px; background: transparent url(./img/icon_sport.png) no-repeat 0 0; opacity: 0;}
+.qblogWrap .pic2{ left: 70px; background: transparent url(./img/icon_sweet.png) no-repeat 0 0; opacity: 0;}
+.qblogWrap .pic3{ right: -119px; background: transparent url(./img/icon_music.png) no-repeat 0 0; opacity: 0;}
+
+/* footer */
+.newfoot{ width: 100%;/* height: 348px;*/ padding-top:34px; margin-bottom:30px; font-size:0.75em;}
+.newfoot a:link, .newfoot a:visited{ color: #979797;}
+.newfoot a:hover{ color: #cfcfcf;}
+.qmaps{ width: 960px; height: 205px; margin: 0 auto;}
+
+.map{ float: left;}
+.map h3{ height: 25px; color: #666; font-size: 14px; margin-bottom:4px;}
+.map li{ line-height: 22px;}
+.qac{ width: 120px;}
+.qfaq{width: 120px;}
+.qlink{ width: 120px;}
+.copyright{ clear: both; width: 960px; margin: 0 auto; padding-top: 16px; /*border-top: 1px solid #666;*/ line-height: 17px; text-align: center; color: #979797;}
+
+.btnd {
+    border-radius: 50px;
+    border: 1px solid white;
+    padding: 20px 50px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.btnd.reverse {
+    border: 1px solid #8C9095;
+    color: #4B4B4B;
+}
+
+.btnd.ios {
+    background: url(./img/icon_ios_w.png) no-repeat 30px 16px;
+}
+.btnd.ios:hover {
+    background: url(./img/icon_ios_b.png) no-repeat 30px 16px;
+    background-color: white;
+    color: #4B4B4B;
+}
+.btnd.ios.reverse {
+    background: url(./img/icon_ios_b.png) no-repeat 30px 16px;
+}
+.btnd.ios.reverse:hover {
+    background: url(./img/icon_ios_w.png) no-repeat 30px 16px;
+    background-color: #4B4B4B;
+    color: white;
+}
+.btnd.android {
+    background: url(./img/icon_android_w.png) no-repeat 30px 16px;
+}
+.btnd.android:hover {
+    background: url(./img/icon_android_b.png) no-repeat 30px 16px;
+    background-color: white;
+    color: #4B4B4B;
+}
+.btnd.android.reverse {
+    background: url(./img/icon_android_b.png) no-repeat 30px 16px;
+}
+.btnd.android.reverse:hover {
+    background: url(./img/icon_android_w.png) no-repeat 30px 16px;
+    background-color: #4B4B4B;
+    color: white;
+}
+.btnd.er {
+    background: url(./img/icon_2_w.png) no-repeat 38px 16px;
+    padding: 20px 50px;
+}
+.btnd.er:hover {
+    background: url(./img/icon_2_b.png) no-repeat 38px 16px;
+    background-color: white;
+}
+
+#pg3 .qblogWrap .pic1{
+    opacity: 1;
+    -webkit-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.4s;
+    -moz-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.4s;
+    -o-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.4s;
+    animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.4s;
+    -webkit-animation-fill-mode: backwards;
+    -moz-animation-fill-mode: backwards;
+    -o-animation-fill-mode: backwards;
+    animation-fill-mode: backwards;
+}
+
+#pg3 .qblogWrap .pic2{
+    opacity: 1;
+    -webkit-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.5s;
+    -moz-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.5s;
+    -o-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.5s;
+    animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.5s;
+    -webkit-animation-fill-mode: backwards;
+    -moz-animation-fill-mode: backwards;
+    -o-animation-fill-mode: backwards;
+    animation-fill-mode: backwards;
+}
+
+#pg3 .qblogWrap .pic3{
+    opacity: 1;
+    -webkit-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.6s;
+    -moz-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.6s;
+    -o-animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.6s;
+    animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.6s;
+    -webkit-animation-fill-mode: backwards;
+    -moz-animation-fill-mode: backwards;
+    -o-animation-fill-mode: backwards;
+    animation-fill-mode: backwards;
+}
+
+@keyframes fadeUp {
+    0% { opacity: 0;transform:translateY(-20px);}
+    100% { opacity: 1;transform:translateY(0px);}
+}
+@-moz-keyframes fadeUp {
+    0% {opacity: 0; transform:translateY(-20px);}
+    100% {opacity: 1; transform:translateY(0px);}
+}
+@-webkit-keyframes fadeUp {
+    0% {opacity: 0;-webkit-transform:translateY(-20px);}
+    100% {opacity: 1; -webkit-transform:translateY(0px);}
+}
+
+@-o-keyframes fadeUp {
+    0% { opacity: 0;-o-transform:translateY(-20px);}
+    100% { opacity: 1;-o-transform:translateY(0px);}
+}
+@-ms-keyframes fadeUp {
+    0% { opacity: 0;-ms-transform:translateY(-20px);}
+    100% { opacity: 1;-ms-transform:translateY(0px);}
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
+}
+@-moz-keyframes fadeIn {
+    0% {opacity: 0; }
+    100% {opacity: 1; }
+}
+@-webkit-keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1; }
+}
+@-o-keyframes fadeIn {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
+}
+@-ms-keyframes fadeIn {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
+}
+
+@keyframes widthall {
+    0%{ width: 30%;}
+    100% { width: 100%;}
+}
+@-moz-keyframes widthall {
+     0%{ width: 30%;}
+    100% { width: 100%;}
+}
+@-webkit-keyframes widthall {
+     0%{ width: 30%;}
+    100% { width: 100%;}
+}
+@-o-keyframes widthall {
+     0%{ width: 30%;}
+    100% { width: 100%;}
+}
+@-ms-keyframes widthall{
+     0%{ width: 30%;}
+    100% { width: 100%;}
+}
+
+@keyframes zoomIn {
+    0%{ transform: scale(0);}
+    60%{ transform: scale(1.1);}
+    100% { transform: scale(1);}
+}
+@-moz-keyframes zoomIn {
+    0%{ transform: scale(0);}
+    60% { transform: scale(1.1);}
+    100% { transform: scale(1);}
+}
+@-webkit-keyframes zoomIn {
+    0%{ -webkit-transform: scale(0);}
+    60% { -webkit-transform: scale(1.1);}
+    100% { -webkit-transform: scale(1);}
+}
+@-o-keyframes zoomIn {
+    0%{ -o-transform: scale(0);}
+    90% { -o-transform: scale(1.1);}
+    100% { -o-transform: scale(1);}
+}
+@-ms-keyframes zoomIn{
+    0%{ -ms-transform: scale(0);}
+    60% { -ms-transform: scale(1.1);}
+    100% { -ms-transform: scale(1);}
+}
+
+@keyframes moveleft {
+    0% { transform:translateX(100%); opacity: 1;}
+    100% { transform:translateX(0); opacity: 1;}
+}
+@-moz-keyframes moveleft {
+    0% { transform:translateX(100%); opacity: 1;}
+    100% { transform:translateX(0); opacity: 1;}
+}
+@-webkit-keyframes moveleft {
+    0% {-webkit-transform:translateX(100%); opacity: 1;}
+    100% { -webkit-transform:translateX(0); opacity: 1;}
+}
+
+@-o-keyframes moveleft {
+    0% { -o-transform:translateX(100%); opacity: 1;}
+    100% { -o-transform:translateX(0); opacity: 1;}
+}
+@-ms-keyframes moveleft {
+    0% { -ms-transform:translateX(100%); opacity: 1;}
+    100% { -ms-transform:translateX(0); opacity: 1;}
+}
+
+@keyframes click {
+    0% { transform:translateY(0px) translateX(0px);}
+    80% { transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    90% { transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    100% { transform:translateY(80px) translateX(-10px) scale(1.5); opacity: 0;}
+}
+@-moz-keyframes click {
+    0% { transform:translateY(0px) translateX(0px);}
+    80% { transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    90% { transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    100% { transform:translateY(80px) translateX(-10px) scale(1.5); opacity: 0;}
+}
+@-webkit-keyframes click {
+    0% { -webkit-transform:translateY(0px) translateX(0px);}
+    80% { -webkit-transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    90% { -webkit-transform:translateY(80px) translateX(-10px) scale(1); opacity: 1;}
+    100% { -webkit-transform:translateY(80px) translateX(-10px) scale(1.5); opacity: 0;}
+}
+
+@-o-keyframes click {
+    0% { -o-transform:translateY(0px) translateX(0px);}
+    80% { -o-transform:translateY(-240px) translateX(-107px) scale(1); opacity: 1;}
+    90% { -o-transform:translateY(-240px) translateX(-107px) scale(1); opacity: 1;}
+    100% { -o-transform:translateY(-240px) translateX(-107px) scale(1.5); opacity: 0;}
+}
+@-ms-keyframes click {
+    0% { -ms-transform:translateY(0px) translateX(0px);}
+    80% { -ms-transform:translateY(-240px) translateX(-107px) scale(1); opacity: 1;}
+    90% { -ms-transform:translateY(-240px) translateX(-107px) scale(1); opacity: 1;}
+    100% { -ms-transform:translateY(-240px) translateX(-107px) scale(1.5); opacity: 0;}
+}
+
+@media screen and (min-width:1921px) {
+    .crossbanenr li{ width: 100%; left: 50%; margin-left: -50%;}
+    .crossbanenr li.pcqqbg, .fisrtbg, .secondbg, .thirdbg{ background-size: 100%;}
+}
+
+@media screen and (max-width:1440px) {
+    .crossbanenr li.pcqqbg{
+        background: transparent url(./img/bg0_s.jpg) no-repeat center top;
+    }
+    .fisrtbg{ background-image: url(./img/bg1_1600.jpg);}
+    .secondbg{ background-image: url(./img/bg2.jpg);}
+    .thirdbg{ background-image: url(./img/bg3_1600.jpg);}
+    .crossbanenr li.pcqqbg, .fisrtbg, .secondbg, .thirdbg{ background-size: cover;}
+    .bncont{width: 945px; }
+}
+@media screen and (max-width:1200px) and (min-height:1400px) {
+    .crossbanenr li.pcqqbg, .fisrtbg, .secondbg, .thirdbg{ background-size: cover;}
+}
+@media screen and (min-width:1200px) and (min-height:900px) {
+    .crossbanenr li.pcqqbg, .fisrtbg, .secondbg, .thirdbg{ background-size: cover;}
+}
+
+</style>
+
+<style type="text/css">
+.arrow_tip {
+    position: relative;
+    z-index: 6;
+    text-align: center;
+}
+.arrow_tip.d1 {
+    margin-top: -68px;
+}
+.arrow_tip.d2 {
+    margin-top: -28px;
+}
+.arrow_tip span {
+    color: white;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+.divider {
+    text-align: center;
+    margin: 20px;
+}
+.divider img{
+    cursor: pointer;
+}
+.choose {
+    text-align: center;
+    font-size: 22px;
+    margin: 60px;
+}
+.btns {
+    text-align: center;
+    margin: 80px 0 200px;
+}
+</style>
+
+<script type="text/javascript">
+var t0 = new Date();
+var os = function() {
+     var ua = navigator.userAgent,
+     isWindowsPhone = /(?:Windows Phone)/.test(ua),
+     isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+     isAndroid = /(?:Android)/.test(ua),
+     isFireFox = /(?:Firefox)/.test(ua),
+     isChrome = /(?:Chrome|CriOS)/.test(ua),
+     isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),
+     isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+     isPc = !isPhone && !isAndroid && !isSymbian;
+     return {
+          isTablet: isTablet,
+          isPhone: isPhone,
+          isAndroid : isAndroid,
+          isPc : isPc
+     };
+}();
+var getSearch = function(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substring(1).match(reg);
+    if ( !! r) {
+        return unescape(r[2]);
+    }
+    return null;
+};
+var searchstr = window.location.search,
+    hashstr = window.location.hash;
+var viewpc = getSearch("vpc");
+if(!viewpc && (os.isAndroid || os.isPhone)){
+	location.replace('http://im.moning.com/immobile/index.html'+searchstr+hashstr);
+}else if(os.isTablet){
+    location.replace('http://im.monking.com/qqhd/'+searchstr+hashstr);
+}
+</script>
+</head>
+
+<body id="pg0">
+<!--S header-->
+<div id="topbar" class="topbar">
+    <div class="toppic">
+        <div class="topside">
+            <a href="#" class="logoLink">Monking</a>
+        </div>
+        <div class="topTool">
+            <a class="btnd_top" href="http://pkg3.fir.im/661135cb9411ead3108714cc89984fd61d0e1f7e.apk?attname=monking-release-v0.5.108-5.apk_V0.5.108.apk">下载</a>
+        </div>
+    </div>
+</div>
+<!--E header-->
+
+<!--S banner-->
+<div class="crossbanenr wrap" style="height: 560px;">
+    <ul id="crossbanenr">
+        <li class="pcqqbg">
+            <div class="bncont" style="width: 945px;">
+                <div class="bntxt">
+                    <p class="title">Monking，我们不生产技能，我们只是技能的搬运工</p>
+                    <p class="desc">向右滑喜欢，向左滑无感，翻动探探推送的照片，寻找与你最近的缘分。如果你喜欢的人也喜欢你，恭喜，一见钟情！</p>
+                    <p class="desc">在猴王，只有相互喜欢的人才可以开始聊天，眼缘不错，趣味相投，向陌生人尴尬的搭讪说再见吧。</p>
+                    <div style="margin-top:50px;">
+                        <a class="btnd ios" style="display: none;">&nbsp;&nbsp;iPhone版</a>
+                        <a  href="http://pkg3.fir.im/661135cb9411ead3108714cc89984fd61d0e1f7e.apk?attname=monking-release-v0.5.108-5.apk_V0.5.108.apk" class="btnd android">&nbsp;&nbsp;Android版</a>
+                        <a class="btnd er" id="qrcode"></a>
+                    </div>
+                    <div style="float:right;margin-top:20px;margin-right:-6px;display:none;" id="qrlayer"><img src="./img/qrcode.png"></div>
+                </div>
+                <div class="bnimg2">
+                    <img src="./img/pt0.png">
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="arrow_tip d1">
+        <span>好玩、新奇、纯净，社交生活由你定</span>
+        <div style="height:20px;"></div>
+        <img src="./img/icon_arrow_down.png">
+    </div>
+</div>
+<!--E banner-->
+
+<!--S figure-->
+<div class="content">
+    <!-- <h1>每一天，乐在沟通</h1> -->
+    <div id="fisrtbg" class="activebg fisrtbg" data-stellar-background-ratio="0.03" style="background-position: 50% 30.54px;"></div>
+    <div class="qfigure qcall">
+        <div class="qw960">
+            <div class="txtwrap">
+                <h2>寻找更多好友</h2>
+                <p>文字聊天、高清语音、已读回执，细节精心打磨，让聊天变得更爽；<br>真正好用的免费电话，通话过程不耗流量，人在国外也能打；<br>TA不在线，消息转为免费短信，电话留言，一键直达。<br>多种极致沟通方式，想怎么聊就怎么聊！</p>
+            </div>
+            <div class="qcallAnimate">
+            </div>
+        </div>
+
+        <div class="arrow_tip d2">
+            <img src="./img/icon_arrow_down.png">
+        </div>
+    </div>
+</div>
+    <div id="secondbg" class="activebg secondbg" data-stellar-background-ratio="0.05" style="background-position: 50% 110.1px;"></div>
+    <div class="qfigure qfile">
+        <div class="qw960">
+            <div class="txtwrap">
+                <h2>线上交友，线下交流</h2>
+                <p>精彩晒一晒，随时晒出自己的精彩；<br>一键偶遇，邂逅有缘人，与最适合的TA不期而遇，缘分有时真的很奇妙。<br>世界这么大，原来你也在这里；<br>遇见对味儿的人，搭建你专属的社交圈。</p>
+            </div>
+            <div class="qfileAnimate"></div>
+        </div>
+        <div class="arrow_tip d2">
+            <img src="./img/icon_arrow_down.png">
+        </div>
+    </div>
+    <div id="thirdbg" class="activebg thirdbg" data-stellar-background-ratio="0.05" style="background-position: 50% 169.3px;"></div>
+    <div class="qfigure qblog">
+        <div class="qw960">
+            <div class="txtwrap">
+                <h2>发现共同爱好</h2>
+                <p>文字聊天、高清语音、已读回执，细节精心打磨，让聊天变得更爽；<br>真正好用的免费电话，通话过程不耗流量，人在国外也能打；<br>TA不在线，消息转为免费短信，电话留言，一键直达。<br>多种极致沟通方式，想怎么聊就怎么聊！</p>
+            </div>
+            <div class="qblogAnimate">
+                <div class="qblogWrap">
+                    <div class="pic1"></div>
+                    <div class="pic2"></div>
+                    <div class="pic3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--E figure-->
+
+<!--S footer-->
+<div class="newfoot">
+    <div class="qmaps">
+    </div>
+    <div class="choose">请选择设备和操作系统</div>
+    <div class="btns">
+        <a class="btnd ios reverse">&nbsp;&nbsp;iPhone版</a>
+        <a class="btnd android reverse">&nbsp;&nbsp;Android版</a>
+    </div>
+    <div class="divider js_gotop"><img src="./img/icon_go_top.png"></div>
+    <div class="copyright">
+        <p>鄂ICP备15013583号-1</p>
+        <!-- <p><script>document.write((new Date()).getFullYear());</script></p> -->
+    </div>
+</div>
+<!--E footer-->
+
+<script type="text/javascript" src="./js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="./js/stellar.js"></script>
+<script type="text/javascript" src="./js/main.js"></script>
+
+</body></html>
