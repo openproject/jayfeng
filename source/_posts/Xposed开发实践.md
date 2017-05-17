@@ -86,11 +86,17 @@ public class HookModule implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        Activity activity = (Activity) param.thisObject;
-        String activityName = activity.getClass().getName();
 
-        Log.d(TAG, "activity onCreate called : " + activityName);
-        Log.d(TAG, "activity onCreate params : " + Arrays.toString(param.args));
+        XposedBridge.hookAllMethods(Activity.class, "onCreate", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Activity activity = (Activity) param.thisObject;
+                String activityName = activity.getClass().getName();
+
+                Log.d(TAG, "activity onCreate called : " + activityName);
+                Log.d(TAG, "activity onCreate params : " + Arrays.toString(param.args));
+            }
+        });
     }
 }
 ```
