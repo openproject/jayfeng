@@ -194,8 +194,8 @@ Object callMethod(Object obj, String methodName, Object... args)
 用 am start 命令打开一些 Activity 需要 Root 权限，这也是需要手动的一个操作，我又觉得不是很方便，于是可以 hook 授权对话框的允许按钮，实现 Root 的自动化。
 
 #### 第八、跨进程通信。
-因为 hook 的代码是执行在目标程序的进程中，所以往往在做一些复杂一点的操作就会不是很方便（大量的初始化、程序间的交互等），从我的感觉上说，使用Provider是一个相对比较舒服的选择。
-- 使用Provider本身可以增删改数据，可以直接数据操作。
+因为 hook 的代码是执行在目标程序的进程中，所以往往在做一些复杂一点的操作就会不是很方便（大量的初始化、程序间的交互等），从我的感觉上说，使用ContentProvider是一个相对比较舒服的选择。
+- 使用ContentProvider本身可以增删改数据，可以直接数据操作。
 ```
 public class MyAppProvider extends ContentProvider {
 
@@ -237,7 +237,7 @@ public class MyAppProvider extends ContentProvider {
 }
 
 ```
-- Provider中的call方法是一种更简单的行为调用，也可以传递数据，非常不错。
+- ContentProvider中的call方法是一种更简单的行为调用，也可以传递数据，非常不错。
 ```java
 // 可以用method定义行为，用arg, extra传递参数
 @Override
@@ -295,6 +295,13 @@ public static void printFields(Class clazz) {
 Hook代码一多，自然就容易乱，如果你全部都放在HookModule里难免就会又长又臭了，这里提供一个参考模板：
 https://github.com/ac-pm/Inspeckage
 一个鼎鼎大名的模块，让我学习良多。
+
+#### 第十一、获取Context
+有时候 Hook 的代码中没有 Context，但是确实又要用 Context 怎么办?
+场景举例：在网络数据中 Hook 的方法把数据调用通过 ContentProvider 传递给本应用，而调用 ContentProvider 就需要一个 Context。
+有两种方法：
+- 方法一，在 Hook 程序的 Application 或者 Activity 的 onCreate 方法，通过 param.thisObject 转化成 Context。
+- 方法二，直接使用系统自带的 AndroidAppHelper.currentApplication() 得到 Application，简洁完美！
 
 ## 小结
 Xposed 框架就像一把锋利的剑，强大的有点吓人，切记要善用，而且自律！
