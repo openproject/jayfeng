@@ -1,0 +1,1180 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,util," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="前言特别喜欢系统中一些小而精的工具类，有的时候分析一下别有一番味道。ThumbnailUtils是系统内置的一个生成缩略图的工具类，只有512行代码，网上有很多使用ThumbnailUtils的例子，刚好我个人正在整理Bitmap的相关资料，希望从中也能有所收获。 几个概念像素规范系统中对缩略图的像素定义了三种规范：12345// frameworks/base/core/java/android">
+<meta name="keywords" content="android,util">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解ThumbnailUtils">
+<meta property="og:url" content="http://www.jayfeng.com/2016/03/16/理解ThumbnailUtils/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="前言特别喜欢系统中一些小而精的工具类，有的时候分析一下别有一番味道。ThumbnailUtils是系统内置的一个生成缩略图的工具类，只有512行代码，网上有很多使用ThumbnailUtils的例子，刚好我个人正在整理Bitmap的相关资料，希望从中也能有所收获。 几个概念像素规范系统中对缩略图的像素定义了三种规范：12345// frameworks/base/core/java/android">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解ThumbnailUtils">
+<meta name="twitter:description" content="前言特别喜欢系统中一些小而精的工具类，有的时候分析一下别有一番味道。ThumbnailUtils是系统内置的一个生成缩略图的工具类，只有512行代码，网上有很多使用ThumbnailUtils的例子，刚好我个人正在整理Bitmap的相关资料，希望从中也能有所收获。 几个概念像素规范系统中对缩略图的像素定义了三种规范：12345// frameworks/base/core/java/android">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 理解ThumbnailUtils | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                理解ThumbnailUtils
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-16T20:26:54+08:00" content="2016-03-16">
+              2016-03-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/16/理解ThumbnailUtils/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/理解ThumbnailUtils/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/16/理解ThumbnailUtils/" class="leancloud_visitors" data-flag-title="理解ThumbnailUtils">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>特别喜欢系统中一些小而精的工具类，有的时候分析一下别有一番味道。<br>ThumbnailUtils是系统内置的一个生成缩略图的工具类，只有512行代码，网上有很多使用ThumbnailUtils的例子，刚好我个人正在整理Bitmap的相关资料，希望从中也能有所收获。</p>
+<h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h4 id="像素规范"><a href="#像素规范" class="headerlink" title="像素规范"></a>像素规范</h4><p>系统中对缩略图的像素定义了三种规范：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// frameworks/base/core/java/android/provider/MediaStoreSaver.java</span></div><div class="line"><span class="comment">// Images.Thumbnails</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MINI_KIND = <span class="number">1</span>; <span class="comment">// 512 x 384</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> FULL_SCREEN_KIND = <span class="number">2</span>; <span class="comment">// 未定义</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MICRO_KIND = <span class="number">3</span>; <span class="comment">// 160 * 120</span></div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>对于开发者，只支持MINI_KIND和MICRO_KIND两种类型。为什么是这个像素呢？因为ThumbnailUtils中定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThumbnailUtils</span> </span>&#123;</div><div class="line">    <span class="comment">/* Maximum pixels size for created bitmap. */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_NUM_PIXELS_THUMBNAIL = <span class="number">512</span> * <span class="number">384</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_NUM_PIXELS_MICRO_THUMBNAIL = <span class="number">160</span> * <span class="number">120</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNCONSTRAINED = -<span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中MAX_NUM_PIXELS_MICRO_THUMBNAIL的值之前是128 <em> 128，在4.2+版本上被调整为160 </em> 120，原因很简单，现在手机拍摄照片比例普遍是4：3，如果不是这个比例生成缩略图的时候需要更多的计算。</p>
+<h4 id="尺寸规范"><a href="#尺寸规范" class="headerlink" title="尺寸规范"></a>尺寸规范</h4><p>系统中对MINI_KIND和MICRO_KIND两种类型的图片尺寸做了限制，强调一下，是“系统”。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TARGET_SIZE_MINI_THUMBNAIL = <span class="number">320</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TARGET_SIZE_MICRO_THUMBNAIL = <span class="number">96</span>;</div></pre></td></tr></table></figure></p>
+<p>当然这两个字段是@hide的，是专门系统用的。<br>如果图片缩略图，MINI_KIND则等比例缩到360，MICRO_KIND则缩放为96 x 96的正方形（实现方法参考下面的#最合适的缩略图）<br>如果视频缩略图，MINI_KIND则等比例缩到512（这个512是写死在代码里的magic number），MICRO_KIND则缩放为96 x 96的正方形（实现方法参考下面的#最合适的缩略图）</p>
+<h4 id="Exif格式"><a href="#Exif格式" class="headerlink" title="Exif格式"></a>Exif格式</h4><blockquote>
+<p>Exif是一种图像文件格式，它的数据存储与JPEG格式是完全相同的。实际上Exif格式就是在JPEG格式头部插入了数码照片的信息，包括拍摄时的光圈、快门、白平衡、ISO、焦距、日期时间等各种和拍摄条件以及相机品牌、型号、色彩编码、拍摄时录制的声音以及GPS全球定位系统数据、缩略图等。</p>
+</blockquote>
+<p>具体元信息，可参考f/b/media/java/android/media/ExifInterface.java<br>这里我特别指出ExifInterface的两点，在大家工作中很有可能会碰到：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * This is a class for reading and writing Exif tags in a JPEG file.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExifInterface</span> </span>&#123;</div><div class="line">    <span class="comment">// 1. 方向，也就是旋转角度</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG_ORIENTATION = <span class="string">"Orientation"</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 2. 从Exif中获取缩略图, 如果没有则返回null</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] getThumbnail() &#123;</div><div class="line">        <span class="keyword">synchronized</span> (sLock) &#123;</div><div class="line">            <span class="keyword">return</span> getThumbnailNative(mFilename);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="最合适的缩略图"><a href="#最合适的缩略图" class="headerlink" title="最合适的缩略图"></a>最合适的缩略图</h2><p>等比例缩放只需要按Bitmap.createBitmap即可，但是Thumbnail的缩略图生成算法中为了从中间截图最合适的部分，包含了裁剪的逻辑。主要分两步：</p>
+<blockquote>
+<ol>
+<li>先缩放：按照填满的思想缩放到目标大小</li>
+<li>再裁剪：从中间裁剪目标大小的区域</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 把原始图片转化为目标大小的图片，从中间截图</div><div class="line"> * 注意：这里我把放大的一个逻辑处理删除了，那段逻辑永远不会执行</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Bitmap <span class="title">transform</span><span class="params">(Matrix scaler,</span></span></div><div class="line">        Bitmap source,</div><div class="line">        <span class="keyword">int</span> targetWidth,</div><div class="line">        <span class="keyword">int</span> targetHeight,</div><div class="line">        <span class="keyword">int</span> options) &#123;</div><div class="line">    <span class="comment">// 是否回收原始Bitmap</span></div><div class="line">    <span class="keyword">boolean</span> recycle = (options &amp; OPTIONS_RECYCLE_INPUT) != <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 计算是按宽度还是高度计算缩放比例</span></div><div class="line">    <span class="comment">// 这里通过高宽比计算缩放的方法，可以用填满的思维去想象一下</span></div><div class="line">    <span class="keyword">float</span> bitmapWidthF = source.getWidth();</div><div class="line">    <span class="keyword">float</span> bitmapHeightF = source.getHeight();</div><div class="line"></div><div class="line">    <span class="keyword">float</span> bitmapAspect = bitmapWidthF / bitmapHeightF;</div><div class="line">    <span class="keyword">float</span> viewAspect   = (<span class="keyword">float</span>) targetWidth / targetHeight;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (bitmapAspect &gt; viewAspect) &#123;</div><div class="line">        <span class="keyword">float</span> scale = targetHeight / bitmapHeightF;</div><div class="line">        <span class="keyword">if</span> (scale &lt; .<span class="number">9F</span> || scale &gt; <span class="number">1F</span>) &#123;</div><div class="line">            scaler.setScale(scale, scale);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            scaler = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">float</span> scale = targetWidth / bitmapWidthF;</div><div class="line">        <span class="keyword">if</span> (scale &lt; .<span class="number">9F</span> || scale &gt; <span class="number">1F</span>) &#123;</div><div class="line">            scaler.setScale(scale, scale);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            scaler = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 调用Bitmap.createBitmap方法按上面算出的缩放比例等比例缩小</span></div><div class="line">    Bitmap b1;</div><div class="line">    <span class="keyword">if</span> (scaler != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// this is used for minithumb and crop, so we want to filter here.</span></div><div class="line">        b1 = Bitmap.createBitmap(source, <span class="number">0</span>, <span class="number">0</span>,</div><div class="line">                source.getWidth(), source.getHeight(), scaler, <span class="keyword">true</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        b1 = source;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (recycle &amp;&amp; b1 != source) &#123;</div><div class="line">        source.recycle();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 从中间裁剪最合适部分</span></div><div class="line">    <span class="keyword">int</span> dx1 = Math.max(<span class="number">0</span>, b1.getWidth() - targetWidth);</div><div class="line">    <span class="keyword">int</span> dy1 = Math.max(<span class="number">0</span>, b1.getHeight() - targetHeight);</div><div class="line"></div><div class="line">    Bitmap b2 = Bitmap.createBitmap(</div><div class="line">            b1,</div><div class="line">            dx1 / <span class="number">2</span>,</div><div class="line">            dy1 / <span class="number">2</span>,</div><div class="line">            targetWidth,</div><div class="line">            targetHeight);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (b2 != b1) &#123;</div><div class="line">        <span class="keyword">if</span> (recycle || b1 != source) &#123;</div><div class="line">            b1.recycle();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> b2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>基于上面的算法，ThumbnailUtils对外提供了如下接口生成缩略图:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// options主要用于是否回收原始Bitmap</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">extractThumbnail</span><span class="params">(Bitmap source, <span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> options)</span></span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">extractThumbnail</span><span class="params">(Bitmap source, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span></div></pre></td></tr></table></figure></p>
+<h2 id="视频缩略图"><a href="#视频缩略图" class="headerlink" title="视频缩略图"></a>视频缩略图</h2><p>使用MediaMetadataRetriever读取视频第一帧Bitmap，然后据此再生成缩略图。<br>如果kind为Thumbnails.MINI_KIND，就等比例生成最大宽或者高为512的小图。<br>如果king为Thumbnails.MICRO_KIND，就使用上面讲的最合适的缩略图算法，生成96 x 96的正方形小图<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">createVideoThumbnail</span><span class="params">(String filePath, <span class="keyword">int</span> kind)</span> </span>&#123;</div><div class="line">    Bitmap bitmap = <span class="keyword">null</span>;</div><div class="line">    MediaMetadataRetriever retriever = <span class="keyword">new</span> MediaMetadataRetriever();</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        retriever.setDataSource(filePath);</div><div class="line">        bitmap = retriever.getFrameAtTime(-<span class="number">1</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalArgumentException ex) &#123;</div><div class="line">        <span class="comment">// Assume this is a corrupt video file</span></div><div class="line">    &#125; <span class="keyword">catch</span> (RuntimeException ex) &#123;</div><div class="line">        <span class="comment">// Assume this is a corrupt video file.</span></div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            retriever.release();</div><div class="line">        &#125; <span class="keyword">catch</span> (RuntimeException ex) &#123;</div><div class="line">            <span class="comment">// Ignore failures while cleaning up.</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (bitmap == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (kind == Images.Thumbnails.MINI_KIND) &#123;</div><div class="line">        <span class="comment">// Scale down the bitmap if it's too large.</span></div><div class="line">        <span class="keyword">int</span> width = bitmap.getWidth();</div><div class="line">        <span class="keyword">int</span> height = bitmap.getHeight();</div><div class="line">        <span class="keyword">int</span> max = Math.max(width, height);</div><div class="line">        <span class="keyword">if</span> (max &gt; <span class="number">512</span>) &#123;</div><div class="line">            <span class="keyword">float</span> scale = <span class="number">512f</span> / max;</div><div class="line">            <span class="keyword">int</span> w = Math.round(scale * width);</div><div class="line">            <span class="keyword">int</span> h = Math.round(scale * height);</div><div class="line">            bitmap = Bitmap.createScaledBitmap(bitmap, w, h, <span class="keyword">true</span>);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind == Images.Thumbnails.MICRO_KIND) &#123;</div><div class="line">        bitmap = extractThumbnail(bitmap,</div><div class="line">                TARGET_SIZE_MICRO_THUMBNAIL,</div><div class="line">                TARGET_SIZE_MICRO_THUMBNAIL,</div><div class="line">                OPTIONS_RECYCLE_INPUT);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> bitmap;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="内部方法"><a href="#内部方法" class="headerlink" title="内部方法"></a>内部方法</h2><p>ThumbnailUtils其实对外的方法就上面三个演示的三个方法，除此之外，内部还有两部分，一部分是生成图片文件的缩略图，另外一部分就是未使用的无用代码。</p>
+<h2 id="计算SampleSize"><a href="#计算SampleSize" class="headerlink" title="计算SampleSize"></a>计算SampleSize</h2><p>系统中新加入一张图，就要生成缩略图了，最重要的就是计算SampleSize了，ThumbnailUtils提供了两种算法：</p>
+<h4 id="按目标最小边-minSideLength"><a href="#按目标最小边-minSideLength" class="headerlink" title="按目标最小边(minSideLength)"></a>按目标最小边(minSideLength)</h4><blockquote>
+<p>定义最小边的缩放比例<br>(int) Math.min(Math.floor(w / minSideLength), Math.floor(h / minSideLength))</p>
+</blockquote>
+<h4 id="按目标像素-maxNumOfPixels"><a href="#按目标像素-maxNumOfPixels" class="headerlink" title="按目标像素(maxNumOfPixels)"></a>按目标像素(maxNumOfPixels)</h4><blockquote>
+<p>定义像素的缩放比例<br>(int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels))</p>
+</blockquote>
+<h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><p>同时支持不指定限制，也做了一个默认值处理，实现如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 计算缩放比例</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">computeInitialSampleSize</span><span class="params">(BitmapFactory.Options options,</span></span></div><div class="line">        <span class="keyword">int</span> minSideLength, <span class="keyword">int</span> maxNumOfPixels) &#123;</div><div class="line">    <span class="keyword">double</span> w = options.outWidth;</div><div class="line">    <span class="keyword">double</span> h = options.outHeight;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> lowerBound = (maxNumOfPixels == UNCONSTRAINED) ? <span class="number">1</span> :</div><div class="line">        (<span class="keyword">int</span>) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));</div><div class="line">    <span class="keyword">int</span> upperBound = (minSideLength == UNCONSTRAINED) ? <span class="number">128</span> :</div><div class="line">        (<span class="keyword">int</span>) Math.min(Math.floor(w / minSideLength),</div><div class="line">                Math.floor(h / minSideLength));</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (upperBound &lt; lowerBound) &#123;</div><div class="line">        <span class="comment">// return the larger one when there is no overlapping zone.</span></div><div class="line">        <span class="keyword">return</span> lowerBound;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> ((maxNumOfPixels == UNCONSTRAINED) &amp;&amp;</div><div class="line">            (minSideLength == UNCONSTRAINED)) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (minSideLength == UNCONSTRAINED) &#123;</div><div class="line">        <span class="keyword">return</span> lowerBound;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> upperBound;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>但是上面的缩放比例不是标准的2的次放，不符合BitmapFactory的规范，再封装一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 规范化上面的sampleSize为2的次方或者8的倍数</span></div><div class="line"><span class="comment">// 据说这是BitmapFactory的要求，可以避免OOM？注释里说的。</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">computeSampleSize</span><span class="params">(BitmapFactory.Options options,</span></span></div><div class="line">        <span class="keyword">int</span> minSideLength, <span class="keyword">int</span> maxNumOfPixels) &#123;</div><div class="line">    <span class="keyword">int</span> initialSize = computeInitialSampleSize(options, minSideLength,</div><div class="line">            maxNumOfPixels);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> roundedSize;</div><div class="line">    <span class="keyword">if</span> (initialSize &lt;= <span class="number">8</span>) &#123;</div><div class="line">        <span class="comment">// 如果小于8，转化为2的次方（通过位移来转化，可以借鉴一下）</span></div><div class="line">        roundedSize = <span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span> (roundedSize &lt; initialSize) &#123;</div><div class="line">            roundedSize &lt;&lt;= <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 如果大于8，转化为8的倍数</span></div><div class="line">        roundedSize = (initialSize + <span class="number">7</span>) / <span class="number">8</span> * <span class="number">8</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> roundedSize;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="从EXIF中选取缩略图"><a href="#从EXIF中选取缩略图" class="headerlink" title="从EXIF中选取缩略图"></a>从EXIF中选取缩略图</h2><p>只支持JPG中读取EXIF信息。<br>这里不是说EXIF有缩略图就用这个缩略图，而是会先用高宽算出文件本身的TargetSize对应的缩略图，和EXIF中缩放到TargetSize对应的缩略图比较，哪个大取哪个。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates a bitmap by either downsampling from the thumbnail in EXIF or the full image.</div><div class="line"> * The functions returns a SizedThumbnailBitmap,</div><div class="line"> * which contains a downsampled bitmap and the thumbnail data in EXIF if exists.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createThumbnailFromEXIF</span><span class="params">(String filePath, <span class="keyword">int</span> targetSize,</span></span></div><div class="line">        <span class="keyword">int</span> maxPixels, SizedThumbnailBitmap sizedThumbBitmap) &#123;</div><div class="line">    <span class="keyword">if</span> (filePath == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">    ExifInterface exif = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">byte</span> [] thumbData = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        exif = <span class="keyword">new</span> ExifInterface(filePath);</div><div class="line">        thumbData = exif.getThumbnail();</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">        Log.w(TAG, ex);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    BitmapFactory.Options fullOptions = <span class="keyword">new</span> BitmapFactory.Options();</div><div class="line">    BitmapFactory.Options exifOptions = <span class="keyword">new</span> BitmapFactory.Options();</div><div class="line">    <span class="keyword">int</span> exifThumbWidth = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> fullThumbWidth = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">// Compute exifThumbWidth.</span></div><div class="line">    <span class="keyword">if</span> (thumbData != <span class="keyword">null</span>) &#123;</div><div class="line">        exifOptions.inJustDecodeBounds = <span class="keyword">true</span>;</div><div class="line">        BitmapFactory.decodeByteArray(thumbData, <span class="number">0</span>, thumbData.length, exifOptions);</div><div class="line">        exifOptions.inSampleSize = computeSampleSize(exifOptions, targetSize, maxPixels);</div><div class="line">        exifThumbWidth = exifOptions.outWidth / exifOptions.inSampleSize;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Compute fullThumbWidth.</span></div><div class="line">    fullOptions.inJustDecodeBounds = <span class="keyword">true</span>;</div><div class="line">    BitmapFactory.decodeFile(filePath, fullOptions);</div><div class="line">    fullOptions.inSampleSize = computeSampleSize(fullOptions, targetSize, maxPixels);</div><div class="line">    fullThumbWidth = fullOptions.outWidth / fullOptions.inSampleSize;</div><div class="line"></div><div class="line">    <span class="comment">// Choose the larger thumbnail as the returning sizedThumbBitmap.</span></div><div class="line">    <span class="keyword">if</span> (thumbData != <span class="keyword">null</span> &amp;&amp; exifThumbWidth &gt;= fullThumbWidth) &#123;</div><div class="line">        <span class="keyword">int</span> width = exifOptions.outWidth;</div><div class="line">        <span class="keyword">int</span> height = exifOptions.outHeight;</div><div class="line">        exifOptions.inJustDecodeBounds = <span class="keyword">false</span>;</div><div class="line">        sizedThumbBitmap.mBitmap = BitmapFactory.decodeByteArray(thumbData, <span class="number">0</span>,</div><div class="line">                thumbData.length, exifOptions);</div><div class="line">        <span class="keyword">if</span> (sizedThumbBitmap.mBitmap != <span class="keyword">null</span>) &#123;</div><div class="line">            sizedThumbBitmap.mThumbnailData = thumbData;</div><div class="line">            sizedThumbBitmap.mThumbnailWidth = width;</div><div class="line">            sizedThumbBitmap.mThumbnailHeight = height;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        fullOptions.inJustDecodeBounds = <span class="keyword">false</span>;</div><div class="line">        sizedThumbBitmap.mBitmap = BitmapFactory.decodeFile(filePath, fullOptions);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="图片文件缩略图"><a href="#图片文件缩略图" class="headerlink" title="图片文件缩略图"></a>图片文件缩略图</h2><p>如果是MINI_KIND，尺寸最小边缩放到320左右，像素缩放到512 x 387。否则就是MICRO_KIND，尺寸最大边缩放到96，像素所放到160 x 120。<br>如果图片是JPG，参考上面的方法从EXIF中选取缩略图。否则，用decodeFileDescriptor()老老实实等比例生成缩略图。<br>最终成功后，如果是MICRO_KIND，还要裁剪为96 x 96的正方形。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">public static Bitmap createImageThumbnail(String filePath, int kind) &#123;</div><div class="line">    boolean wantMini = (kind == Images.Thumbnails.MINI_KIND);</div><div class="line">    int targetSize = wantMini</div><div class="line">        ? TARGET_SIZE_MINI_THUMBNAIL</div><div class="line">        : TARGET_SIZE_MICRO_THUMBNAIL;</div><div class="line">    int maxPixels = wantMini</div><div class="line">        ? MAX_NUM_PIXELS_THUMBNAIL</div><div class="line">        : MAX_NUM_PIXELS_MICRO_THUMBNAIL;</div><div class="line">    SizedThumbnailBitmap sizedThumbnailBitmap = new SizedThumbnailBitmap();</div><div class="line">    Bitmap bitmap = null;</div><div class="line">    MediaFileType fileType = MediaFile.getFileType(filePath);</div><div class="line">    if (fileType != null &amp;&amp; fileType.fileType == MediaFile.FILE_TYPE_JPEG) &#123;</div><div class="line">        createThumbnailFromEXIF(filePath, targetSize, maxPixels, sizedThumbnailBitmap);</div><div class="line">        bitmap = sizedThumbnailBitmap.mBitmap;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (bitmap == null) &#123;</div><div class="line">        FileInputStream stream = null;</div><div class="line">        try &#123;</div><div class="line">            stream = new FileInputStream(filePath);</div><div class="line">            FileDescriptor fd = stream.getFD();</div><div class="line">            BitmapFactory.Options options = new BitmapFactory.Options();</div><div class="line">            options.inSampleSize = 1;</div><div class="line">            options.inJustDecodeBounds = true;</div><div class="line">            BitmapFactory.decodeFileDescriptor(fd, null, options);</div><div class="line">            if (options.mCancel || options.outWidth == -1</div><div class="line">                    || options.outHeight == -1) &#123;</div><div class="line">                return null;</div><div class="line">            &#125;</div><div class="line">            options.inSampleSize = computeSampleSize(</div><div class="line">                    options, targetSize, maxPixels);</div><div class="line">            options.inJustDecodeBounds = false;</div><div class="line"></div><div class="line">            options.inDither = false;</div><div class="line">            options.inPreferredConfig = Bitmap.Config.ARGB_8888;</div><div class="line">            bitmap = BitmapFactory.decodeFileDescriptor(fd, null, options);</div><div class="line">        &#125; catch (IOException ex) &#123;</div><div class="line">            Log.e(TAG, &quot;&quot;, ex);</div><div class="line">        &#125; catch (OutOfMemoryError oom) &#123;</div><div class="line">            Log.e(TAG, &quot;Unable to decode file &quot; + filePath + &quot;. OutOfMemoryError.&quot;, oom);</div><div class="line">        &#125; finally &#123;</div><div class="line">            try &#123;</div><div class="line">                if (stream != null) &#123;</div><div class="line">                    stream.close();</div><div class="line">                &#125;</div><div class="line">            &#125; catch (IOException ex) &#123;</div><div class="line">                Log.e(TAG, &quot;&quot;, ex);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (kind == Images.Thumbnails.MICRO_KIND) &#123;</div><div class="line">        // now we make it a &quot;square thumbnail&quot; for MICRO_KIND thumbnail</div><div class="line">        bitmap = extractThumbnail(bitmap,</div><div class="line">                TARGET_SIZE_MICRO_THUMBNAIL,</div><div class="line">                TARGET_SIZE_MICRO_THUMBNAIL, OPTIONS_RECYCLE_INPUT);</div><div class="line">    &#125;</div><div class="line">    return bitmap;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里你可能注意到了，如果从EXIF的代码中获取本身文件缩略图用的是decodeFile()，而后面非JPG图片获取缩略图用decodeFileDescriptor()，为什么呢？<br>不知道，也许是开发者“Ray Chen”忘记了，只改了一部分，另外一部分为了稳定性也没改。<br>据网上资料看，decodeFileDescriptor()比decodeFile()更省内存，没有论证，仅供参考。</p>
+<h2 id="未使用的无用代码"><a href="#未使用的无用代码" class="headerlink" title="未使用的无用代码"></a>未使用的无用代码</h2><p>在ThumbnailUtils有一些私有方法，但是自己又没有去调用，暂且把这些方法定位无用代码吧：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Make a bitmap from a given Uri, minimal side length, and maximum number of pixels.</div><div class="line"> * The image data will be read from specified pfd if it&apos;s not null, otherwise</div><div class="line"> * a new input stream will be created using specified ContentResolver.</div><div class="line"> *</div><div class="line"> * Clients are allowed to pass their own BitmapFactory.Options used for bitmap decoding. A</div><div class="line"> * new BitmapFactory.Options will be created if options is null.</div><div class="line"> */</div><div class="line">private static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,</div><div class="line">        Uri uri, ContentResolver cr, ParcelFileDescriptor pfd,</div><div class="line">        BitmapFactory.Options options) &#123;</div><div class="line">    Bitmap b = null;</div><div class="line">    try &#123;</div><div class="line">        if (pfd == null) pfd = makeInputStream(uri, cr);</div><div class="line">        if (pfd == null) return null;</div><div class="line">        if (options == null) options = new BitmapFactory.Options();</div><div class="line"></div><div class="line">        FileDescriptor fd = pfd.getFileDescriptor();</div><div class="line">        options.inSampleSize = 1;</div><div class="line">        options.inJustDecodeBounds = true;</div><div class="line">        BitmapFactory.decodeFileDescriptor(fd, null, options);</div><div class="line">        if (options.mCancel || options.outWidth == -1</div><div class="line">                || options.outHeight == -1) &#123;</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">        options.inSampleSize = computeSampleSize(</div><div class="line">                options, minSideLength, maxNumOfPixels);</div><div class="line">        options.inJustDecodeBounds = false;</div><div class="line"></div><div class="line">        options.inDither = false;</div><div class="line">        options.inPreferredConfig = Bitmap.Config.ARGB_8888;</div><div class="line">        b = BitmapFactory.decodeFileDescriptor(fd, null, options);</div><div class="line">    &#125; catch (OutOfMemoryError ex) &#123;</div><div class="line">        Log.e(TAG, &quot;Got oom exception &quot;, ex);</div><div class="line">        return null;</div><div class="line">    &#125; finally &#123;</div><div class="line">        closeSilently(pfd);</div><div class="line">    &#125;</div><div class="line">    return b;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private static void closeSilently(ParcelFileDescriptor c) &#123;</div><div class="line">    if (c == null) return;</div><div class="line">    try &#123;</div><div class="line">        c.close();</div><div class="line">    &#125; catch (Throwable t) &#123;</div><div class="line">        // do nothing</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">private static ParcelFileDescriptor makeInputStream(</div><div class="line">        Uri uri, ContentResolver cr) &#123;</div><div class="line">    try &#123;</div><div class="line">        return cr.openFileDescriptor(uri, &quot;r&quot;);</div><div class="line">    &#125; catch (IOException ex) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>通过学习ThumbnailUtils生成缩略图的方方面面，结合自己的经验实践，从此生成缩略图无忧。<br>零零散散写的有点乱，但基本上能运行到的每行代码都覆盖到了，对于理解ThumbnailUtils这个类来说，应该够了。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><a href="https://github.com/CyanogenMod/android_frameworks_base/blob/cm-12.1/media/java/android/media/ThumbnailUtils.java" target="_blank" rel="external">ThumbnailUtils.java源码</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/util/" rel="tag">#util</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/11/理解Java垃圾回收机制/" rel="next" title="理解Java垃圾回收机制">
+                <i class="fa fa-chevron-left"></i> 理解Java垃圾回收机制
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/18/你应该知道的那些Android小经验/" rel="prev" title="你应该知道的那些Android小经验">
+                你应该知道的那些Android小经验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/16/理解ThumbnailUtils/"
+           data-title="理解ThumbnailUtils" data-url="http://www.jayfeng.com/2016/03/16/理解ThumbnailUtils/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个概念"><span class="nav-text">几个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#像素规范"><span class="nav-text">像素规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尺寸规范"><span class="nav-text">尺寸规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exif格式"><span class="nav-text">Exif格式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最合适的缩略图"><span class="nav-text">最合适的缩略图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频缩略图"><span class="nav-text">视频缩略图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内部方法"><span class="nav-text">内部方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算SampleSize"><span class="nav-text">计算SampleSize</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#按目标最小边-minSideLength"><span class="nav-text">按目标最小边(minSideLength)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按目标像素-maxNumOfPixels"><span class="nav-text">按目标像素(maxNumOfPixels)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体实现"><span class="nav-text">具体实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从EXIF中选取缩略图"><span class="nav-text">从EXIF中选取缩略图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片文件缩略图"><span class="nav-text">图片文件缩略图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未使用的无用代码"><span class="nav-text">未使用的无用代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-text">附录</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

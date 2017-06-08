@@ -1,0 +1,1193 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="设计模式,面向对象,OOP,简单工厂,工厂方法,抽象工厂," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="工厂方法、抽象工厂都属于创建型模式，是用来创建对象的。简单工厂，也称参数化工厂方法，是工厂方法的一种。今天就来聊聊这些工厂相关的设计模式。 工厂类的意义client直接创建对象Target，无形之中client和Target就形成了强耦合。解除这种耦合是设计模式的课题之一：如何优雅的替代外部new()。如果用一个中间类把Target的创建封装起来，这个中间类取名为工厂Factory，那么clien">
+<meta name="keywords" content="设计模式,面向对象,OOP,简单工厂,工厂方法,抽象工厂">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解设计模式之简单工厂、工厂方法、抽象工厂">
+<meta property="og:url" content="http://www.jayfeng.com/2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="工厂方法、抽象工厂都属于创建型模式，是用来创建对象的。简单工厂，也称参数化工厂方法，是工厂方法的一种。今天就来聊聊这些工厂相关的设计模式。 工厂类的意义client直接创建对象Target，无形之中client和Target就形成了强耦合。解除这种耦合是设计模式的课题之一：如何优雅的替代外部new()。如果用一个中间类把Target的创建封装起来，这个中间类取名为工厂Factory，那么clien">
+<meta property="og:image" content="http://www.jayfeng.com/images/dp_uml_factory_simple.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/dp_uml_factory_method.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/dp_uml_factory_abstract.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解设计模式之简单工厂、工厂方法、抽象工厂">
+<meta name="twitter:description" content="工厂方法、抽象工厂都属于创建型模式，是用来创建对象的。简单工厂，也称参数化工厂方法，是工厂方法的一种。今天就来聊聊这些工厂相关的设计模式。 工厂类的意义client直接创建对象Target，无形之中client和Target就形成了强耦合。解除这种耦合是设计模式的课题之一：如何优雅的替代外部new()。如果用一个中间类把Target的创建封装起来，这个中间类取名为工厂Factory，那么clien">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/dp_uml_factory_simple.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 理解设计模式之简单工厂、工厂方法、抽象工厂 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                理解设计模式之简单工厂、工厂方法、抽象工厂
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-03T12:00:00+08:00" content="2016-04-03">
+              2016-04-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/理解设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">理解设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/" class="leancloud_visitors" data-flag-title="理解设计模式之简单工厂、工厂方法、抽象工厂">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>工厂方法、抽象工厂都属于创建型模式，是用来创建对象的。<br>简单工厂，也称参数化工厂方法，是工厂方法的一种。<br>今天就来聊聊这些工厂相关的设计模式。</p>
+<h2 id="工厂类的意义"><a href="#工厂类的意义" class="headerlink" title="工厂类的意义"></a>工厂类的意义</h2><p>client直接创建对象Target，无形之中client和Target就形成了强耦合。解除这种耦合是设计模式的课题之一：如何优雅的替代外部new()。如果用一个中间类把Target的创建封装起来，这个中间类取名为工厂Factory，那么client是否就和Target解耦了呢？<br>答案是肯定的。<br>有的同学可能会问，client和Target解耦了但是client和Factory、Factory和Target却又耦合了，这种解耦有什么意义？<br>答案是有意义的。<br>因为这里面包含了一个变化和不变的因素，一般来说，Factory相对于Target的可变性要小的多，通过Factory可以把Target的变化封装起来。显然，client依赖于一个稳定的Factory比依赖于容易变化的Target要好的多，对于系统的稳定性和灵活性更佳。<br>有的同学可能会问，如果Factory可变性依然很大那怎么办？虽然这个问题有点钻牛角尖，若真是如此，就要考虑再来一个FactoryFactory了。<br>工厂类的意义就在于此。</p>
+<p>但是还有一个和Factory的可变性没有关系的问题，Factory和Target的耦合怎么办？两点说明：</p>
+<blockquote>
+<ol>
+<li>相对于client，Factory和Target当属一个系统，属于“内部”问题，它们之间的耦合，比client和Target的耦合要好的多；</li>
+<li>让Factory尽量依赖Target的抽象来降低它们之间的耦合。</li>
+</ol>
+</blockquote>
+<h2 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h2><blockquote>
+<p>在工厂类中，通过参数创建同类型的对象</p>
+</blockquote>
+<p>理解了上面工厂类的意义之后，简单工厂就真的再简单不过了。<br><a id="more"></a><br>首先，抽象化一下产品还是有必要的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IProduct</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductA</span> <span class="keyword">implements</span> <span class="title">IProduct</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductB</span> <span class="keyword">implements</span> <span class="title">IProduct</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>写一个工厂类，根据参数来判断是创建ProductA还是ProductB：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_A = <span class="number">1</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_B = <span class="number">2</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> IProduct <span class="title">create</span><span class="params">(<span class="keyword">int</span> type)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (type == TYPE_A) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ProductA();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type == TYPE_B) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ProductB();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>好了，client无须直接new具体的ProductA或者ProductB，而能通过Factory得到它们，当然，需要传一下参数的。<br>这就是简单工厂，UML示意图如下：<br><img src="/images/dp_uml_factory_simple.png" alt="简单工厂UML示意图"><br>这里可以进一步解耦client和Factory的关系，那就是static化Factory或create方法，这就是静态工厂。静态工厂让使用Factory变得简单，但也让Factory变的不那么面向对象了（不能再继承扩展），所以这是一个简单和扩展的选择，实际场景自然有它们存在的需求，应酌情使用。</p>
+<p>简单工厂模式的代码基本上是随处可见，这样的代码应该经常写吧：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainPagerAdapter</span> <span class="keyword">extends</span> <span class="title">FragmentPagerAdapter</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Fragment <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> HomeFragment();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i == <span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SettingFragment();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// ... ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="工厂方法-Factory-Method"><a href="#工厂方法-Factory-Method" class="headerlink" title="工厂方法(Factory Method)"></a>工厂方法(Factory Method)</h2><blockquote>
+<p>定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类。</p>
+</blockquote>
+<p>简单工厂的Factory里包括一个if-else语句，这种结构意味着，如果增加或删除新的产品必须修改Factory类，这不符合开闭原则的思想，应付变化的能力有待加强。<br>如何改造呢？<br>不能再要这个if-else了，在前面已经分析了工厂类的意义了，所以分别为ProductA和ProductB包装一个FactoryA和FactoryB来负责创建它们。<br>既然出现了多个Factory，我们有必要抽象一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="function">IProduct <span class="title">create</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryA</span> <span class="keyword">implements</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> IProduct <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ProductA();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryB</span> <span class="keyword">implements</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> IProduct <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ProductB();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>好了，现在要增加新的产品，只需要增加ProductC和FactoryC而不会修改现在的框架代码。<br>当然，client现在要创建ProductA，不再是传参数了，直接创建FactoryA；创建ProductB的话，直接创建FactoryB好了。<br>有的同学就要问了，是不创建Product了，但是全变成创建Factory了，感觉一样啊？<br>答案是，不一样的。请回看“工厂类的意义”。<br>工厂方法的UML示意图如下：<br><img src="/images/dp_uml_factory_method.png" alt="简单工厂UML示意图"></p>
+<p>PS：这里client和具体Factory的耦合，可以根据具体场景，用反射、注解等技术手段再解耦，本文的重点不在于此，不做讨论。</p>
+<h2 id="抽象工厂-Abstract-Factory"><a href="#抽象工厂-Abstract-Factory" class="headerlink" title="抽象工厂(Abstract Factory)"></a>抽象工厂(Abstract Factory)</h2><blockquote>
+<p>提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。</p>
+</blockquote>
+<p>如果ProuctA和ProductB并不是同类产品，只是语义相关的或者有一定的依赖关系，那么工厂模式的Factory的一个接口就不够了，的这时候。<br>比如苹果既生产Phone也生产Watch，都是基于ios系统，都是苹果负责。还有小米，三星也是如此…<br>有人就说了，那定义两个IFactory吧，一个IFactoryA，一个IFactoryB，但是请注意这些产品对象的“关系”，把它们放到同一个IFactory才是最合适的。所以说，如果说这些工厂模式提供了天生的松耦合的思想，抽象工厂则还体现高内聚的思想。<br>既然搞的这么复杂（其实并不复杂），那我们还是抽象一下吧：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="function">IProductA <span class="title">createA</span><span class="params">()</span></span>;</div><div class="line">    <span class="function">IProductB <span class="title">createB</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IProductA</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IProductB</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>具体产品类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductA1</span> <span class="keyword">implements</span> <span class="title">IProductA</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductA2</span> <span class="keyword">implements</span> <span class="title">IProductA</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductB1</span> <span class="keyword">implements</span> <span class="title">IProductB</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductB2</span> <span class="keyword">implements</span> <span class="title">IProductB</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>具体工厂来负责创建这些具体产品类，并按门别类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class Factory1 implements IFactory &#123;</div><div class="line">    @Override</div><div class="line">    public IProductA createA() &#123;</div><div class="line">        return new ProductA1();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public IProductB createB() &#123;</div><div class="line">        return new ProductB1();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Factory2 implements IFactory &#123;</div><div class="line">    @Override</div><div class="line">    public IProductA createA() &#123;</div><div class="line">        return new ProductA2();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public IProductB createB() &#123;</div><div class="line">        return new ProductB2();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的代码，也看的出高内聚带来的问题，增加新的产品需要修改所有的Factory，这很要命，这是它的“缺点”。<br>但是这真的是缺点吗？<br>是缺点，但不是这个模式的重点，每个模式都是有自己的侧重点的，抽象工厂的侧重点是能创建有关联或者一系列的对象的工厂抽象出来，这些对象是不能拆开的，如果行的通的话，甚至可以如此组合：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class Factory3 implements IFactory &#123;</div><div class="line">    @Override</div><div class="line">    public IProductA createA() &#123;</div><div class="line">        // 小米收购了苹果，不生产自己的手表，改为生产苹果的手表</div><div class="line">        return new ProductA2();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public IProductB createB() &#123;</div><div class="line">        return new ProductB1();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当你改变关注点时事情就会发生变化。抽象工厂的UML示意图如下：<br><img src="/images/dp_uml_factory_abstract.png" alt="抽象工厂UML示意图"></p>
+<p>从这个图中，这里再强调一下，抽象工厂和工厂方法的模型是有本质区别的：</p>
+<blockquote>
+<p>工厂方法（包括简单工厂）的ProductA和ProductB是同源的，都是继承自IProduct。<br>但是抽象工厂不是，ProductA1和ProductB1有各自的接口，它们是关联类，这是我们在实际场景“套用”它们的时候要特别注意的。</p>
+</blockquote>
+<p>思考：<br>我偏偏就要完美的工厂模式，既要工厂方法的完美扩展，又要抽象工厂的产品关联，那怎么办呢？</p>
+<h2 id="当工厂遇见单例"><a href="#当工厂遇见单例" class="headerlink" title="当工厂遇见单例"></a>当工厂遇见单例</h2><p>说到静态工厂的时候，也许大家就意识到，client对Factory的使用如果每次都需要new一下Factory，在绝大多数场景下没必要，甚至是一种资源的浪费。<br>结合单例，就变得水到渠成了，我们把FactoryA改造成SingletonFactoryA：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonFactoryA</span> <span class="keyword">implements</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 单例实现</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> SingletonFactoryA instance;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonFactoryA</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonFactoryA <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (SingletonFactoryA.class) &#123;</div><div class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">                    instance = <span class="keyword">new</span> SingletonFactoryA();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> IProduct <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ProductA();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>单例模式不是本文重点，在此不展开讨论。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>如果说简单工厂是抽象了1：N的工厂-产品关系，工厂方法则是抽象了N：N的工厂-产品关系，抽象工厂则是抽象了N：M的工厂-产品关系。<br>计算机领域有一句名言：“All problems in computer science can be solved by another level of indirection”，计算机科学领域的所有问题都可以通过增加一个间接中间层来解决,真是一语中的，这正是工厂类的精要所在。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag">#设计模式</a>
+          
+            <a href="/tags/面向对象/" rel="tag">#面向对象</a>
+          
+            <a href="/tags/OOP/" rel="tag">#OOP</a>
+          
+            <a href="/tags/简单工厂/" rel="tag">#简单工厂</a>
+          
+            <a href="/tags/工厂方法/" rel="tag">#工厂方法</a>
+          
+            <a href="/tags/抽象工厂/" rel="tag">#抽象工厂</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/02/理解设计模式之分类、意图、UML类图/" rel="next" title="理解设计模式之分类、意图、UML类图">
+                <i class="fa fa-chevron-left"></i> 理解设计模式之分类、意图、UML类图
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/04/理解设计模式之单例模式、享元模式/" rel="prev" title="理解设计模式之单例模式、享元模式">
+                理解设计模式之单例模式、享元模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/"
+           data-title="理解设计模式之简单工厂、工厂方法、抽象工厂" data-url="http://www.jayfeng.com/2016/04/03/理解设计模式之简单工厂、工厂方法、抽象工厂/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂类的意义"><span class="nav-text">工厂类的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单工厂"><span class="nav-text">简单工厂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂方法-Factory-Method"><span class="nav-text">工厂方法(Factory Method)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂-Abstract-Factory"><span class="nav-text">抽象工厂(Abstract Factory)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当工厂遇见单例"><span class="nav-text">当工厂遇见单例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

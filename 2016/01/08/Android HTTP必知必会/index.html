@@ -1,0 +1,1460 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="http,android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="HTTP协议使用如此广泛，开发者务必要做到“知”，“会”。 引子用curl请求百度首页全解析的过程：12345678910111213141516171819202122232425262728293031323334353637@feng ➜  jayfeng.com (master) ✗ curl -v http://www.baidu.com &amp;gt; ~/http_get.txt* Reb">
+<meta name="keywords" content="http,android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android HTTP必知必会">
+<meta property="og:url" content="http://www.jayfeng.com/2016/01/08/Android HTTP必知必会/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="HTTP协议使用如此广泛，开发者务必要做到“知”，“会”。 引子用curl请求百度首页全解析的过程：12345678910111213141516171819202122232425262728293031323334353637@feng ➜  jayfeng.com (master) ✗ curl -v http://www.baidu.com &amp;gt; ~/http_get.txt* Reb">
+<meta property="og:image" content="http://www.jayfeng.com/images/http_request_and_response.gif">
+<meta property="og:image" content="http://www.jayfeng.com/images/http_persistent.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android HTTP必知必会">
+<meta name="twitter:description" content="HTTP协议使用如此广泛，开发者务必要做到“知”，“会”。 引子用curl请求百度首页全解析的过程：12345678910111213141516171819202122232425262728293031323334353637@feng ➜  jayfeng.com (master) ✗ curl -v http://www.baidu.com &amp;gt; ~/http_get.txt* Reb">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/http_request_and_response.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android HTTP必知必会 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android HTTP必知必会
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-08T14:57:36+08:00" content="2016-01-08">
+              2016-01-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/08/Android HTTP必知必会/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/08/Android HTTP必知必会/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/01/08/Android HTTP必知必会/" class="leancloud_visitors" data-flag-title="Android HTTP必知必会">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>HTTP协议使用如此广泛，开发者务必要做到“知”，“会”。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>用curl请求百度首页全解析的过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">@feng ➜  jayfeng.com (master) ✗ curl -v http://www.baidu.com &gt; ~/http_get.txt</div><div class="line">* Rebuilt URL to: http://www.baidu.com/</div><div class="line">% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</div><div class="line">Dload  Upload   Total   Spent    Left  Speed</div><div class="line">0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 119.75.217.109...</div><div class="line">* Connected to www.baidu.com (119.75.217.109) port 80 (#0)</div><div class="line">&gt; GET / HTTP/1.1</div><div class="line">&gt; Host: www.baidu.com</div><div class="line">&gt; User-Agent: curl/7.43.0</div><div class="line">&gt; Accept: */*</div><div class="line">&gt;</div><div class="line">&lt; HTTP/1.1 200 OK</div><div class="line">&lt; Date: Thu, 28 Jan 2016 14:53:51 GMT</div><div class="line">&lt; Content-Type: text/html; charset=utf-8</div><div class="line">&lt; Transfer-Encoding: chunked</div><div class="line">&lt; Connection: Keep-Alive</div><div class="line">&lt; Vary: Accept-Encoding</div><div class="line">&lt; Set-Cookie: BAIDUID=D75C20ED3D7551221E1C32F79C698867:FG=1; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: BIDUPSID=D75C20ED3D7551221E1C32F79C698867; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: PSTM=1453992831; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: BDSVRTM=0; path=/</div><div class="line">&lt; Set-Cookie: BD_HOME=0; path=/</div><div class="line">&lt; Set-Cookie: H_PS_PSSID=18880_1458_18879_12824_18205_18777_17000_17072_15544_11476_10634; path=/; domain=.baidu.com</div><div class="line">&lt; P3P: CP=&quot; OTI DSP COR IVA OUR IND COM &quot;</div><div class="line">&lt; Cache-Control: private</div><div class="line">&lt; Cxy_all: baidu+1257c154f891fc3a17374fed141622bd</div><div class="line">&lt; Expires: Thu, 28 Jan 2016 14:53:00 GMT</div><div class="line">&lt; X-Powered-By: HPHP</div><div class="line">&lt; Server: BWS/1.1</div><div class="line">&lt; X-UA-Compatible: IE=Edge,chrome=1</div><div class="line">&lt; BDPAGETYPE: 1</div><div class="line">&lt; BDQID: 0xe5ff10b4000dd380</div><div class="line">&lt; BDUSERID: 0</div><div class="line">&lt;</div><div class="line">&#123; [2880 bytes data]</div><div class="line">100 98345    0 98345    0     0   665k      0 --:--:-- --:--:-- --:--:--  671k</div><div class="line">* Connection #0 to host www.baidu.com left intact</div></pre></td></tr></table></figure></p>
+<h2 id="示意图"><a href="#示意图" class="headerlink" title="示意图"></a>示意图</h2><p>把上面的过程画成示意图如下：<br><img src="/images/http_request_and_response.gif" alt="http 请求和响应过程"><br>但是那些代码到底是什么意思呢？<br>听我慢慢说来。</p>
+<a id="more"></a>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>说起来http的结构确实是简单，从上面的示意图大概也能看出来，包括三部分(请求和响应用/区分)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">| Request Line / Response Line                    |</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">| ...                                             |</div><div class="line">| Request Header / Response Header                |</div><div class="line">| ...                                             |</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - - -</div><div class="line">| Optional Request Body / Optional Response Body  |</div><div class="line">| ...                                             |</div><div class="line">- - - - - - - - - - - - - - - - - - - - - - - - - -</div></pre></td></tr></table></figure></p>
+<h3 id="1-请求行-状态行"><a href="#1-请求行-状态行" class="headerlink" title="1. 请求行/状态行"></a>1. 请求行/状态行</h3><p>以上面百度为例子，请求行是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 包括了基本的请求方法: GET，请求资源路径: /, HTTP协议版本: HTTP/1.1</span></div><div class="line">&gt; GET / HTTP/<span class="number">1.1</span></div></pre></td></tr></table></figure></p>
+<p>状态行是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 包括服务器响应的HTTP协议版本: HTTP/1.1, 响应状态码: 200, 状态码描述: OK</span></div><div class="line">&lt; HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</div></pre></td></tr></table></figure></p>
+<h3 id="2-首部"><a href="#2-首部" class="headerlink" title="2. 首部"></a>2. 首部</h3><p>首部可分为请求首部，响应首部, 实体首部，非正式首部，但是这些首部会有一些相同名称的首部，我们把它们定位为通用首部。<br>请求首部:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; User-Agent: curl/7.43.0</div></pre></td></tr></table></figure></p>
+<p>响应首部：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt; Connection: Keep-Alive</div></pre></td></tr></table></figure></p>
+<p>实体首部：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Content-Type: text/html; charset=utf-8</div></pre></td></tr></table></figure></p>
+<p>非正式首部：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set-Cookie: BDSVRTM=0; path=/</div></pre></td></tr></table></figure></p>
+<p>更多首部，下一节会专门详解。</p>
+<h3 id="3-实体内容"><a href="#3-实体内容" class="headerlink" title="3. 实体内容"></a>3. 实体内容</h3><p>对于请求消息，如果是POST请求，可以设置请求内容：传参，甚至上传文件。<br>对于响应消息，返回的主体内容，就是响应内容：网页，图片等资源都是。</p>
+<h2 id="首部字段概览"><a href="#首部字段概览" class="headerlink" title="首部字段概览"></a>首部字段概览</h2><p>从HTTP的结构来看，HTTP的重头戏当属那些预定义的首部了。</p>
+<table>
+<thead>
+<tr>
+<th>首部字段名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>通用首部字段</strong></td>
+<td>请求报文和响应报文两方都会使用的首部</td>
+</tr>
+<tr>
+<td>CacheControl</td>
+<td>控制缓存的行</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>允许客户端和服务器指定与请求/响应连接有关的选项</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>报文创建时间</td>
+</tr>
+<tr>
+<td>Progma</td>
+<td>报文指令</td>
+</tr>
+<tr>
+<td>Trailer</td>
+<td>报文末端的首部一览</td>
+</tr>
+<tr>
+<td>Transfer-Encoding</td>
+<td>指定报文主体的传输编码方式</td>
+</tr>
+<tr>
+<td>Upgrade</td>
+<td>升级为其它协议</td>
+</tr>
+<tr>
+<td>Via</td>
+<td>代理服务器的相关信息</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>错误通知</td>
+</tr>
+<tr>
+<td><strong>请求首部字段</strong></td>
+<td>从客户端向服务器端发送请求报文时使用的首部。补充了请求的附加内容、客户端信息、响应内容相关优先级等信息</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>用户代理可处理的媒体类型</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>优先的字符集</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>优先的内容编码</td>
+</tr>
+<tr>
+<td>Connectionntent-Language</td>
+<td>优先的语言</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>Web认证信息</td>
+</tr>
+<tr>
+<td>Expect</td>
+<td>期待服务器的特定行为</td>
+</tr>
+<tr>
+<td>From</td>
+<td>用户的电子邮箱地址</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>请求资源所在服务器</td>
+</tr>
+<tr>
+<td>If-Match</td>
+<td>比较实体标记(ETag)</td>
+</tr>
+<tr>
+<td>If-Modified-Since</td>
+<td>比较资源的更新时间</td>
+</tr>
+<tr>
+<td>If-None-Match</td>
+<td>比较实体标记较实体标记(与If-Match相反)</td>
+</tr>
+<tr>
+<td>If-Range</td>
+<td>资源未更新时发送实体Byte的范围请求</td>
+</tr>
+<tr>
+<td>If-Unmodified-Since</td>
+<td>比较资源的更新æ¶间(与If-Modified-Since相反)</td>
+</tr>
+<tr>
+<td>Max-Forwards</td>
+<td>最大传输逐跳数</td>
+</tr>
+<tr>
+<td>Proxy-Authorization</td>
+<td>代理服务器要求客户端的认证信息</td>
+</tr>
+<tr>
+<td>Range</td>
+<td>实体的字节范围请求</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>对请求中URI的原始获取方</td>
+</tr>
+<tr>
+<td>TE</td>
+<td>传输编码的优先级</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>HTTP客户端程序的信息</td>
+</tr>
+<tr>
+<td><strong>响应首部字段</strong></td>
+<td>从服务器端向客户端返回响应报文时使用的首部。补充了响应的附加内容，也会要求客户端附加额外的内容信息</td>
+</tr>
+<tr>
+<td>Accept-Ranges</td>
+<td>是否接受字节范围请求</td>
+</tr>
+<tr>
+<td>Agente</td>
+<td>推算资源创建经过时间</td>
+</tr>
+<tr>
+<td>Etag</td>
+<td>资源的匹配信息</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>令客户端重定向至指定URI</td>
+</tr>
+<tr>
+<td>Proxy-Authenticate</td>
+<td>代理服务器对客户端的认证信息</td>
+</tr>
+<tr>
+<td>Retry-After</td>
+<td>对再次发起请求的时机要求</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>HTTP服务器的安装信息</td>
+</tr>
+<tr>
+<td>Vary</td>
+<td>代理服务器缓存的管理信息</td>
+</tr>
+<tr>
+<td>WWW-Authenticate</td>
+<td>服务器对客户端的认证信息</td>
+</tr>
+<tr>
+<td><strong>实体首部字段</strong></td>
+<td>针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等与实体相关的信息</td>
+</tr>
+<tr>
+<td>Allow</td>
+<td>资源可支持的HTTP方法</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>实体主体适用的编码方式</td>
+</tr>
+<tr>
+<td>Content-Language</td>
+<td>实体主体的自然语言</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>实体主体的大小</td>
+</tr>
+<tr>
+<td>Content-Location</td>
+<td>替代对应资源的URI</td>
+</tr>
+<tr>
+<td>Content-MD5</td>
+<td>实体主体的报文摘要</td>
+</tr>
+<tr>
+<td>Content-Rangesge</td>
+<td>实体主体的位置范围</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>实体主体的媒体类型</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>实体主体过期的日期时间</td>
+</tr>
+<tr>
+<td>Last-Modified</td>
+<td>资源的最后修改日期时间</td>
+</tr>
+</tbody>
+</table>
+<p>对一些常用字段深入了解是很有必要，这里不做详述，有些字段单独拿出来就能另外再写一篇文章了，请参考文末附录。</p>
+<h2 id="常见状态码"><a href="#常见状态码" class="headerlink" title="常见状态码"></a>常见状态码</h2><p>HTTP状态码标明客户端HTTP请求的返回结果，结果是否正确，应该怎么处理等信息。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Found</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+</tr>
+</tbody>
+</table>
+<h2 id="值得注意的几个热点"><a href="#值得注意的几个热点" class="headerlink" title="值得注意的几个热点"></a>值得注意的几个热点</h2><h3 id="1-持久连接"><a href="#1-持久连接" class="headerlink" title="1. 持久连接"></a>1. 持久连接</h3><p>在这个无网不冲浪，推送满天飞的年代，理解持久连接的概念非常重要。<br>引用wiki的解释：</p>
+<blockquote>
+<p>HTTP持久连接（HTTP persistent connection，也称作HTTP keep-alive或HTTP connection reuse）是使用同一个TCP连接来发送和接收多个HTTP请求/应答，而不是为每一个新的请求/应答打开新的连接的方法。</p>
+</blockquote>
+<p>可以说，http1.1相对于http1.0的一个最大的改进就是默认支持http持久连接了。<br><img src="/images/http_persistent.png" alt="http 持久连接示意图"></p>
+<p>在android客户端中如果要关闭持久连接（以google http client为例）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">request.getHeaders().set(<span class="string">"Connection"</span>, <span class="string">"close"</span>);</div></pre></td></tr></table></figure></p>
+<p>另外，关于持久连接造成EOFException的问题，我一直没用找到可靠的解决方案，okhttp的issues下关于这个讨论也是很热闹：<br><a href="https://github.com/square/okhttp/issues/1114" target="_blank" rel="external">EOFException in RealBufferedSource.readUtf8LineStrict</a><br><a href="https://github.com/square/okhttp/issues/1517" target="_blank" rel="external">EOFException in RealBufferedSource.readUtf8LineStrict(): 0-bytes in stream</a><br><a href="https://github.com/square/okhttp/issues/1518" target="_blank" rel="external">EOFException in RealBufferedSource.readUtf8LineStrict(): corrupt stream</a><br>但是，像xutils3这样的修复方案是真的对吗？<br><a href="https://github.com/wyouflf/xUtils3/commit/6c30604182d48aaac8e0b0fde41282ac1d09f908" target="_blank" rel="external">尝试修复Android4.4之前HttpUrlConnection偶发的EOFException问题</a></p>
+<p>直接把4.4之前的长连接给关闭了，虽然干净了，但是是否会对性能造成影响？这个问题的解法是否要联调一下服务器的keepalive_timeout？如果真的和keepalive_timeout，keepalive_timeout设置应该设置多少（这个值不能设置太大，否则可能会把服务器搞挂）？<br>请高手赐教。</p>
+<h3 id="2-断点续传"><a href="#2-断点续传" class="headerlink" title="2. 断点续传"></a>2. 断点续传</h3><p>断点续传的原理其实非常简单，就是利用HTTP的请求首部中的Range字段。<br>第一步，计算本地文件大小。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// 读取本地文件</span></div><div class="line">    fis = <span class="keyword">new</span> FileInputStream(dest);</div><div class="line">    <span class="comment">// currentSize就是本地文件大小</span></div><div class="line">    currentSize = fis.available();</div><div class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    <span class="keyword">throw</span> e;</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (fis != <span class="keyword">null</span>) &#123;</div><div class="line">        fis.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>第二步，设置Range值，明确告知服务器从哪里接着下载。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">HttpURLConnection conn;</div><div class="line">...</div><div class="line"><span class="comment">// 如果本地文件存在，设置RANGE为"bytes=currentSize-", -后面不写具体值，表示接着下载到文件结尾</span></div><div class="line"><span class="keyword">if</span> (currentSize &gt; <span class="number">0</span>) &#123;</div><div class="line">    conn.setRequestProperty(<span class="string">"RANGE"</span>, <span class="string">"bytes="</span> + currentSize + <span class="string">"-"</span>);</div><div class="line">&#125;</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>完整代码请参考：<a href="https://github.com/openproject/LessCode/blob/master/lesscode-core/src/main/java/com/jayfeng/lesscode/core/HttpLess.java#L224" target="_blank" rel="external">http之download方法</a><br>PS: 这里只是说明原理，如果是可变文件（比如图片资源一般定义为不变文件），还要考虑文件校验。</p>
+<h3 id="3-上传文件"><a href="#3-上传文件" class="headerlink" title="3. 上传文件"></a>3. 上传文件</h3><p>对上传文件的理解程度某个意义上就代表了你对HTTP结构的理解程度。<br>第一步，为了后续代码可读性，先定义几个常量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">String BOUNDARY = <span class="string">"--------------"</span> + UUID.randomUUID().toString();</div><div class="line">String PREFIX = <span class="string">"--"</span>,</div><div class="line">String LINEND = <span class="string">"\r\n"</span>;</div><div class="line">String MULTIPART_FROM_DATA = <span class="string">"multipart/form-data"</span>;</div></pre></td></tr></table></figure></p>
+<p>第二步，定义Content-Type。<br>Content-Type为”multipart/form-data”，因为有文件只能以二进制的形式传输。同时定义内容分隔符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// $&#123;bound&#125; 是一个占位符, 为了表示唯一，可以用一些特殊的随机组合，比如---------------4365423423423423</div><div class="line">Content-Type: multipart/form-data; boundary=$&#123;bound&#125;</div></pre></td></tr></table></figure></p>
+<p>第三步，传参数（可选）。<br>传文件并不是说就不能再传参数了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : params.entrySet()) &#123;</div><div class="line">    sb.append(PREFIX);</div><div class="line">    sb.append(BOUNDARY);</div><div class="line">    sb.append(LINEND);</div><div class="line">    sb.append(<span class="string">"Content-Disposition: form-data; name=\""</span> + entry.getKey() + <span class="string">"\""</span> + LINEND);</div><div class="line">    sb.append(<span class="string">"Content-Type: text/plain; charset=GBK"</span> + LINEND);</div><div class="line">    sb.append(<span class="string">"Content-Transfer-Encoding: 8bit"</span> + LINEND);</div><div class="line">    sb.append(LINEND);</div><div class="line">    sb.append(entry.getValue());</div><div class="line">    sb.append(LINEND);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>第四步，传文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">for (Map.Entry&lt;String, File&gt; file : files.entrySet()) &#123;</div><div class="line">    StringBuilder sb1 = new StringBuilder();</div><div class="line">    sb1.append(PREFIX);</div><div class="line">    sb1.append(BOUNDARY);</div><div class="line">    sb1.append(LINEND);</div><div class="line">    // 添加文件描述</div><div class="line">    sb1.append(&quot;Content-Disposition: form-data; name=\&quot;uploadfile\&quot;; filename=\&quot;&quot;</div><div class="line">            + file.getValue().getName() + &quot;\&quot;&quot; + LINEND);</div><div class="line">    sb1.append(&quot;Content-Type: application/octet-stream; charset=GBK&quot; + LINEND);</div><div class="line">    sb1.append(LINEND);</div><div class="line">    os.write(sb1.toString().getBytes());</div><div class="line"></div><div class="line">    is = new FileInputStream(file.getValue());</div><div class="line">    byte[] buffer = new byte[1024];</div><div class="line">    int len = 0;</div><div class="line">    while ((len = is.read(buffer)) != -1) &#123;</div><div class="line">        os.write(buffer, 0, len);</div><div class="line">    &#125;</div><div class="line">    is.close();</div><div class="line">    os.write(LINEND.getBytes());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>第五步，末尾边界。<br>特别写出这一步是为了强调，请务必注意各个段落的分割。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">byte</span>[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();</div><div class="line">os.write(end_data);</div></pre></td></tr></table></figure></p>
+<p>可以看的出来，所谓上传文件，就是以二进制的形式把这些参数，文件等数据以一定边界区分并拼装在一起发送给服务器。<br>完整代码请参考：<a href="https://github.com/openproject/LessCode/blob/master/lesscode-core/src/main/java/com/jayfeng/lesscode/core/HttpLess.java#L328" target="_blank" rel="external">http之upload方法</a><br>关于上传如果想了解更多，可以学习一下lite http的部分源码：<a href="https://github.com/litesuits/android-lite-http/tree/master/library2.0/src/com/litesuits/http/request/content" target="_blank" rel="external">lite http之content</a></p>
+<h3 id="4-Last-Modified和ETag"><a href="#4-Last-Modified和ETag" class="headerlink" title="4. Last Modified和ETag"></a>4. Last Modified和ETag</h3><p>通过Last Modified作为服务器文件的时间戳，来判断服务器文件是否有更新。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getLastModified</span><span class="params">(URL url)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line"></div><div class="line">    HttpURLConnection connection = (HttpURLConnection) url.openConnection();</div><div class="line">    connection.setConnectTimeout(TIME_OUT);</div><div class="line">    connection.setReadTimeout(TIME_OUT);</div><div class="line">    <span class="keyword">long</span> lastModified = connection.getLastModified();</div><div class="line"></div><div class="line">    connection.disconnect();</div><div class="line">    <span class="keyword">return</span> lastModified;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>ETag，其实和Last Modified一样，只不过它不是时间戳而是一串标志量，也可以判断服务器文件是否发生变化。<br>这个我没有使用过，这里不细讲。<br>具体请参考： <a href="http://zhanzhang.baidu.com/college/articleinfo?id=487?edm1117" target="_blank" rel="external">ETag使用效果对比&amp;经验分享</a> 、 <a href="http://zhanzhang.baidu.com/college/articleinfo?id=457" target="_blank" rel="external">对站点服务器如何配置ETag</a></p>
+<h3 id="5-HTTPS"><a href="#5-HTTPS" class="headerlink" title="5. HTTPS"></a>5. HTTPS</h3><p>HTTPS是在HTTP层之下添加了SSL层，大大增强了数据传输的安全性。<br>在android中，如何解析https的接口呢？（以下代码因为是多年前代码，可能有些地方欠缺严谨，仅供学习参考）<br>第一步，生成客户端私钥。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> [ -z $<span class="number">1</span> ]; then</div><div class="line">echo <span class="string">"Usage: importcert.sh &lt;CA cert PEM file&gt;"</span></div><div class="line">exit <span class="number">1</span></div><div class="line">fi</div><div class="line"></div><div class="line">CACERT=$<span class="number">1</span></div><div class="line">BCJAR=bcprov-jdk16-<span class="number">145</span>.jar</div><div class="line"></div><div class="line">TRUSTSTORE=../app/src/main/res/raw/mytruststore.bks</div><div class="line">ALIAS=`openssl x509 -inform PEM -subject_hash -noout -in $CACERT`</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -f $TRUSTSTORE ]; then</div><div class="line">rm $TRUSTSTORE || exit <span class="number">1</span></div><div class="line">fi</div><div class="line"></div><div class="line">echo <span class="string">"Adding certificate to $TRUSTSTORE..."</span></div><div class="line">keytool -<span class="keyword">import</span> -v -trustcacerts -alias $ALIAS \</div><div class="line">            -file $CACERT \</div><div class="line">            -keystore $TRUSTSTORE -storetype BKS \</div><div class="line">            -providerclass org.bouncycastle.jce.provider.BouncyCastleProvider \</div><div class="line">            -providerpath $BCJAR \</div><div class="line">            -storepass <span class="number">123456</span>abc</div><div class="line"></div><div class="line">echo <span class="string">""</span></div><div class="line">echo <span class="string">"Added '$CACERT' with alias '$ALIAS' to $TRUSTSTORE..."</span></div></pre></td></tr></table></figure></p>
+<p>使用这个脚本，利用pem文件，最终在res/raw目录下生成一个mytruststore.bks文件。</p>
+<p>第二步，根据私钥和密码生成SSLSocketFactory：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 为了更好的性能，这里使用全局静态变量</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> SSLSocketFactory sCustomerSSLSocketFactory = <span class="keyword">null</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SSLSocketFactory <span class="title">getCustomerSSLSocketFactory</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sCustomerSSLSocketFactory != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> sCustomerSSLSocketFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        KeyStore trusted = KeyStore.getInstance(<span class="string">"BKS"</span>);</div><div class="line">        InputStream in = context.getResources().openRawResource(R.raw.mytruststore);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            trusted.load(in, <span class="string">"aike_client"</span>.toCharArray());</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">finally</span> &#123;</div><div class="line">            in.close();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        sCustomerSSLSocketFactory = <span class="keyword">new</span> SSLSocketFactory(trusted);</div><div class="line">        sCustomerSSLSocketFactory.setHostnameVerifier(<span class="keyword">new</span> AllowAllHostnameVerifier());</div><div class="line">        <span class="keyword">return</span> sCustomerSSLSocketFactory;</div><div class="line">    &#125; <span class="keyword">catch</span>(Exception e) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>第三步，在google http client中使用SSLSocketFactory。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ApacheHttpTransport.Builder builder = <span class="keyword">new</span> ApacheHttpTransport.Builder();</div><div class="line">HttpRequestFactory httpRequestFactory = builder</div><div class="line">    .setSocketFactory(AppConfig.getCustomerSSLSocketFactory(mContext))</div><div class="line">    .build()</div><div class="line">    .createRequestFactory();</div><div class="line">HttpRequest request = httpRequestFactory.buildPostRequest(url, content);</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>至此https的基本使用流程大概是这样的。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>通过对HTTP结构和首部的深入学习，相信大家对http协议的理解会上一个台阶。<br>如果有兴趣，可自行去拓展学习一下HTTP2.0，SPDY，WebSocket等。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>[1]. <a href="http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/" target="_blank" rel="external">What really happens when you navigate to a URL</a><br>[2]. <a href="https://imququ.com/series.html#toc-7" target="_blank" rel="external">HTTP专题 by Jerry Qu</a><br>[3]. <a href="https://imququ.com/series.html#toc-6" target="_blank" rel="external">HTTP/2专题 by Jerry Qu</a><br>[4]. <a href="https://imququ.com/post/transfer-encoding-header-in-http.html" target="_blank" rel="external">HTTP 协议中的 Transfer-Encoding</a><br>[5]. <a href="http://emacsist.github.io/2015/12/29/Http-%E5%8D%8F%E8%AE%AE%E4%B8%AD%E7%9A%84Range%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BE%8B%E5%AD%90/" target="_blank" rel="external">Http 协议中的Range请求头例子</a><br>[6]. <a href="http://music4kid.github.io/blog/http2/" target="_blank" rel="external">HTTP 2.0的那些事</a><br>[7]. <a href="https://zh.wikipedia.org/wiki/HTTP%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5" target="_blank" rel="external">HTTP持久连接</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/http/" rel="tag">#http</a>
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/06/如何更好的开发一个Android应用/" rel="next" title="如何更好的开发一个Android应用">
+                <i class="fa fa-chevron-left"></i> 如何更好的开发一个Android应用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/01/Android-APP终极瘦身指南/" rel="prev" title="Android APP终极瘦身指南">
+                Android APP终极瘦身指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/08/Android HTTP必知必会/"
+           data-title="Android HTTP必知必会" data-url="http://www.jayfeng.com/2016/01/08/Android HTTP必知必会/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引子"><span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示意图"><span class="nav-text">示意图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构"><span class="nav-text">结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-请求行-状态行"><span class="nav-text">1. 请求行/状态行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-首部"><span class="nav-text">2. 首部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-实体内容"><span class="nav-text">3. 实体内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#首部字段概览"><span class="nav-text">首部字段概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见状态码"><span class="nav-text">常见状态码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值得注意的几个热点"><span class="nav-text">值得注意的几个热点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-持久连接"><span class="nav-text">1. 持久连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-断点续传"><span class="nav-text">2. 断点续传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-上传文件"><span class="nav-text">3. 上传文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Last-Modified和ETag"><span class="nav-text">4. Last Modified和ETag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-HTTPS"><span class="nav-text">5. HTTPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-text">附录</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

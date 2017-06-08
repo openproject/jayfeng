@@ -1,0 +1,1265 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="之前在微博上看到了一款神器tldr，更友好的命令使用说明，妈妈再也不用担心我记不住命令了！今天抽空整理一下, 以备没用安装tldr的机器也能查阅常用的几个。 官方网站：https://github.com/tldr-pages/tldr 命令列表执行tldr list,得到一些常用的命令列表12345678910111213141516171819202122ab, ack, ag, alias,">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux常用命令汇总">
+<meta property="og:url" content="http://www.jayfeng.com/2016/01/06/Linux常用命令汇总/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="之前在微博上看到了一款神器tldr，更友好的命令使用说明，妈妈再也不用担心我记不住命令了！今天抽空整理一下, 以备没用安装tldr的机器也能查阅常用的几个。 官方网站：https://github.com/tldr-pages/tldr 命令列表执行tldr list,得到一些常用的命令列表12345678910111213141516171819202122ab, ack, ag, alias,">
+<meta property="og:image" content="http://www.jayfeng.com/images/tldr_man.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux常用命令汇总">
+<meta name="twitter:description" content="之前在微博上看到了一款神器tldr，更友好的命令使用说明，妈妈再也不用担心我记不住命令了！今天抽空整理一下, 以备没用安装tldr的机器也能查阅常用的几个。 官方网站：https://github.com/tldr-pages/tldr 命令列表执行tldr list,得到一些常用的命令列表12345678910111213141516171819202122ab, ack, ag, alias,">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/tldr_man.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Linux常用命令汇总 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux常用命令汇总
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-06T09:42:48+08:00" content="2016-01-06">
+              2016-01-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/06/Linux常用命令汇总/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/06/Linux常用命令汇总/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/01/06/Linux常用命令汇总/" class="leancloud_visitors" data-flag-title="Linux常用命令汇总">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前在微博上看到了一款神器tldr，更友好的命令使用说明，妈妈再也不用担心我记不住命令了！今天抽空整理一下, 以备没用安装tldr的机器也能查阅常用的几个。</p>
+<h2 id="官方网站："><a href="#官方网站：" class="headerlink" title="官方网站："></a>官方网站：</h2><p><a href="https://github.com/tldr-pages/tldr" target="_blank" rel="external">https://github.com/tldr-pages/tldr</a><br><img src="/images/tldr_man.png" alt="tldr man"></p>
+<h2 id="命令列表"><a href="#命令列表" class="headerlink" title="命令列表"></a>命令列表</h2><p>执行tldr list,得到一些常用的命令列表<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">ab, ack, ag, <span class="built_in">alias</span>, apropos, ar, awk, bc, bundle, cal, calibre-server, calibredb,</div><div class="line">cat, <span class="built_in">cd</span>, chmod, chown, chsh, cksum, clang, comm, convert, cordova, cp, curl, cut, date, deluser,</div><div class="line">df, diff, dig, docker, drush, ebook-convert, <span class="built_in">echo</span>, electrum, env, exiftool, fdupes, ffmpeg,</div><div class="line">file, find, fswebcam, gcc, gem, gifsicle,</div><div class="line">git-add, git-blame, git-branch, git-checkout, git-clone, git-commit, git-config, git-diff, git-init,</div><div class="line">git-log, git-merge, git-mv, git-pull, git-push, git-remote, git-rm, git-stash, git-status, git-tag, git,</div><div class="line">gpg, grep, gzip, handbrakecli, haxelib, <span class="built_in">history</span>, iconv, ifconfig, ioping, ipcs,</div><div class="line">java, javac, <span class="built_in">kill</span>, less, ln, lp, lpstat, ls, lsof, man, mkdir, more, mount, mp4box, mtr,</div><div class="line">mv, mysql, mysqldump, nc, nginx, nice, nmap, node, nohup, npm, nvm, pandoc,</div><div class="line">passwd, patch, pgrep, php, ping, pip, play, <span class="built_in">printf</span>, ps, psql, <span class="built_in">pushd</span>, <span class="built_in">pwd</span>, python, redis-cli,</div><div class="line">rename, renice, rm, rmdir, rsync, salt-call, salt-key, salt-run, salt, scp, screen,</div><div class="line">sed, sort, sox, split, srm, ssh, sshfs, sudo, svn, tail, tar, tcpdump, tee,</div><div class="line">telnet, <span class="built_in">test</span>, time, tldr, tmux, touch, tr, traceroute, transcode, tree, ufraw-batch, umount,</div><div class="line">uname, unzip, uptime, useradd, userdel, usermod, vim, vimtutor, w, wc,</div><div class="line">wget, <span class="built_in">which</span>, yes, zbarimg, zfs, zip, zpool, apt-get, aptitude, base64, dpkg,</div><div class="line">du, emerge, findmnt, firewall-cmd, free, head, hostname, iostat, ip, journalctl,</div><div class="line">locate, lsb_release, md5sum, mdadm, netstat, pacman, sha1sum, sha224sum, sha256sum, sha384sum, sha512sum,</div><div class="line">shuf, shutdown, ss, strace, systemctl, tcpflow,</div><div class="line">top, wall, watch, wpa_cli, xargs, xsetwacom, airport, brew, caffeinate, diskutil, drutil,</div><div class="line">du, head, hostname, locate, md5, mdfind, netstat, networksetup, open, pbcopy, pbpaste, qlmanage,</div><div class="line">route, say, shutdown, sw_vers, sysctl, system_profiler, systemsetup,</div><div class="line">top, wacaw, xctool, xed, xsltproc, prctl, prstat, svcadm, svccfg, svcs</div></pre></td></tr></table></figure></p>
+<h2 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h2><p>按字母顺序列举。</p>
+<h3 id="ack"><a href="#ack" class="headerlink" title="ack"></a>ack</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">ack</div><div class="line">A search tool like grep, optimized <span class="keyword">for</span> programmers.</div><div class="line"></div><div class="line">- Find files containing <span class="string">"foo"</span></div><div class="line">ack foo</div><div class="line"></div><div class="line">- Find files <span class="keyword">in</span> a specific language</div><div class="line">ack --ruby each_with_object</div><div class="line"></div><div class="line">- Count the total number of matches <span class="keyword">for</span> the term <span class="string">"foo"</span></div><div class="line">ack -ch foo</div><div class="line"></div><div class="line">- Show the file names containing <span class="string">"foo"</span> and number of matches <span class="keyword">in</span> each file</div><div class="line">ack -cl foo</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">alias</span></div><div class="line">Creates an <span class="built_in">alias</span> <span class="keyword">for</span> a word when used</div><div class="line">as the first word of a <span class="built_in">command</span></div><div class="line"></div><div class="line">- creating a generic <span class="built_in">alias</span></div><div class="line"><span class="built_in">alias</span> word=<span class="string">"command"</span></div><div class="line"></div><div class="line">- remove an aliased <span class="built_in">command</span></div><div class="line"><span class="built_in">unalias</span> word</div><div class="line"></div><div class="line">- full list of aliased words</div><div class="line"><span class="built_in">alias</span> -p</div><div class="line"></div><div class="line">- turning rm an interative <span class="built_in">command</span></div><div class="line"><span class="built_in">alias</span> rm=<span class="string">"rm -i"</span></div><div class="line"></div><div class="line">- overriding la as ls -a</div><div class="line"><span class="built_in">alias</span> la=<span class="string">"ls -a"</span></div></pre></td></tr></table></figure>
+<h3 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">awk</div><div class="line">A versatile programming language <span class="keyword">for</span> working on files</div><div class="line"></div><div class="line">- Print the fifth column <span class="keyword">in</span> a space separated file</div><div class="line">awk <span class="string">'&#123;print $5&#125;'</span> filename</div><div class="line"></div><div class="line">- Print the third column <span class="keyword">in</span> a comma separated file</div><div class="line">awk -F <span class="string">','</span> <span class="string">'&#123;print $3&#125;'</span> filename</div><div class="line"></div><div class="line">- Sum the values <span class="keyword">in</span> the first column and <span class="built_in">print</span> the total</div><div class="line">awk <span class="string">'&#123;s+=$1&#125; END &#123;print s&#125;'</span> filename</div><div class="line"></div><div class="line">- Sum the values <span class="keyword">in</span> the first column and pretty-print the values and <span class="keyword">then</span> the total</div><div class="line">awk <span class="string">'&#123;s+=$1; print $1&#125; END &#123;print "--------"; print s&#125;'</span> filename</div></pre></td></tr></table></figure>
+<h3 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">base64</div><div class="line">Encode or decode file or standard input, to standard output.</div><div class="line"></div><div class="line">- Encode a file</div><div class="line">base64 filename</div><div class="line"></div><div class="line">- Decode a file</div><div class="line">base64 -d filename</div><div class="line"></div><div class="line">- Encode from stdin</div><div class="line">somecommand | base64</div><div class="line"></div><div class="line">- Decode from stdin</div><div class="line">somecommand | base64 -d</div></pre></td></tr></table></figure>
+<h3 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">cat</div><div class="line">Print and concatenate files.</div><div class="line"></div><div class="line">- Print the contents of  to the standard output</div><div class="line">cat file1</div><div class="line"></div><div class="line">- Concatenate several files into the target file.</div><div class="line">cat file1 file2 &gt; target-file</div></pre></td></tr></table></figure>
+<h3 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">chmod</div><div class="line">Change the access permissions of a file or directory</div><div class="line"></div><div class="line">- Give the (u)ser who owns a file the right to e(x)ecute it</div><div class="line">chmod u+x file</div><div class="line"></div><div class="line">- Give the user rights to (r)ead and (w)rite to a file/directory</div><div class="line">chmod u+rw file</div><div class="line"></div><div class="line">- Remove executable rights from the (g)roup</div><div class="line">chmod g-x file</div><div class="line"></div><div class="line">- Give (a)ll users rights to <span class="built_in">read</span> and execute</div><div class="line">chmod a+rx file</div><div class="line"></div><div class="line">- Give (o)thers (not <span class="keyword">in</span> the file owner<span class="string">'s group) the same rights as the group</span></div><div class="line">chmod o=g file</div></pre></td></tr></table></figure>
+<h3 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">chown</div><div class="line">Change the owning user/group of the specified files</div><div class="line"></div><div class="line">- change the user of a file</div><div class="line">chown user path/to/file</div><div class="line"></div><div class="line">- change the user and group of a file</div><div class="line">chown user:group path/to/file</div><div class="line"></div><div class="line">- recursively change the owner of an entire folder</div><div class="line">chown -R user path/to/folder</div><div class="line"></div><div class="line">- change the owner of a symbolic link</div><div class="line">chown -h user path/to/symlink</div><div class="line"></div><div class="line">- use the owner and group of a reference file and apply those values to another file</div><div class="line">chown --reference=reference-file path/to/file</div></pre></td></tr></table></figure>
+<h3 id="chsh"><a href="#chsh" class="headerlink" title="chsh"></a>chsh</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">chsh</div><div class="line">Change user<span class="string">'s login shell</span></div><div class="line"></div><div class="line">- change shell</div><div class="line">chsh -s path/to/shell_binary username</div></pre></td></tr></table></figure>
+<h3 id="convert"><a href="#convert" class="headerlink" title="convert"></a>convert</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">convert</div><div class="line">Imagemagick image conversion tool</div><div class="line"></div><div class="line">- Convert an image from JPG to PNG</div><div class="line">convert image.jpg image.png</div><div class="line"></div><div class="line">- Scale an image 50% it<span class="string">'s original size</span></div><div class="line">convert image.png -resize 50% image2.png</div><div class="line"></div><div class="line">- Horizontally append images</div><div class="line">convert image1.png image2.png image3.png +append image123.png</div></pre></td></tr></table></figure>
+<h3 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">cp</div><div class="line">Copy files</div><div class="line"></div><div class="line">- Copy files <span class="keyword">in</span> arbitrary locations</div><div class="line">cp /path/to/original /path/to/copy</div><div class="line"></div><div class="line">- Copy a file to a parent directory</div><div class="line">cp /path/to/original ../path/to/copy</div><div class="line"></div><div class="line">- Copy directories recursive using the option -r</div><div class="line">cp -r /path/to/original /path/to/copy</div><div class="line"></div><div class="line">- Show files as they are copied</div><div class="line">cp -vr /path/to/original /path/to/copy</div><div class="line"></div><div class="line">- Make a copy of a file, adding an extension</div><div class="line">cp file.html&#123;,.backup&#125;</div><div class="line"></div><div class="line">- Make a copy of a file, changing the extension</div><div class="line">cp file.&#123;html,backup&#125;</div></pre></td></tr></table></figure>
+<h3 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">curl</div><div class="line">Transfers data from or to a server</div><div class="line">Supports most protocols including HTTP, FTP, POP</div><div class="line"></div><div class="line">- Download a URL to a file</div><div class="line">curl <span class="string">"URL"</span> -o filename</div><div class="line"></div><div class="line">- send form-encoded data</div><div class="line">curl --data name=bob http://localhost/form</div><div class="line"></div><div class="line">- send JSON data</div><div class="line">curl -X POST -H <span class="string">"Content-Type: application/json"</span> -d <span class="string">'&#123;"name":"bob"&#125;'</span> http://localhost/login</div><div class="line"></div><div class="line">- specify an HTTP method</div><div class="line">curl -X DELETE http://localhost/item/123</div><div class="line"></div><div class="line">- head request</div><div class="line">curl --head http://localhost</div><div class="line"></div><div class="line">- pass a user name and password <span class="keyword">for</span> server authentication</div><div class="line">curl -u myusername:mypassword http://localhost</div></pre></td></tr></table></figure>
+<h3 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">cut</div><div class="line">Cut out fields from STDIN or files</div><div class="line"></div><div class="line">- Cut out the first sixteen characters of each line of STDIN</div><div class="line">cut -c 1-16</div><div class="line"></div><div class="line">- Cut out the first sixteen characters of each line of the given files</div><div class="line">cut -c 1-16 file</div><div class="line"></div><div class="line">- Cut out everything from the 3rd character to the end of each line</div><div class="line">cut -c3-</div><div class="line"></div><div class="line">- Cut out the fifth field, split on the colon character of each line</div><div class="line">cut -d<span class="string">':'</span> -f5</div><div class="line"></div><div class="line">- Cut out the fields five and 10, split on the colon character of each line</div><div class="line">cut -d<span class="string">':'</span> -f5,10</div><div class="line"></div><div class="line">- Cut out the fields five through 10, split on the colon character of each line</div><div class="line">cut -d<span class="string">':'</span> -f5-10</div></pre></td></tr></table></figure>
+<h3 id="date"><a href="#date" class="headerlink" title="date"></a>date</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">date</div><div class="line">Set or display the system date</div><div class="line"></div><div class="line">- Display the date using the default locale</div><div class="line">date +<span class="string">"%c"</span></div><div class="line"></div><div class="line">- Display the date <span class="keyword">in</span> UTC and ISO 8601 format</div><div class="line">date -u +<span class="string">"%Y-%m-%dT%H:%M:%SZ"</span></div></pre></td></tr></table></figure>
+<h3 id="df"><a href="#df" class="headerlink" title="df"></a>df</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">df</div><div class="line">gives an overview of the file system disk space usage</div><div class="line"></div><div class="line">- display all file systems and their disk usage</div><div class="line">df</div><div class="line"></div><div class="line">- display all file systems and their disk usage <span class="keyword">in</span> human readable form</div><div class="line">df -h</div></pre></td></tr></table></figure>
+<h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">diff</div><div class="line">Compare files and directories</div><div class="line"></div><div class="line">- Compare files</div><div class="line">diff file1 file2</div><div class="line"></div><div class="line">- Compare files, ignoring white spaces</div><div class="line">diff -w file1 file2</div><div class="line"></div><div class="line">- Compare files, showing differences side by side</div><div class="line">diff -y file1 file2</div><div class="line"></div><div class="line">- Compare directories recursively</div><div class="line">diff -r directory1 directory2</div><div class="line"></div><div class="line">- Compare directories, only showing the names of files that differ</div></pre></td></tr></table></figure>
+<h3 id="dpkg"><a href="#dpkg" class="headerlink" title="dpkg"></a>dpkg</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">dpkg</div><div class="line">debian package manager</div><div class="line"></div><div class="line">- install a package</div><div class="line">dpkg -i /path/to/file</div><div class="line"></div><div class="line">- remove a package</div><div class="line">dpkg -r package_name</div><div class="line"></div><div class="line">- list installed packages</div><div class="line">dpkg -l pattern</div><div class="line"></div><div class="line">- list package contents</div><div class="line">dpkg -L package_name</div></pre></td></tr></table></figure>
+<h3 id="du"><a href="#du" class="headerlink" title="du"></a>du</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">du</div><div class="line">Estimate file space usage</div><div class="line"></div><div class="line">- get a sum of the total size of a file/folder <span class="keyword">in</span> human readable units</div><div class="line">du -sh file/directory</div><div class="line"></div><div class="line">- list file sizes of a directory and any subdirectories <span class="keyword">in</span> KB</div><div class="line">du -k file/directory</div><div class="line"></div><div class="line">- get recursively, individual file/folder sizes <span class="keyword">in</span> human readable form</div><div class="line">du -ah directory</div><div class="line"></div><div class="line">- list the KB sizes of directories <span class="keyword">for</span> N levels below the specified directory</div><div class="line">du --max-depth=N</div></pre></td></tr></table></figure>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">env</div><div class="line">Show the environment or run a program <span class="keyword">in</span> a modified environment</div><div class="line"></div><div class="line">- Show the environment</div><div class="line">env</div><div class="line"></div><div class="line">- Clear the environment and run a program</div><div class="line">env -i program</div><div class="line"></div><div class="line">- Remove variable from the environment and run a program</div><div class="line">env -u variable program</div><div class="line"></div><div class="line">- Set a variable and run a program</div><div class="line">env variable=value program</div></pre></td></tr></table></figure>
+<h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">find</div><div class="line">Find files under the given directory tree, recursively</div><div class="line"></div><div class="line">- find files by extension</div><div class="line">find root_path -name <span class="string">'*.py'</span></div><div class="line"></div><div class="line">- find files matching path pattern</div><div class="line">find root_path -path <span class="string">'**/lib/**/*.py'</span></div><div class="line"></div><div class="line">- run a <span class="built_in">command</span> <span class="keyword">for</span> each file, use &#123;&#125; within the <span class="built_in">command</span> to access the filename</div><div class="line">find root_path -name <span class="string">'*.py'</span> -<span class="built_in">exec</span> wc -l &#123;&#125; \;</div><div class="line"></div><div class="line">- find files modified since a certain time</div><div class="line">find root_path -name <span class="string">'*.py'</span> -mtime -1d</div><div class="line"></div><div class="line">- find files using <span class="keyword">case</span> insensitive name matching, of a certain size</div><div class="line">find root_path -size +500k -size -10MB -iname <span class="string">'*.TaR.gZ'</span></div><div class="line"></div><div class="line">- delete files by name, older than a certain number of days</div><div class="line">find root_path -name <span class="string">'*.py'</span> -mtime -180d -delete</div></pre></td></tr></table></figure>
+<h3 id="gcc"><a href="#gcc" class="headerlink" title="gcc"></a>gcc</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">gcc</div><div class="line">Preprocesses and compiles C and C++ <span class="built_in">source</span> files, <span class="keyword">then</span> assembles and links them together.</div><div class="line"></div><div class="line">- Compile multiple <span class="built_in">source</span> files into executable</div><div class="line">gcc source1.c source2.c -o executable</div><div class="line"></div><div class="line">- Allow warnings, debug symbols <span class="keyword">in</span> output</div><div class="line">gcc source.c -Wall -Og -o executable</div><div class="line"></div><div class="line">- Include libraries from a different path</div><div class="line">gcc source.c -o executable -Iheader_path -Llibrary_path -llibrary_name</div></pre></td></tr></table></figure>
+<h3 id="git-…"><a href="#git-…" class="headerlink" title="git …"></a>git …</h3><ol>
+<li><p>git add</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">git add</div><div class="line">Adds changed files to the index</div><div class="line"></div><div class="line">- Add a file to the index</div><div class="line">git add PATHSPEC</div><div class="line"></div><div class="line">- Add all files (tracked and untracked)</div><div class="line">git add .</div><div class="line"></div><div class="line">- Only add already tracked files</div><div class="line">git add -u</div><div class="line"></div><div class="line">- Also add ignored files</div><div class="line">git add -f</div></pre></td></tr></table></figure>
+</li>
+<li><p>git blame</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git blame</div><div class="line">Show commit <span class="built_in">hash</span> and last author on each line of a file</div><div class="line"></div><div class="line">- Print file with author name and commit <span class="built_in">hash</span> on each line</div><div class="line">git blame file</div><div class="line"></div><div class="line">- Print file with author email and commit <span class="built_in">hash</span> on each line</div><div class="line">git blame -e file</div></pre></td></tr></table></figure>
+</li>
+<li><p>git branch</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Main <span class="built_in">command</span> <span class="keyword">for</span> working with branches</div><div class="line"></div><div class="line">- List <span class="built_in">local</span> branches. The current branch is highlighted by *.</div><div class="line">git branch</div><div class="line"></div><div class="line">- List all <span class="built_in">local</span> and remote branches</div><div class="line">git branch -a</div><div class="line"></div><div class="line">- Create new branch based on current branch</div><div class="line">git branch BRANCH-NAME</div><div class="line"></div><div class="line">- Delete a <span class="built_in">local</span> branch</div><div class="line">git branch -d BRANCH-NAME</div><div class="line"></div><div class="line">- Move/Rename a branch</div><div class="line">git branch -mch</div></pre></td></tr></table></figure>
+</li>
+<li><p>git checkout</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">git checkout</div><div class="line">Checkout a branch or paths to the working tree</div><div class="line"></div><div class="line">- Switch to another branch</div><div class="line">git checkout BRANCH-NAME</div><div class="line"></div><div class="line">- Create and switch to a new branch</div><div class="line">git checkout -b BRANCH-NAME</div><div class="line"></div><div class="line">- Undo unstaged <span class="built_in">local</span> modification</div><div class="line">git checkout .</div></pre></td></tr></table></figure>
+</li>
+<li><p>git clone</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span></div><div class="line">Clone an existing repository</div><div class="line"></div><div class="line">- Clone an existing repository</div><div class="line">git <span class="built_in">clone</span> REMOTE-REPOSITORY-LOCATION</div><div class="line"></div><div class="line">- For cloning from the <span class="built_in">local</span> machine</div><div class="line">git <span class="built_in">clone</span> -l</div><div class="line"></div><div class="line">- Do it quietly</div><div class="line">git <span class="built_in">clone</span> -q</div><div class="line"></div><div class="line">- Clone an existing repository, and truncate to the specified number of revisions, save your time mostly</div><div class="line">git <span class="built_in">clone</span> --depth 10 REMOTE-REPOSITORY-LOCATION</div></pre></td></tr></table></figure>
+</li>
+<li><p>git commit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git commit</div><div class="line">Commit staged files to the repository</div><div class="line"></div><div class="line">- Commit staged files to the repository with comment</div><div class="line">git commit -m MESSAGE</div><div class="line"></div><div class="line">- Replace the last commit with currently staged changes</div><div class="line">git commit --amend</div></pre></td></tr></table></figure>
+</li>
+<li><p>git config</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">git config</div><div class="line">Get and <span class="built_in">set</span> repository or global options</div><div class="line"></div><div class="line">- Print list of options <span class="keyword">for</span> current repository</div><div class="line">git config --list --<span class="built_in">local</span></div><div class="line"></div><div class="line">- Print global list of options, <span class="built_in">set</span> <span class="keyword">in</span> ~/.gitconfig</div><div class="line">git config --list --global</div><div class="line"></div><div class="line">- Get full list of options</div><div class="line">git config --list</div><div class="line"></div><div class="line">- Get value of alias.ls option</div><div class="line">git config alias.st</div><div class="line"></div><div class="line">- Set option alias.ls=status <span class="keyword">in</span> file ~/.gitconfig</div><div class="line">git config --global alias.ls <span class="string">"status"</span></div><div class="line"></div><div class="line">- Remove option alias.st from ~/.gitconfig</div><div class="line">git config --global --<span class="built_in">unset</span> alias.st</div></pre></td></tr></table></figure>
+</li>
+<li><p>git diff</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">git diff</div><div class="line">Show changes to tracked files</div><div class="line"></div><div class="line">- Show changes to tracked files</div><div class="line">git diff PATHSPEC</div><div class="line"></div><div class="line">- Show only names of changed files.</div><div class="line">git diff --name-only PATHSPEC</div><div class="line"></div><div class="line">- Output a condensed summary of extended header information.</div><div class="line">git diff --summary PATHSPEC</div></pre></td></tr></table></figure>
+</li>
+<li><p>git init</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git init</div><div class="line">Initializes a new <span class="built_in">local</span> Git repository</div><div class="line"></div><div class="line">- Initialize a new <span class="built_in">local</span> repository</div><div class="line">git init</div><div class="line"></div><div class="line">- Initialize a barebones repository</div><div class="line">git init --bare</div></pre></td></tr></table></figure>
+</li>
+<li><p>git log</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">log</span></div><div class="line">Show a <span class="built_in">history</span> of commits</div><div class="line"></div><div class="line">- Show a <span class="built_in">history</span> of commits</div><div class="line">git <span class="built_in">log</span></div><div class="line"></div><div class="line">- Show the <span class="built_in">history</span> of a particular file or directory, including differences</div><div class="line">git <span class="built_in">log</span> -p path</div><div class="line"></div><div class="line">- Show only the first line of each commits</div><div class="line">git <span class="built_in">log</span> --oneline</div></pre></td></tr></table></figure>
+</li>
+<li><p>git merge</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git merge</div><div class="line">Merge branches</div><div class="line"></div><div class="line">- Merge a branch with your current branch</div><div class="line">git merge BRANCH-NAME</div><div class="line"></div><div class="line">- Edit the merge message</div><div class="line">git merge -e BRANCH-NAME</div></pre></td></tr></table></figure>
+</li>
+<li><p>git mv</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">git mv</div><div class="line">Move or rename files and update the git index.</div><div class="line"></div><div class="line">- Move file inside the repo and add the movement to the next commit</div><div class="line">git mv path/to/file new/path/to/file</div><div class="line"></div><div class="line">- Rename file and add renaming to the next commit</div><div class="line">git mv filename new_filename</div><div class="line"></div><div class="line">- Overwrite the file <span class="keyword">in</span> the target path <span class="keyword">if</span> it exists</div><div class="line">git mv --force file target</div></pre></td></tr></table></figure>
+</li>
+<li><p>git pull</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">git pull</div><div class="line">Fetch branch from a remote repository and merge it to <span class="built_in">local</span> repository</div><div class="line"></div><div class="line">- Download changes from default remote repository and merge it</div><div class="line">git pull</div><div class="line"></div><div class="line">- Download changes from default remote repository and use fast forward</div><div class="line">git pull --rebase</div><div class="line"></div><div class="line">- Download changes from given remote repository and branch, <span class="keyword">then</span> merge them into HEAD</div><div class="line">git pull remote_name branch</div></pre></td></tr></table></figure>
+</li>
+<li><p>git push</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">git push</div><div class="line">Push commits to a remote repository</div><div class="line"></div><div class="line">- Publish <span class="built_in">local</span> changes on a remote branch</div><div class="line">git push REMOTE-NAME LOCAL-BRANCH</div><div class="line"></div><div class="line">- Publish <span class="built_in">local</span> changes on a remote branch of different name</div><div class="line">git push REMOTE-NAME LOCAL-BRANCH:REMOTE-BRANCH</div><div class="line"></div><div class="line">- Remove remote branch</div><div class="line">git push REMOTE-NAME :REMOTE-BRANCH</div><div class="line"></div><div class="line">- Remove remote branches <span class="built_in">which</span> don<span class="string">'t exist locally</span></div><div class="line">git push --prune REMOTE-NAME</div><div class="line"></div><div class="line">- Publish tags</div><div class="line">git push --tags</div></pre></td></tr></table></figure>
+</li>
+<li><p>git remote</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">git remote</div><div class="line">ge <span class="built_in">set</span> of tracked repositories (“remotes”)</div><div class="line"></div><div class="line">- Show a list of existing remotes, their names and URL</div><div class="line">git remote -v</div><div class="line"></div><div class="line">- Add a remote</div><div class="line">git remote add remote_name remote_url</div><div class="line"></div><div class="line">- Change the URL of a remote</div><div class="line">git remote <span class="built_in">set</span>-url remote_name new_url</div><div class="line"></div><div class="line">- Remove a remote</div><div class="line">git remote remove remote_name</div><div class="line"></div><div class="line">- Rename a remote</div><div class="line">git remote rename old_name new_name</div></pre></td></tr></table></figure>
+</li>
+<li><p>git stash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">git stash</div><div class="line">Stash <span class="built_in">local</span> Git changes <span class="keyword">in</span> a temporary area</div><div class="line"></div><div class="line">- stash current changes (except new files)</div><div class="line">git stash save optional_stash_name</div><div class="line"></div><div class="line">- include new files <span class="keyword">in</span> the stash (leaves the index completely clean)</div><div class="line">git stash save -u optional_stash_name</div><div class="line"></div><div class="line">- list all stashes</div><div class="line">git stash list</div><div class="line"></div><div class="line">- re-apply the latest stash</div><div class="line">git stash pop</div><div class="line"></div><div class="line">- re-apply a stash by name</div><div class="line">git stash apply stash_name</div><div class="line"></div><div class="line">- drop a stash by an index</div><div class="line">git stash drop stash@&#123;index&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>git tag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">git tag</div><div class="line">Create, list, delete or verify tags.</div><div class="line">Tag is reference to specific commit.</div><div class="line"></div><div class="line">- List all tags</div><div class="line">git tag</div><div class="line"></div><div class="line">- Create a tag with the given name pointing to the current commit</div><div class="line">git tag tag_name</div><div class="line"></div><div class="line">- Create a tag with the given message</div><div class="line">git tag tag_name -m tag_message</div><div class="line"></div><div class="line">- Delete the tag with the given name</div><div class="line">git tag -d tag_name</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">grep</div><div class="line">Matches patterns <span class="keyword">in</span> input text</div><div class="line">Supports simple patterns and regular expressions</div><div class="line"></div><div class="line">- search <span class="keyword">for</span> an exact string</div><div class="line">grep something file_path</div><div class="line"></div><div class="line">- search recursively <span class="keyword">in</span> current directory <span class="keyword">for</span> an exact string</div><div class="line">grep -r something .</div><div class="line"></div><div class="line">- use a regex</div><div class="line">grep -e ^regex$ file_path</div><div class="line"></div><div class="line">- see 3 lines of context</div><div class="line">grep -C 3 something file_path</div><div class="line"></div><div class="line">- <span class="built_in">print</span> the count of matches instead of the matching text</div><div class="line">grep -c something file_path</div><div class="line"></div><div class="line">- use the standard input instead of a file</div><div class="line">cat file_path | grep something</div><div class="line"></div><div class="line">- invert match <span class="keyword">for</span> excluding specific strings</div><div class="line">grep -v something</div></pre></td></tr></table></figure>
+<h3 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">gzip</div><div class="line">Compress/uncompress files with gzip compression (LZ77)</div><div class="line"></div><div class="line">- compress a file, replacing it with a gzipped compressed version</div><div class="line">gzip file.ext</div><div class="line"></div><div class="line">- decompress a file, replacing it with the original uncompressed version</div><div class="line">gzip -d file.ext.gz</div><div class="line"></div><div class="line">- compress a file specifying the output filename</div><div class="line">gzip -c file.ext &gt; compressed-file.ext.gz</div><div class="line"></div><div class="line">- uncompress a gzipped file specifying the output filename</div><div class="line">gzip -c -d file.ext.gz &gt; uncompressed-file.ext</div><div class="line"></div><div class="line">- specify the compression level. 1=Fastest (Worst), 9=Slowest (Best), Default level is 6</div><div class="line">gzip -9 -c file.ext &gt; compressed-file.ext.gz</div></pre></td></tr></table></figure>
+<h3 id="iconv"><a href="#iconv" class="headerlink" title="iconv"></a>iconv</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">iconv</div><div class="line">Converts text from one encoding to another</div><div class="line"></div><div class="line">- convert file and <span class="built_in">print</span> to stdout</div><div class="line">iconv -f from_encoding -t to_encoding input_file</div><div class="line"></div><div class="line">- convert file to current locale</div><div class="line">iconv -f from_encoding input_file &gt; output_file</div><div class="line"></div><div class="line">- list supported encodings</div><div class="line">iconv -l</div></pre></td></tr></table></figure>
+<h3 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">ifconfig</div><div class="line">ifconfig - Interface Configurator, used to configure network interfaces.</div><div class="line"></div><div class="line">- View network settings of an ethernet adapter.</div><div class="line">ifconfig eth0</div><div class="line"></div><div class="line">- Display details of all interfaces, including disabled interfaces.</div><div class="line">ifconfig -a</div><div class="line"></div><div class="line">- Disable eth0 interface.</div><div class="line">ifconfig eth0 down</div><div class="line"></div><div class="line">- Enable eth0 interface.</div><div class="line">ifconfig eth0 up</div><div class="line"></div><div class="line">- Assign IP address to eth0 interface.</div><div class="line">ifconfig eth0 ip_address</div></pre></td></tr></table></figure>
+<h3 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span></div><div class="line">Sends a signal to a process</div><div class="line">Mostly used <span class="keyword">for</span> stopping processes</div><div class="line"></div><div class="line">- <span class="built_in">kill</span> the process</div><div class="line"><span class="built_in">kill</span> process_id</div><div class="line"></div><div class="line">- list signal names</div><div class="line"><span class="built_in">kill</span> -l</div></pre></td></tr></table></figure>
+<h3 id="less"><a href="#less" class="headerlink" title="less"></a>less</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">less</div><div class="line">Opens a file <span class="keyword">for</span> reading</div><div class="line">Allows movement and search</div><div class="line">Doesn<span class="string">'t read the entire file (suitable for logs)</span></div><div class="line"></div><div class="line">- open a file</div><div class="line">less source_file</div><div class="line"></div><div class="line">    - page up / down</div><div class="line">d (next), D (previous)</div><div class="line"></div><div class="line">    - go to start / end of file</div><div class="line">g (start), G (end)</div><div class="line"></div><div class="line">    - search for a string</div><div class="line">/something   then   n (next), N (previous)</div><div class="line"></div><div class="line">    - exit</div><div class="line">    q</div></pre></td></tr></table></figure>
+<h3 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">ln</div><div class="line">Creates links to files and folders</div><div class="line"></div><div class="line">- create a symbolic link to a file or folder</div><div class="line">ln -s path/to/original/file path/to/link</div><div class="line"></div><div class="line">- overwrite a symbolic link to a file</div><div class="line">ln -sf path/to/new/original/file path/to/file/link</div><div class="line"></div><div class="line">- overwrite a symbolic link to a folder</div><div class="line">ln -sfT path/to/new/original/file path/to/folder/link</div><div class="line"></div><div class="line">- create a hard link to a file or folder</div><div class="line">ln path/to/original/file path/to/link</div></pre></td></tr></table></figure>
+<h3 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">locate</div><div class="line">find filenames quickly</div><div class="line">- Look <span class="keyword">for</span> pattern <span class="keyword">in</span> the database. Note: the database is recomputed periodically (usually weekly or daily).</div><div class="line">locate pattern</div><div class="line"></div><div class="line">- Recompute the database. You need to <span class="keyword">do</span> it <span class="keyword">if</span> you want to find recently added files.</div><div class="line">sudo updatedb</div></pre></td></tr></table></figure>
+<h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">ls</div><div class="line">List directory contents</div><div class="line"></div><div class="line">- List all files, even hidden</div><div class="line">ls -a</div><div class="line"></div><div class="line">- List all file names (no extra info)</div><div class="line">ls -A1</div><div class="line"></div><div class="line">- List all files with their rights, groups, owner</div><div class="line">ls -l</div><div class="line"></div><div class="line">- List all files and display the file size <span class="keyword">in</span> a human readable format</div><div class="line">ls -lh</div><div class="line"></div><div class="line">- List all files with a prefix/suffix</div><div class="line">ls *suffix</div><div class="line"></div><div class="line">- Sort the results by size, last modified date, or creation date</div><div class="line">ls -U</div><div class="line"></div><div class="line">- Reverse the order of the results</div><div class="line">ls -r</div></pre></td></tr></table></figure>
+<h3 id="md5-…"><a href="#md5-…" class="headerlink" title="md5 …"></a>md5 …</h3><p>md5sum, sha1sum, sha224sum, sha256sum, sha384sum, sha512sum etc.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">md5sum</div><div class="line">Calculate MD5 cryptographic checksums</div><div class="line"></div><div class="line">- Read a file of MD5SUMs and verify all files have matching checksums</div><div class="line">md5sum -c filename.md5</div></pre></td></tr></table></figure></p>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">mkdir</div><div class="line">Creates a directory</div><div class="line"></div><div class="line">- creates a directory <span class="keyword">in</span> current folder or given path</div><div class="line">mkdir directory</div><div class="line"></div><div class="line">- creates directories recursively (useful <span class="keyword">for</span> creating nested <span class="built_in">dirs</span>)</div><div class="line">    mkdir -p path</div></pre></td></tr></table></figure>
+<h3 id="more"><a href="#more" class="headerlink" title="more"></a>more</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">more</div><div class="line">Opens a file <span class="keyword">for</span> reading.</div><div class="line">Allows movement and search <span class="keyword">in</span> forward direction only.</div><div class="line">Doesn<span class="string">'t read the entire file (suitable for logs)</span></div><div class="line"></div><div class="line">- open a file</div><div class="line">more source_file</div><div class="line"></div><div class="line">- page down</div><div class="line">d (next)</div><div class="line"></div><div class="line">- search for a string</div><div class="line">/something   then   n (next)</div><div class="line"></div><div class="line">- exit</div><div class="line">q</div></pre></td></tr></table></figure>
+<h3 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">mount</div><div class="line">Provides access to an entire filesystem <span class="keyword">in</span> one directory.</div><div class="line"></div><div class="line">- Show all mounted filesystems</div><div class="line">mount</div><div class="line"></div><div class="line">- Mount a device</div><div class="line">mount -t filesystem_type path_to_device_file directory_to_mount_to</div><div class="line"></div><div class="line">- Mount a CD-ROM device (with the filetype ISO9660) to /cdrom (<span class="built_in">readonly</span>)</div><div class="line">mount -t iso9660 -o ro /dev/cdrom /cdrom</div><div class="line"></div><div class="line">- Mount all the filesystem defined <span class="keyword">in</span> /etc/fstab</div><div class="line">mount -a</div><div class="line"></div><div class="line">- Mount a specific filesystem described <span class="keyword">in</span> /etc/fstab (e.g. <span class="string">"/dev/sda1 /my_drive ext2 defaults 0 2"</span>)</div><div class="line">mount /my_drive</div></pre></td></tr></table></figure>
+<h3 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">mv</div><div class="line">Move or rename files and directories</div><div class="line"></div><div class="line">- Move files <span class="keyword">in</span> abitrary locations</div><div class="line">mv <span class="built_in">source</span> target</div><div class="line"></div><div class="line">- Do not prompt <span class="keyword">for</span> confirmation before overwriting existing files</div><div class="line">mv -f <span class="built_in">source</span> target</div><div class="line"></div><div class="line">- Do not prompt <span class="keyword">for</span> confirmation before overwriting existing files but write to standard error before overriding</div><div class="line">mv -<span class="keyword">fi</span> <span class="built_in">source</span> target</div><div class="line"></div><div class="line">- Move files <span class="keyword">in</span> verbose mode, showing files after they are moved</div><div class="line">mv -v <span class="built_in">source</span> target</div></pre></td></tr></table></figure>
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mysql</div><div class="line">the MySQL <span class="built_in">command</span>-line tool</div><div class="line"></div><div class="line">- Connect to a database</div><div class="line">mysql database_name</div><div class="line"></div><div class="line">- Connect to a database using credentials</div><div class="line">mysql -u user -ppassword database_name</div><div class="line"></div><div class="line">- Execute SQL statements <span class="keyword">in</span> a script file (batch file)</div><div class="line">mysql database_name &lt; script.sql</div></pre></td></tr></table></figure>
+<h3 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">nc</div><div class="line">reads and writes tcp or udp data</div><div class="line"></div><div class="line">- listen on a specified port</div><div class="line">nc  -l port</div><div class="line"></div><div class="line">- connect to a certain port (you can <span class="keyword">then</span> write to this port)</div><div class="line">nc ip_address port</div><div class="line"></div><div class="line">- <span class="built_in">set</span> a timeout</div><div class="line">nc -w timeout_in_seconds ipaddress port</div><div class="line"></div><div class="line">- serve a file</div><div class="line">cat somefile.txt | nc -l port</div><div class="line"></div><div class="line">- receive a file</div><div class="line">nc ip_address port &gt; somefile.txt</div><div class="line"></div><div class="line">- server stay up after client detach</div><div class="line">nc -k -l port</div><div class="line"></div><div class="line">- client stay up after EOF</div><div class="line">nc -q timeout ip_address</div></pre></td></tr></table></figure>
+<h3 id="passwd"><a href="#passwd" class="headerlink" title="passwd"></a>passwd</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">passwd</div><div class="line">passwd is a tool used to change a user<span class="string">'s password.</span></div><div class="line"></div><div class="line">- Change the password of the current user</div><div class="line">passwd new password</div><div class="line"></div><div class="line">- Change the password of the specified user</div><div class="line">passwd username new password</div><div class="line"></div><div class="line">- Get the current statuts of the user</div><div class="line">passwd -S</div><div class="line"></div><div class="line">- Make the password of the account blank (it will set the named account passwordless)</div><div class="line">passwd -d</div></pre></td></tr></table></figure>
+<h3 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">ping</div><div class="line">send ICMP ECHO_REQUEST packets to network hosts</div><div class="line"></div><div class="line">- Ping host</div><div class="line">ping host</div><div class="line"></div><div class="line">- Ping host limiting the number of packages to be send to four</div><div class="line">ping -c 4 host</div><div class="line"></div><div class="line">- Ping host, waiting <span class="keyword">for</span> 0.5 s between each request (default is 1 s)</div><div class="line">ping -i 0.5 host</div><div class="line"></div><div class="line">- Ping host without trying to lookup symbolic names <span class="keyword">for</span> addresses</div><div class="line">ping -n host</div></pre></td></tr></table></figure>
+<h3 id="pip"><a href="#pip" class="headerlink" title="pip"></a>pip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">pip</div><div class="line">Python package manager</div><div class="line"></div><div class="line">- Install a package</div><div class="line">pip install package_name</div><div class="line"></div><div class="line">- Install a specific version of a package</div><div class="line">pip install package_name==package_version</div><div class="line"></div><div class="line">- Upgrade a package</div><div class="line">pip install -U package_name</div><div class="line"></div><div class="line">- Uninstall a package</div><div class="line">pip uninstall package_name</div><div class="line"></div><div class="line">- Save installed packages to file</div><div class="line">pip freeze &gt; requirements.txt</div><div class="line"></div><div class="line">- Install packages from file</div><div class="line">pip install -r requirements.txt</div></pre></td></tr></table></figure>
+<h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">pwd</span></div><div class="line">Print name of current/working directory</div><div class="line"></div><div class="line">- Print the current directory</div><div class="line"><span class="built_in">pwd</span></div><div class="line"></div><div class="line">- Print the current directory, and resolve all symlinks (e.g. show the <span class="string">"physical"</span> path)</div><div class="line"><span class="built_in">pwd</span> -P</div></pre></td></tr></table></figure>
+<h3 id="rename"><a href="#rename" class="headerlink" title="rename"></a>rename</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">rename</div><div class="line">renames multiple files</div><div class="line"></div><div class="line">- Change foo to bar <span class="keyword">in</span> matching filenames</div><div class="line">rename <span class="string">'s/foo/bar/'</span> *.txt</div><div class="line"></div><div class="line">- Convert to lower <span class="keyword">case</span></div><div class="line">rename -c *.txt</div><div class="line"></div><div class="line">- No action, just show what renames would occur</div><div class="line">rename -n <span class="string">'s/foo/bar/'</span> *.txt</div></pre></td></tr></table></figure>
+<h3 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">rm</div><div class="line">Remove files or directories</div><div class="line"></div><div class="line">- Remove files from arbitrary locations</div><div class="line">rm /path/to/file /otherpath/to/file2</div><div class="line"></div><div class="line">- Remove recursively a directory and all it<span class="string">'s subdirectories</span></div><div class="line">rm -r /path/to/folder</div><div class="line"></div><div class="line">- Prompt before every removal</div><div class="line">rm -i \*</div></pre></td></tr></table></figure>
+<h3 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">scp</div><div class="line">Copies files between hosts on a network</div><div class="line">Works over a secure connection (SSH)</div><div class="line"></div><div class="line">- upload a file, or upload and rename a file</div><div class="line">scp /<span class="built_in">local</span>/file.txt 10.0.0.1:/remote/path/newname.txt</div><div class="line"></div><div class="line">- download a file</div><div class="line">scp 10.0.0.1:/remote/path/file.txt /<span class="built_in">local</span>/folder</div><div class="line"></div><div class="line">- upload or download a directory</div><div class="line">scp -r 10.0.0.1:/remote/path /<span class="built_in">local</span>/folder</div><div class="line"></div><div class="line">- specify username on host</div><div class="line">scp /<span class="built_in">local</span>/file.txt my_user@10.0.0.1:/remote/path</div><div class="line"></div><div class="line">- copy a file from one host to another</div><div class="line">scp 10.0.0.1:/remote/path/file.txt 20.0.0.2:/other/remote/path</div><div class="line"></div><div class="line">- download a file with ssh key</div><div class="line">scp -i /<span class="built_in">local</span>/key 10.0.0.1:/remote/path/file.txt /<span class="built_in">local</span>/folder</div></pre></td></tr></table></figure>
+<h3 id="screen"><a href="#screen" class="headerlink" title="screen"></a>screen</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">screen</div><div class="line">Hold a session open on a remote server. Manage multiple windows with a single SSH connection.</div><div class="line"></div><div class="line">- Start a new screen session</div><div class="line">screen</div><div class="line"></div><div class="line">- Start a new named screen session</div><div class="line">screen -S name</div><div class="line"></div><div class="line">- Show open screen sessions</div><div class="line">screen -ls</div><div class="line"></div><div class="line">- Reattach to an open screen</div><div class="line">screen -r screen id</div><div class="line"></div><div class="line">- Detach from inside a screen</div><div class="line">ctrl+A D</div><div class="line"></div><div class="line">- Kill a detached screen</div><div class="line">screen -X -S screen id quit</div></pre></td></tr></table></figure>
+<h3 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sed</div><div class="line">Run replacements based on regular expressions</div><div class="line"></div><div class="line">- replace all occurrences of a string <span class="keyword">in</span> a file, and <span class="built_in">print</span> the result</div><div class="line">sed <span class="string">'s/find/replace/g'</span> filename</div><div class="line"></div><div class="line">- replace all occurrences of a string <span class="keyword">in</span> a file, and overwrite the file</div><div class="line">contents</div><div class="line">sed -i <span class="string">'s/find/replace/g'</span> filename</div><div class="line"></div><div class="line">- replace all occurrences of an extended regular expression <span class="keyword">in</span> a file</div><div class="line">sed -E <span class="string">'s/regex/replace/g'</span> filename</div><div class="line"></div><div class="line">- replace all occurrences of multiple strings <span class="keyword">in</span> a file</div><div class="line">sed -e <span class="string">'s/find/replace/g'</span> -e <span class="string">'s/find/replace/g'</span> filename</div></pre></td></tr></table></figure>
+<h3 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">shutdown</div><div class="line">Shutdown and reboot the system</div><div class="line"></div><div class="line">- Power off (halt) immediately</div><div class="line">shutdown -h now</div><div class="line"></div><div class="line">- Reboot immediately</div><div class="line">shutdown -r now</div><div class="line"></div><div class="line">- Reboot <span class="keyword">in</span> 5 minutes</div><div class="line">shutdown -r +5 &amp;</div><div class="line"></div><div class="line">- Cancel a pending shutdown/reboot operation</div><div class="line">shutdown -c</div></pre></td></tr></table></figure>
+<h3 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">SSH</div><div class="line">Secure Shell is a protocol used to securely <span class="built_in">log</span> onto remote systems.</div><div class="line">It can be used <span class="keyword">for</span> logging or executing commands on a remote server.</div><div class="line"></div><div class="line">- connecting to a remote server</div><div class="line">ssh username@remote_host</div><div class="line"></div><div class="line">- connecting to a remote server with a specific identity (private key)</div><div class="line">ssh -i /path/to/key_file username@remote_host</div><div class="line"></div><div class="line">- connecting to a remote server with specific port</div><div class="line">ssh username@remote_host -p 2222</div><div class="line"></div><div class="line">- run a <span class="built_in">command</span> on a remote server</div><div class="line">ssh remote_host <span class="string">"command -with -flags"</span></div><div class="line"></div><div class="line">- ssh tunneling: dynamic port forwarding (SOCKS proxy on localhost:9999)</div><div class="line">ssh -D 9999 -C username@remote_host</div><div class="line"></div><div class="line">- ssh tunneling: forward a specific port (localhost:9999 to slashdot.org:80)</div><div class="line">ssh -L 9999:slashdot.org:80 username@remote_host</div><div class="line"></div><div class="line">- ssh <span class="built_in">enable</span> agent forward</div><div class="line">ssh -A username@remote_host</div></pre></td></tr></table></figure>
+<h3 id="sshfs"><a href="#sshfs" class="headerlink" title="sshfs"></a>sshfs</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SSHFS</div><div class="line">filesystem client based on ssh</div><div class="line"></div><div class="line">- mounting remote directory</div><div class="line">sshfs username@remote_host:remote_directory mountpoint</div><div class="line"></div><div class="line">- unmounting remote directory</div><div class="line">fusermount -u mountpoint</div><div class="line"></div><div class="line">- mounting remote directory from server with specific port</div><div class="line">sshfs username@remote_host:remote_directory -p 2222</div><div class="line"></div><div class="line">- use compression</div><div class="line">sshfs username@remote_host:remote_directory -C</div></pre></td></tr></table></figure>
+<h3 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">strace</div><div class="line">Troubleshooting tool <span class="keyword">for</span> tracing system calls</div><div class="line"></div><div class="line">- Start tracing a specific process by its PID</div><div class="line">strace -p pid</div><div class="line"></div><div class="line">- Trace a process and filter output by system call</div><div class="line">strace -p pid -e system call name</div><div class="line"></div><div class="line">- Count time, calls, and errors <span class="keyword">for</span> each system call and report a summary on program <span class="built_in">exit</span>.</div><div class="line">strace -p pid -c</div></pre></td></tr></table></figure>
+<h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">sudo</div><div class="line">execute a <span class="built_in">command</span> as another user</div><div class="line"></div><div class="line">- Listing of an unreadable directory:</div><div class="line">sudo ls /usr/<span class="built_in">local</span>/scrt</div><div class="line"></div><div class="line">- To edit a file as user www:</div><div class="line">sudo -u www vi /var/www/index.html</div><div class="line"></div><div class="line">- To shutdown the machine:</div><div class="line">sudo shutdown -r +10 <span class="string">"Cya soon!"</span></div><div class="line"></div><div class="line">- To repeat the last <span class="built_in">command</span> as sudo</div><div class="line">sudo !!</div></pre></td></tr></table></figure>
+<h3 id="svn"><a href="#svn" class="headerlink" title="svn"></a>svn</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">svn</div><div class="line">Subversion <span class="built_in">command</span> line client tool</div><div class="line"></div><div class="line">- Check out a working copy from a repository</div><div class="line">svn co url/to/repository</div><div class="line"></div><div class="line">- Bring changes from the repository into the working copy</div><div class="line">svn up</div><div class="line"></div><div class="line">- Put files and directories under version control, scheduling them <span class="keyword">for</span> addition to repository. They will be added <span class="keyword">in</span> next commit.</div><div class="line">svn add PATH...</div><div class="line"></div><div class="line">- Send changes from your working copy to the repository</div><div class="line">svn ci -m commit <span class="built_in">log</span> message [PATH...]</div><div class="line"></div><div class="line">- Show detailed <span class="built_in">help</span></div><div class="line">svn <span class="built_in">help</span></div></pre></td></tr></table></figure>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">tail</div><div class="line">Display the last part of a file</div><div class="line"></div><div class="line">- show last <span class="string">'num'</span> lines <span class="keyword">in</span> file</div><div class="line">tail -n num file</div><div class="line"></div><div class="line">- show all file since line <span class="string">'num'</span></div><div class="line">tail -n +num file</div><div class="line"></div><div class="line">- show last <span class="string">'num'</span> bytes <span class="keyword">in</span> file</div><div class="line">tail -c num file</div><div class="line"></div><div class="line">- keep reading file until ctrl-c</div><div class="line">tail -f file</div></pre></td></tr></table></figure>
+<h3 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">tar</div><div class="line">Archiving utility</div><div class="line">Optional compression with gzip / bzip</div><div class="line"></div><div class="line">- create an archive from files</div><div class="line">tar cf target.tar file1 file2 file3</div><div class="line"></div><div class="line">- create a gzipped archive</div><div class="line">tar czf target.tar.gz file1 file2 file3</div><div class="line"></div><div class="line">- extract an archive <span class="keyword">in</span> a target folder</div><div class="line">tar xf source.tar -C folder</div><div class="line"></div><div class="line">- extract a gzipped archive <span class="keyword">in</span> the current directory</div><div class="line">tar xzf source.tar.gz</div><div class="line"></div><div class="line">- extract a bzipped archive <span class="keyword">in</span> the current directory</div><div class="line">tar xjf source.tar.bz2</div><div class="line"></div><div class="line">- create a compressed archive, using archive suffix to determine the compression program</div><div class="line">tar caf target.tar.xz file1 file2 file3</div><div class="line"></div><div class="line">- list the contents of a tar file</div><div class="line">tar tvf source.tar</div></pre></td></tr></table></figure>
+<h3 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">tcpdump</div><div class="line">Dump traffic on a network</div><div class="line"></div><div class="line">- capture the traffic of a specific interface</div><div class="line">tcpdump -i eth0</div><div class="line"></div><div class="line">- capture all TCP traffic showing contents (ASCII) <span class="keyword">in</span> console</div><div class="line">tcpdump -A tcp</div><div class="line"></div><div class="line">- capture the traffic from or to a host</div><div class="line">tcpdump host www.example.com</div><div class="line"></div><div class="line">- capture the traffic from a specific interface, <span class="built_in">source</span>, destination and port</div><div class="line">tcpdump -i eth0 src 192.168.1.1 dest 192.168.1.2 and port 80</div><div class="line"></div><div class="line">- capture the traffic of a network</div><div class="line">tcpdump net 192.168.1.0/24</div><div class="line"></div><div class="line">- capture all traffic except traffic over port 22 and save to a dump file</div><div class="line">tcpdump -w dumpfile.pcap not port 22</div></pre></td></tr></table></figure>
+<h3 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">telnet</div><div class="line">telnet is used to connect to a specified port of a host</div><div class="line"></div><div class="line">- telnet to a certain port</div><div class="line">telnet  ip_address port</div><div class="line"></div><div class="line">- to <span class="built_in">exit</span> a telnet session</div><div class="line">quit</div><div class="line"></div><div class="line">- default escape character</div><div class="line">CTRL + ]</div><div class="line"></div><div class="line">- specify an escape character (x is the escape character)</div><div class="line">telnet -e x ip_address port</div></pre></td></tr></table></figure>
+<h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">top</div><div class="line">Display dynamic real-time information about running processes.</div><div class="line"></div><div class="line">- Start top</div><div class="line">top</div><div class="line"></div><div class="line">- Start top ignoring any idle or zombie processes</div><div class="line">top -i</div><div class="line"></div><div class="line">- Start top displaying only processes owned by given user</div><div class="line">top -u user-name</div><div class="line"></div><div class="line">- Get <span class="built_in">help</span> about interactive commands</div><div class="line">?</div></pre></td></tr></table></figure>
+<h3 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">touch</div><div class="line">Change a file access and modification <span class="built_in">times</span> (atime, mtime)</div><div class="line"></div><div class="line">- Create a new empty file(s) or change the <span class="built_in">times</span> <span class="keyword">for</span> existing file(s) to current time.`</div><div class="line">touch filename</div><div class="line"></div><div class="line">- Set the <span class="built_in">times</span> on a file to match those on second file</div><div class="line">touch -r filename2 filename</div></pre></td></tr></table></figure>
+<h3 id="tree"><a href="#tree" class="headerlink" title="tree"></a>tree</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">tree</div><div class="line">Show the contents of the current directory as a tree.</div><div class="line"></div><div class="line">- Show files and directories with a depth of <span class="string">'num'</span></div><div class="line">tree -L num</div><div class="line"></div><div class="line">- Show directories only</div><div class="line">tree -d</div><div class="line"></div><div class="line">- Show hidden files too</div><div class="line">tree -a</div><div class="line"></div><div class="line">- Print human readable size of files</div><div class="line">tree -h</div><div class="line"></div><div class="line">- Print the full path <span class="keyword">for</span> each file</div><div class="line">tree -f</div><div class="line"></div><div class="line">- Print the tree without lines and indentation. Useful when used with -f</div><div class="line">tree -i</div></pre></td></tr></table></figure>
+<h3 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">umount</div><div class="line">Revokes access to an entire filesystem mounted to a directory.</div><div class="line">A filesystem cannot be unmounted when it is busy.</div><div class="line"></div><div class="line">- Unmount a filesystem</div><div class="line">umount path_to_device_file</div><div class="line"></div><div class="line">- OR</div><div class="line">umount path_to_mounted_directory</div><div class="line"></div><div class="line">- Unmount all mounted filesystems (dangerous!)</div><div class="line">umount -a</div></pre></td></tr></table></figure>
+<h3 id="uname"><a href="#uname" class="headerlink" title="uname"></a>uname</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">uname</div><div class="line">Print details about the current machine and the operating system running on it.</div><div class="line">Note: If you<span class="string">'re on Linux, try also the lsb_release command.</span></div><div class="line"></div><div class="line">- Print hardware-related information: machine and processor</div><div class="line">uname -mp</div><div class="line"></div><div class="line">- Print software-related information: operating system, release number, and version</div><div class="line">uname -srv</div><div class="line"></div><div class="line">- Print the nodename (hostname) of the system</div><div class="line">uname -n</div><div class="line"></div><div class="line">- Print all available system information (hardware, software, nodename)</div><div class="line">uname -a</div></pre></td></tr></table></figure>
+<h3 id="unzip"><a href="#unzip" class="headerlink" title="unzip"></a>unzip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">unzip</div><div class="line">Extract compressed files <span class="keyword">in</span> a ZIP archive</div><div class="line"></div><div class="line">- extract zip file(s) (<span class="keyword">for</span> multiple files, seperate file paths by spaces)</div><div class="line">unzip file(s)</div><div class="line"></div><div class="line">- extract zip files(s) to given path</div><div class="line">unzip files(s) -d /path/to/put/extracted/files</div><div class="line"></div><div class="line">- list the contents of a zip file without extracting</div><div class="line">unzip -l file</div></pre></td></tr></table></figure>
+<h3 id="wget"><a href="#wget" class="headerlink" title="wget"></a>wget</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">wget</div><div class="line">Download files from the Web</div><div class="line">Supports HTTP, HTTPS, and FTP</div><div class="line"></div><div class="line">- Download a URL to a file</div><div class="line">wget -O filename <span class="string">"url"</span></div><div class="line"></div><div class="line">- Limit download speed</div><div class="line">wget --<span class="built_in">limit</span>-rate=200k url</div><div class="line"></div><div class="line">- Continue an incomplete download</div><div class="line">wget -c url</div><div class="line"></div><div class="line">- Download a full website</div><div class="line">wget --mirror -p --convert-links -P target_folder url</div><div class="line"></div><div class="line">- FTP download with username and password</div><div class="line">wget --ftp-user=username --ftp-password=password url</div></pre></td></tr></table></figure>
+<h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">xargs</div><div class="line">execute a <span class="built_in">command</span> with piped arguments</div><div class="line"></div><div class="line">- main use</div><div class="line">arguments | xargs <span class="built_in">command</span></div><div class="line"></div><div class="line">- handling whitespace <span class="keyword">in</span> arguments</div><div class="line">arguments_null_terminated | xargs -0 <span class="built_in">command</span></div><div class="line"></div><div class="line">- example: list unneeded packages with deborphan and remove them with apt-get</div><div class="line">sudo deborphan | xargs sudo apt-get remove</div></pre></td></tr></table></figure>
+<h3 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">zip</div><div class="line">Package and compress (archive) files into zip file</div><div class="line"></div><div class="line">- package and compress multiple directories and files</div><div class="line">zip -r compressed.zip /path/to/dir1 /path/to/dir2 /path/to/file</div><div class="line"></div><div class="line">- add files to an existing zip file</div><div class="line">zip compressed.zip path/to/file</div><div class="line"></div><div class="line">- remove unwanted files from an existing zip file</div><div class="line">zip -d compressed.zip <span class="string">"foo/*.tmp"</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/29/APK瘦身实践/" rel="next" title="APK瘦身实践">
+                <i class="fa fa-chevron-left"></i> APK瘦身实践
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/06/如何更好的开发一个Android应用/" rel="prev" title="如何更好的开发一个Android应用">
+                如何更好的开发一个Android应用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/06/Linux常用命令汇总/"
+           data-title="Linux常用命令汇总" data-url="http://www.jayfeng.com/2016/01/06/Linux常用命令汇总/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#官方网站："><span class="nav-text">官方网站：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令列表"><span class="nav-text">命令列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令详解"><span class="nav-text">命令详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ack"><span class="nav-text">ack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alias"><span class="nav-text">alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk"><span class="nav-text">awk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#base64"><span class="nav-text">base64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cat"><span class="nav-text">cat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chmod"><span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chown"><span class="nav-text">chown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chsh"><span class="nav-text">chsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convert"><span class="nav-text">convert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp"><span class="nav-text">cp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#curl"><span class="nav-text">curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cut"><span class="nav-text">cut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#date"><span class="nav-text">date</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#df"><span class="nav-text">df</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#diff"><span class="nav-text">diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dpkg"><span class="nav-text">dpkg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du"><span class="nav-text">du</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#env"><span class="nav-text">env</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find"><span class="nav-text">find</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gcc"><span class="nav-text">gcc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-…"><span class="nav-text">git …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep"><span class="nav-text">grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gzip"><span class="nav-text">gzip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iconv"><span class="nav-text">iconv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifconfig"><span class="nav-text">ifconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kill"><span class="nav-text">kill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less"><span class="nav-text">less</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ln"><span class="nav-text">ln</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locate"><span class="nav-text">locate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ls"><span class="nav-text">ls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#md5-…"><span class="nav-text">md5 …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir"><span class="nav-text">mkdir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#more"><span class="nav-text">more</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mount"><span class="nav-text">mount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mv"><span class="nav-text">mv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nc"><span class="nav-text">nc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#passwd"><span class="nav-text">passwd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ping"><span class="nav-text">ping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pip"><span class="nav-text">pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pwd"><span class="nav-text">pwd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rename"><span class="nav-text">rename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rm"><span class="nav-text">rm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scp"><span class="nav-text">scp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#screen"><span class="nav-text">screen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutdown"><span class="nav-text">shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh"><span class="nav-text">ssh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sshfs"><span class="nav-text">sshfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strace"><span class="nav-text">strace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo"><span class="nav-text">sudo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#svn"><span class="nav-text">svn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail"><span class="nav-text">tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar"><span class="nav-text">tar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tcpdump"><span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#telnet"><span class="nav-text">telnet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top"><span class="nav-text">top</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#touch"><span class="nav-text">touch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tree"><span class="nav-text">tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#umount"><span class="nav-text">umount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uname"><span class="nav-text">uname</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unzip"><span class="nav-text">unzip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wget"><span class="nav-text">wget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xargs"><span class="nav-text">xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zip"><span class="nav-text">zip</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

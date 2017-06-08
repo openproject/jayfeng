@@ -1,0 +1,1174 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="设计模式,面向对象,OOP,原型模式,建造者模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="抽象工厂和工厂方法从外部封装对象的创建，解耦对象的直接引用关系，而单例模式、原型模式、建造者模式则是从内部创建对外可用的对象。单例模式已经介绍过了，这里主要说说原型模式和建造者模式。 从内部构造对象从内部控制实例个数，构造出一个单例，这是单例模式；从内部控制数据的复制，可以构造出平行的对象，这是原型模式；从内部控制对象的组装，可以构造出自定义对象，这是建造者模式； 为什么要从内部构造？首先，在不需">
+<meta name="keywords" content="设计模式,面向对象,OOP,原型模式,建造者模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解设计模式之原型模式、建造者模式">
+<meta property="og:url" content="http://www.jayfeng.com/2016/04/08/理解设计模式之原型模式、建造者模式/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="抽象工厂和工厂方法从外部封装对象的创建，解耦对象的直接引用关系，而单例模式、原型模式、建造者模式则是从内部创建对外可用的对象。单例模式已经介绍过了，这里主要说说原型模式和建造者模式。 从内部构造对象从内部控制实例个数，构造出一个单例，这是单例模式；从内部控制数据的复制，可以构造出平行的对象，这是原型模式；从内部控制对象的组装，可以构造出自定义对象，这是建造者模式； 为什么要从内部构造？首先，在不需">
+<meta property="og:image" content="http://www.jayfeng.com/images/dp_uml_prototype.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/dp_uml_builder.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解设计模式之原型模式、建造者模式">
+<meta name="twitter:description" content="抽象工厂和工厂方法从外部封装对象的创建，解耦对象的直接引用关系，而单例模式、原型模式、建造者模式则是从内部创建对外可用的对象。单例模式已经介绍过了，这里主要说说原型模式和建造者模式。 从内部构造对象从内部控制实例个数，构造出一个单例，这是单例模式；从内部控制数据的复制，可以构造出平行的对象，这是原型模式；从内部控制对象的组装，可以构造出自定义对象，这是建造者模式； 为什么要从内部构造？首先，在不需">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/dp_uml_prototype.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 理解设计模式之原型模式、建造者模式 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                理解设计模式之原型模式、建造者模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T12:00:00+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/理解设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">理解设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/08/理解设计模式之原型模式、建造者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/08/理解设计模式之原型模式、建造者模式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/04/08/理解设计模式之原型模式、建造者模式/" class="leancloud_visitors" data-flag-title="理解设计模式之原型模式、建造者模式">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>抽象工厂和工厂方法从外部封装对象的创建，解耦对象的直接引用关系，而单例模式、原型模式、建造者模式则是从内部创建对外可用的对象。<br>单例模式已经介绍过了，这里主要说说原型模式和建造者模式。</p>
+<h2 id="从内部构造对象"><a href="#从内部构造对象" class="headerlink" title="从内部构造对象"></a>从内部构造对象</h2><p>从内部控制实例个数，构造出一个单例，这是单例模式；<br>从内部控制数据的复制，可以构造出平行的对象，这是原型模式；<br>从内部控制对象的组装，可以构造出自定义对象，这是建造者模式；</p>
+<p>为什么要从内部构造？<br>首先，在不需要的情况下，外部构造有两个问题：</p>
+<ol>
+<li>增加了复杂度。只是创建一个对象，就是说不需要处理多个对象，完全不需要增加这种复杂度。</li>
+<li>破坏了封装性。内部数据的处理，也必须要暴露给外部构造对象（比如说工厂）；</li>
+</ol>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><blockquote>
+<p>用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。</p>
+</blockquote>
+<p>大家先看看这样的效果是不是原型模式想要的？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 错误示例，特此标注</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Prototype</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Prototype <span class="title">clone</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>貌似是“复制”了和自己一模一样（真的是一模一样）的对象了，但是总感觉哪里不对，是不是太简单了？<br>感觉是对的，上述代码只是提供了一个引用，并没有创建新的对象，所以我们要解决对象的复制问题：得真的new一个对象出来。<br>当然完全可以自定义复制的细节，比如说改变一些值，复制出不一样的对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Prototype</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Prototype <span class="title">clone</span><span class="params">()</span> </span>&#123;</div><div class="line">        Prototype prototype = <span class="keyword">new</span> Prototype();</div><div class="line">        <span class="comment">// prototype.setXX()</span></div><div class="line">        <span class="keyword">return</span> prototype;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种不依赖于引用的复制称为深拷贝，因为对象中会引用对象，引用对象又会引用对象，“冤冤相报何时了”，这会造成真正的深拷贝是很难的，甚至有时是不可能的。<br>另外，在java中虽然在Object级别就定义了clone()，但是然并卵，如果没有实现Cloneable接口，调用clone就会异常，这个clone就是一定要你自己实现的。<br>我们也参考java实现原型模式的最终形态，借用一下Cloneable：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.age = age;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</div><div class="line">        User user = <span class="keyword">new</span> User(name, age);</div><div class="line">        <span class="comment">// user.name = "cloner name";</span></div><div class="line">        <span class="keyword">return</span> user;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>UML类图如下：<br><img src="/images/dp_uml_prototype.png" alt="原型模式UML类图"></p>
+<h2 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h2><blockquote>
+<p>将一个复杂对象的构建与它的表示分离,使得同样的构建过程可以创建不同的表示。</p>
+</blockquote>
+<p>建造者模式其实是简化了复杂对象的构建。什么样的复杂对象？<br>复杂到需要你一步一步去配置它，最终才能得到它的复杂对象，比如Dialog，XXConfig …，可以向导式带你构建一个Product。<br>首先，建立Product和Builder，Builder构建Product：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepA</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepB</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepC</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Product product = <span class="keyword">new</span> Product();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepA</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepA();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepB</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepB();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepC</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepC();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> product;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可能有人要骂我了，什么玩意？No，no，no，这里包含了一个建造者模式重要的基础：分离对象的构建和它的表示。实现代码都在Product自身里，但是构建过程全部放在Builder里。<br>为什么要把构建和表示分离？说回去了，因为这个复杂对象，它的构建（配置）太复杂，职责分离，干脆把这个构建操作专门抽象到Builder里，简化产品本身。<br>其次，对Builder进行抽象，就能得到多种Builder实现，创造不同的表示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IBuilder</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buildStepA</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buildStepB</span><span class="params">()</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buildStepC</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BuilderA</span> <span class="keyword">implements</span> <span class="title">IBuilder</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Product product = <span class="keyword">new</span> Product();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepA</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepA();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 互换B、C顺序</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepB</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepC();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepC</span><span class="params">()</span> </span>&#123;</div><div class="line">        product.buildStepB();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> product;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BuilderB</span> <span class="keyword">implements</span> <span class="title">IBuilder</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Product product = <span class="keyword">new</span> Product();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepA</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepB</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStepC</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Product <span class="title">create</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 各种定制操作。比如检测、延迟...</span></div><div class="line">        <span class="comment">// B、C二者只能选一，可以巧妙的在create里面做检测</span></div><div class="line">        <span class="comment">// if (A &amp;&amp; B) &#123; throw new RuntimeException("A和B只能选择一个") &#125;;</span></div><div class="line">        <span class="keyword">return</span> product;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>既然这么复杂了，就再复杂一点，创建一个指导者Director，接受不同的Builder构建出不同的Product。<br>当然，也可以对产品抽象出一系列具体产品，但考虑到不同的产品它的构建基本不同，产品的抽象意义并不大。<br>事实上，就Director和Builder的抽象常常被简化，使用简单的一个Builder即可满足大部分要求。<br>UML类图如下：<br><img src="/images/dp_uml_builder.png" alt="建造者模式UML类图"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>原型模式和建造者模式，从对象内部考虑对象的创建，更多的是偏向数据或者行为的处理，这和其他很多设计模式偏向关系的处理是有很大的不同的。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag">#设计模式</a>
+          
+            <a href="/tags/面向对象/" rel="tag">#面向对象</a>
+          
+            <a href="/tags/OOP/" rel="tag">#OOP</a>
+          
+            <a href="/tags/原型模式/" rel="tag">#原型模式</a>
+          
+            <a href="/tags/建造者模式/" rel="tag">#建造者模式</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/" rel="next" title="理解设计模式之组合模式、迭代器模式、访问者模式">
+                <i class="fa fa-chevron-left"></i> 理解设计模式之组合模式、迭代器模式、访问者模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/09/理解设计模式之状态模式、职责链模式/" rel="prev" title="理解设计模式之状态模式、职责链模式">
+                理解设计模式之状态模式、职责链模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/08/理解设计模式之原型模式、建造者模式/"
+           data-title="理解设计模式之原型模式、建造者模式" data-url="http://www.jayfeng.com/2016/04/08/理解设计模式之原型模式、建造者模式/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从内部构造对象"><span class="nav-text">从内部构造对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型模式"><span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建造者模式"><span class="nav-text">建造者模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

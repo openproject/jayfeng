@@ -1,0 +1,1182 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,gradle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="使用gradle打包apk已经成为当前主流趋势，我也在这个过程中经历了各种需求，并不断结合gradle新的支持，一一改进。在此，把这些相关的东西记录，做一总结。 1. 替换AndroidManifest中的占位符我想把其中的${app_label}替换为@string/app_name12345android&amp;#123;    defaultConfig&amp;#123;        manifest">
+<meta name="keywords" content="android,gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android打包的那些事">
+<meta property="og:url" content="http://www.jayfeng.com/2015/11/07/Android打包的那些事/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="使用gradle打包apk已经成为当前主流趋势，我也在这个过程中经历了各种需求，并不断结合gradle新的支持，一一改进。在此，把这些相关的东西记录，做一总结。 1. 替换AndroidManifest中的占位符我想把其中的${app_label}替换为@string/app_name12345android&amp;#123;    defaultConfig&amp;#123;        manifest">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android打包的那些事">
+<meta name="twitter:description" content="使用gradle打包apk已经成为当前主流趋势，我也在这个过程中经历了各种需求，并不断结合gradle新的支持，一一改进。在此，把这些相关的东西记录，做一总结。 1. 替换AndroidManifest中的占位符我想把其中的${app_label}替换为@string/app_name12345android&amp;#123;    defaultConfig&amp;#123;        manifest">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Android打包的那些事 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android打包的那些事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-07T10:44:01+08:00" content="2015-11-07">
+              2015-11-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/07/Android打包的那些事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/07/Android打包的那些事/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/11/07/Android打包的那些事/" class="leancloud_visitors" data-flag-title="Android打包的那些事">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用gradle打包apk已经成为当前主流趋势，我也在这个过程中经历了各种需求，并不断结合gradle新的支持，一一改进。在此，把这些相关的东西记录，做一总结。</p>
+<h2 id="1-替换AndroidManifest中的占位符"><a href="#1-替换AndroidManifest中的占位符" class="headerlink" title="1. 替换AndroidManifest中的占位符"></a>1. 替换AndroidManifest中的占位符</h2><p>我想把其中的${app_label}替换为@string/app_name<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android&#123;</div><div class="line">    defaultConfig&#123;</div><div class="line">        manifestPlaceholders = [app_label:&quot;@string/app_name&quot;]</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果只想替换debug版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">android&#123;</div><div class="line">    buildTypes &#123;</div><div class="line">        debug &#123;</div><div class="line">	          manifestPlaceholders = [app_label:&quot;@string/app_name_debug&quot;]</div><div class="line">        &#125;</div><div class="line">        release &#123;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>更多的需求是替换渠道编号：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">android&#123;</div><div class="line">    productFlavors &#123;</div><div class="line">        // 把dev产品型号的apk的AndroidManifest中的channel替换dev</div><div class="line">        &quot;dev&quot;&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;dev&quot;]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="2-独立配置签名信息"><a href="#2-独立配置签名信息" class="headerlink" title="2. 独立配置签名信息"></a>2. 独立配置签名信息</h2><p>对于签名相关的信息,直接写在gradle当然不好,特别是一些开源项目，可以添加到gradle.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">RELEASE_KEY_PASSWORD=xxxx</div><div class="line">RELEASE_KEY_ALIAS=xxx</div><div class="line">RELEASE_STORE_PASSWORD=xxx</div><div class="line">RELEASE_STORE_FILE=../.keystore/xxx.jks</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>然后在build.gradle中引用即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    signingConfigs &#123;</div><div class="line">        release &#123;</div><div class="line">            storeFile file(RELEASE_STORE_FILE)</div><div class="line">            storePassword RELEASE_STORE_PASSWORD</div><div class="line">            keyAlias RELEASE_KEY_ALIAS</div><div class="line">            keyPassword RELEASE_KEY_PASSWORD</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果不想提交到版本库，可以添加到local.properties中，然后在build.gradle中读取。</p>
+<h2 id="3-多渠道打包"><a href="#3-多渠道打包" class="headerlink" title="3. 多渠道打包"></a>3. 多渠道打包</h2><p>多渠道打包的关键之处在于，定义不同的product flavor, 并把AndroiManifest中的channel渠道编号替换为对应的flavor标识：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    productFlavors &#123;</div><div class="line">        dev&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;dev&quot;]</div><div class="line">        &#125;</div><div class="line">        official&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;official&quot;]</div><div class="line">        &#125;</div><div class="line">        // ... ...</div><div class="line">        wandoujia&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;wandoujia&quot;]</div><div class="line">        &#125;</div><div class="line">        xiaomi&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;xiaomi&quot;]</div><div class="line">        &#125;</div><div class="line">        &quot;360&quot;&#123;</div><div class="line">            manifestPlaceholders = [channel:&quot;360&quot;]</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注意一点，这里的flavor名如果是数字开头，必须用引号引起来。<br>构建一下，就能生成一系列的Build Variant了:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">devDebug</div><div class="line">devRelease</div><div class="line">officialDebug</div><div class="line">officialRelease</div><div class="line">wandoujiaDebug</div><div class="line">wandoujiaRelease</div><div class="line">xiaomiDebug</div><div class="line">xiaomiRelease</div><div class="line">360Debug</div><div class="line">360Release</div></pre></td></tr></table></figure></p>
+<p>其中debug, release是gradle默认自带的两个build type, 下一节还会继续说明。<br>选择一个，就能编译出对应渠道的apk了。</p>
+<h2 id="4-自定义Build-Type"><a href="#4-自定义Build-Type" class="headerlink" title="4. 自定义Build Type"></a>4. 自定义Build Type</h2><p>前面说到默认的build type有两种debug和release，区别如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// release版本生成的BuildConfig特性信息</div><div class="line">public final class BuildConfig &#123;</div><div class="line">  public static final boolean DEBUG = false;</div><div class="line">  public static final String BUILD_TYPE = &quot;release&quot;;</div><div class="line">&#125;</div><div class="line">// debug版本生成的BuildConfig特性信息</div><div class="line">public final class BuildConfig &#123;</div><div class="line">  public static final boolean DEBUG = true;</div><div class="line">  public static final String BUILD_TYPE = &quot;debug&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在有一种需求，增加一种build type，介于debug和release之间，就是和release版本一样，但是要保留debug状态（如果做过rom开发的话，类似于user debug版本），我们称为preview版本吧。<br>其实很简单：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    signingConfigs &#123;</div><div class="line">        debug &#123;</div><div class="line">            storeFile file(RELEASE_STORE_FILE)</div><div class="line">            storePassword RELEASE_STORE_PASSWORD</div><div class="line">            keyAlias RELEASE_KEY_ALIAS</div><div class="line">            keyPassword RELEASE_KEY_PASSWORD</div><div class="line">        &#125;</div><div class="line">        preview &#123;</div><div class="line">            storeFile file(RELEASE_STORE_FILE)</div><div class="line">            storePassword RELEASE_STORE_PASSWORD</div><div class="line">            keyAlias RELEASE_KEY_ALIAS</div><div class="line">            keyPassword RELEASE_KEY_PASSWORD</div><div class="line">        &#125;</div><div class="line">        release &#123;</div><div class="line">            storeFile file(RELEASE_STORE_FILE)</div><div class="line">            storePassword RELEASE_STORE_PASSWORD</div><div class="line">            keyAlias RELEASE_KEY_ALIAS</div><div class="line">            keyPassword RELEASE_KEY_PASSWORD</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    buildTypes &#123;</div><div class="line">        debug &#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name_debug&quot;]</div><div class="line">        &#125;</div><div class="line">        release &#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name&quot;]</div><div class="line">        &#125;</div><div class="line">        preview&#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name_preview&quot;]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>另外，build type还有一个好处，如果想要一次性生成所有的preview版本，执行assemblePreview即可，debug和releae版本同理。</p>
+<h2 id="5-build-type中的定制参数"><a href="#5-build-type中的定制参数" class="headerlink" title="5. build type中的定制参数"></a>5. build type中的定制参数</h2><p>上面我们在不同的build type替换${app_label}为不同的字符串，这样安装到手机上就能明显的区分出不同build type的版本。<br>除此之外，可能还可以配置一些参数，我这里列几个我在工作中用到的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">        debug &#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name_debug&quot;]</div><div class="line">            applicationIdSuffix &quot;.debug&quot;</div><div class="line">            minifyEnabled false</div><div class="line">            signingConfig signingConfigs.debug</div><div class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</div><div class="line">        &#125;</div><div class="line">        release &#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name&quot;]</div><div class="line">            minifyEnabled true</div><div class="line">            shrinkResources true</div><div class="line">            signingConfig signingConfigs.release</div><div class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</div><div class="line">        &#125;</div><div class="line">        preview&#123;</div><div class="line">            manifestPlaceholders = [app_label:&quot;@string/app_name_preview&quot;]</div><div class="line">            applicationIdSuffix &quot;.preview&quot;</div><div class="line">            debuggable true // 保留debug信息</div><div class="line">            minifyEnabled true</div><div class="line">            shrinkResources true</div><div class="line">            signingConfig signingConfigs.preview</div><div class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这些都用的太多了，稍微解释一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// minifyEnabled 混淆处理</div><div class="line">// shrinkResources 去除无用资源</div><div class="line">// signingConfig 签名</div><div class="line">// proguardFiles 混淆配置</div><div class="line">// applicationIdSuffix 增加APP ID的后缀</div><div class="line">// debuggable 是否保留调试信息</div><div class="line">// ... ...</div></pre></td></tr></table></figure></p>
+<h2 id="6-多工程全局配置"><a href="#6-多工程全局配置" class="headerlink" title="6. 多工程全局配置"></a>6. 多工程全局配置</h2><p>随着产品渠道的铺开，往往一套代码需要支持多个产品形态，这就需要抽象出主要代码到一个Library，然后基于Library扩展几个App Module。<br>相信每个module的build.gradle都会有这个代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    compileSdkVersion 22</div><div class="line">    buildToolsVersion &quot;23.0.1&quot;</div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        minSdkVersion 10</div><div class="line">        targetSdkVersion 22</div><div class="line">        versionCode 34</div><div class="line">        versionName &quot;v2.6.1&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当升级sdk、build tool、target sdk等，几个module都要更改，非常的麻烦。最重要的是，很容易忘记，最终导致app module之间的差异不统一，也不可控。<br>强大的gradle插件在1.1.0支持全局变量设定，一举解决了这个问题。<br>先在project的根目录下的build.gradle定义ext全局变量:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ext &#123;</div><div class="line">    compileSdkVersion = 22</div><div class="line">    buildToolsVersion = &quot;23.0.1&quot;</div><div class="line">    minSdkVersion = 10</div><div class="line">    targetSdkVersion = 22</div><div class="line">    versionCode = 34</div><div class="line">    versionName = &quot;v2.6.1&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在各module的build.gradle中引用如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    compileSdkVersion rootProject.ext.compileSdkVersion</div><div class="line">    buildToolsVersion rootProject.ext.buildToolsVersion</div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId &quot;com.xxx.xxx&quot;</div><div class="line">        minSdkVersion rootProject.ext.minSdkVersion</div><div class="line">        targetSdkVersion rootProject.ext.targetSdkVersion</div><div class="line">        versionCode rootProject.ext.versionCode</div><div class="line">        versionName rootProject.ext.versionName</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后每次修改project级别的build.gradle即可实现全局统一配置。</p>
+<h2 id="7-自定义导出的APK名称"><a href="#7-自定义导出的APK名称" class="headerlink" title="7. 自定义导出的APK名称"></a>7. 自定义导出的APK名称</h2><p>默认android studio生成的apk名称为app-debug.apk或者app-release.apk，当有多个渠道的时候，需要同时编出50个渠道包的时候，就麻烦了，不知道谁是谁了。<br>这个时候，就需要自定义导出的APK名称了，不同的渠道编出的APK的文件名应该是不一样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    // rename the apk with the version name</div><div class="line">    applicationVariants.all &#123; variant -&gt;</div><div class="line">        variant.outputs.each &#123; output -&gt;</div><div class="line">            output.outputFile = new File(</div><div class="line">                    output.outputFile.parent,</div><div class="line">                    &quot;ganchai-$&#123;variant.buildType.name&#125;-$&#123;variant.versionName&#125;-$&#123;variant.productFlavors[0].name&#125;.apk&quot;.toLowerCase())</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当apk太多时，如果能把apk按debug，release，preview分一下类就更好了（事实上，对于我这样经常发版的人，一编往往就要编四五十个版本的人，debug和release版本全混在一起没法看，必须分类），简单：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    // rename the apk with the version name</div><div class="line">    // add output file sub folder by build type</div><div class="line">    applicationVariants.all &#123; variant -&gt;</div><div class="line">        variant.outputs.each &#123; output -&gt;</div><div class="line">            output.outputFile = new File(</div><div class="line">                    output.outputFile.parent + &quot;/$&#123;variant.buildType.name&#125;&quot;,</div><div class="line">                    &quot;ganchai-$&#123;variant.buildType.name&#125;-$&#123;variant.versionName&#125;-$&#123;variant.productFlavors[0].name&#125;.apk&quot;.toLowerCase())</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在生成了类似于ganchai-dev-preview-v2.4.0.0.apk这样格式的包了，preview的包自然就放在preview的文件夹下，清晰明了。</p>
+<h2 id="8-混淆技巧"><a href="#8-混淆技巧" class="headerlink" title="8. 混淆技巧"></a>8. 混淆技巧</h2><p>混淆能让反编译的代码可读性变的很差，而且还能显著的减少APK包的大小。</p>
+<h3 id="1-第一个技巧"><a href="#1-第一个技巧" class="headerlink" title="1). 第一个技巧"></a>1). 第一个技巧</h3><p>相信很多朋友对混淆都觉得麻烦，甚至说，非常乱。因为添加混淆规则需要查询官方说明文档，甚至有的官方文档还没说明。当你引用了太多库后，添加混淆规则将使一场噩梦。<br>这里介绍一个技巧，不用查官方文档，不用逐个库考虑添加规则。<br>首先，除了默认的混淆配置(android-sdk/tools/proguard/proguard-android.txt), 自己的代码肯定是要自己配置的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">## 位于module下的proguard-rules.pro</div><div class="line">#####################################</div><div class="line">######### 主程序不能混淆的代码 #########</div><div class="line">#####################################</div><div class="line"></div><div class="line">-dontwarn xxx.model.**</div><div class="line">-keep class xxx.model.** &#123; *; &#125;</div><div class="line"></div><div class="line">## 等等，自己的代码自己清楚</div><div class="line"></div><div class="line">#####################################</div><div class="line">########### 不优化泛型和反射 ##########</div><div class="line">#####################################</div><div class="line"></div><div class="line">-keepattributes Signature</div></pre></td></tr></table></figure>
+<p>接下来是麻烦的第三方库，一般来说，如果是极光推的话，它的包名是cn.jpush, 添加如下代码即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-dontwarn cn.jpush.**</div><div class="line">-keep class cn.jpush.** &#123; *; &#125;</div></pre></td></tr></table></figure></p>
+<p>其他的第三库也是如此，一个一个添加，太累！其实可以用第三方反编译工具（比如jadx：<a href="https://github.com/skylot/jadx" target="_blank" rel="external">https://github.com/skylot/jadx</a> ），打开apk后，一眼就能看到引用的所有第三方库的包名，把所有不想混淆或者不确定能不能混淆的，直接都添加又有何不可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">#####################################</div><div class="line">######### 第三方库或者jar包 ###########</div><div class="line">#####################################</div><div class="line"></div><div class="line">-dontwarn cn.jpush.**</div><div class="line">-keep class cn.jpush.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn com.squareup.**</div><div class="line">-keep class com.squareup.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn com.octo.**</div><div class="line">-keep class com.octo.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn de.**</div><div class="line">-keep class de.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn javax.**</div><div class="line">-keep class javax.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn org.**</div><div class="line">-keep class org.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn u.aly.**</div><div class="line">-keep class u.aly.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn uk.**</div><div class="line">-keep class uk.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn com.baidu.**</div><div class="line">-keep class com.baidu.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn com.facebook.**</div><div class="line">-keep class com.facebook.** &#123; *; &#125;</div><div class="line"></div><div class="line">-dontwarn com.google.**</div><div class="line">-keep class com.google.** &#123; *; &#125;</div><div class="line"></div><div class="line">## ... ...</div></pre></td></tr></table></figure></p>
+<h3 id="2-第二个技巧"><a href="#2-第二个技巧" class="headerlink" title="2). 第二个技巧"></a>2). 第二个技巧</h3><p>一般release版本混淆之后，像友盟这样的统计系统如果有崩溃异常，会记录如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">java.lang.NullPointerException: java.lang.NullPointerException</div><div class="line">	at com.xxx.TabMessageFragment$7.run(Unknown Source)</div></pre></td></tr></table></figure></p>
+<p>这个Unknown Source是很要命的，排除错误无法定位到具体行了，大大降低调试效率。<br>当然，友盟支持上传Mapping文件，可帮助定位，mapping文件的位置在：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">project &gt; module</div><div class="line">        &gt; build &gt; outputs &gt; &#123;flavor name&#125; &gt; &#123;build type&#125; &gt; mapping.txt</div></pre></td></tr></table></figure></p>
+<p>如果版本一多，mapping.txt每次都要重新生成，还要上传，终归还是麻烦。<br>其实，在proguard-rules.pro中添加如下代码即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-keepattributes SourceFile,LineNumberTable</div></pre></td></tr></table></figure></p>
+<p>当然apk包会大那么一点点（我这里6M的包，大个200k吧），但是再也不用mapping.txt也能定位到行了，为了这种解脱，这个代价我个人觉得是值的，而且超值！</p>
+<h2 id="9-动态设置一些额外信息"><a href="#9-动态设置一些额外信息" class="headerlink" title="9. 动态设置一些额外信息"></a>9. 动态设置一些额外信息</h2><p>假如想把当前的编译时间、编译的机器、最新的commit版本添加到apk，而这些信息又不好写在代码里，强大的gradle给了我创造可能的自信：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultConfig &#123;</div><div class="line">        resValue &quot;string&quot;, &quot;build_time&quot;, buildTime()</div><div class="line">        resValue &quot;string&quot;, &quot;build_host&quot;, hostName()</div><div class="line">        resValue &quot;string&quot;, &quot;build_revision&quot;, revision()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">def buildTime() &#123;</div><div class="line">    return new Date().format(&quot;yyyy-MM-dd HH:mm:ss&quot;)</div><div class="line">&#125;</div><div class="line">def hostName() &#123;</div><div class="line">    return System.getProperty(&quot;user.name&quot;) + &quot;@&quot; + InetAddress.localHost.hostName</div><div class="line">&#125;</div><div class="line">def revision() &#123;</div><div class="line">    def code = new ByteArrayOutputStream()</div><div class="line">    exec &#123;</div><div class="line">        commandLine &apos;git&apos;, &apos;rev-parse&apos;, &apos;--short&apos;, &apos;HEAD&apos;</div><div class="line">        standardOutput = code</div><div class="line">    &#125;</div><div class="line">    return code.toString()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上述代码实现了动态的添加了3个字符串资源: build_time、build_host、build_revision, 然后在其他地方可像如引用字符串一样使用如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 在Activity里调用</div><div class="line">getString(R.string.build_time)  // 输出2015-11-07 17:01</div><div class="line">getString(R.string.build_host)  // 输出jay@deepin，这是我的电脑的用户名和PC名</div><div class="line">getString(R.string.build_revision) // 输出3dd5823, 这是最后一次commit的sha值</div></pre></td></tr></table></figure></p>
+<p>这个地方，如何从命令行读取返回结果，很有意思。<br>其实这段代码来自我学习VLC源码时偶然看到，深受启发，不敢独享，特摘抄在此。<br>vlc源码及编译地址：<a href="https://wiki.videolan.org/AndroidCompile，" target="_blank" rel="external">https://wiki.videolan.org/AndroidCompile，</a> 有兴趣可以过去一观。</p>
+<h2 id="10-给自己留个”后门”-点七下"><a href="#10-给自己留个”后门”-点七下" class="headerlink" title="10. 给自己留个”后门”: 点七下"></a>10. 给自己留个”后门”: 点七下</h2><p>为了调试方便，我们往往会在debug版本留一个显示我们想看的界面（记得之前微博的一个iOS版本就泄露了一个调试界面），如何进入到一个界面，我们可以仿照android开发者选项的方式，点七下才显示，我们来实现一个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private int clickCount = 0;</div><div class="line">private long clickTime = 0;</div><div class="line"></div><div class="line">sevenClickView.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">    @Override</div><div class="line">    public void onClick(View view) &#123;</div><div class="line"></div><div class="line">        if (clickTime == 0) &#123;</div><div class="line">            clickTime = System.currentTimeMillis();</div><div class="line">        &#125;</div><div class="line">        if (System.currentTimeMillis() - clickTime &gt; 500) &#123;</div><div class="line">            clickCount = 0;</div><div class="line">        &#125; else &#123;</div><div class="line">            clickCount++;</div><div class="line">        &#125;</div><div class="line">        clickTime = System.currentTimeMillis();</div><div class="line"></div><div class="line">        if (clickCount &gt; 6) &#123;</div><div class="line">            // 点七下条件达到，跳到debug界面</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>release版本肯定是不能暴露这个界面的，也不能让人用am在命令行调起，如何防止呢，可以在release版本把这个debug界面的exported设为false。</p>
+<h2 id="11-自动化构建"><a href="#11-自动化构建" class="headerlink" title="11. 自动化构建"></a>11. 自动化构建</h2><p>如何使用jenkins打包android和ios，并上传到蒲公英平台，这个可以参考我的另外一篇文章专门介绍: <a href="http://www.jayfeng.com/2015/10/22/%E4%BD%BF%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BAandroid%E5%92%8Cios%E5%BA%94%E7%94%A8/">《使用jenkins自动化构建android和ios应用》</a>，不过，这篇文章还没写完，实际上在公司里已经一直在用了，哪天心情好了总会写完的，这里不再赘述。</p>
+<h2 id="12-小结"><a href="#12-小结" class="headerlink" title="12. 小结"></a>12. 小结</h2><p>android打包因为groovy语言的强大，变的强大的同时必然也变的复杂，今天把我经历的这些门道拿出来说道一下，做一个小小的总结，后续有更新我还会添加。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/gradle/" rel="tag">#gradle</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/22/使用jenkins自动化构建android和ios应用/" rel="next" title="使用jenkins自动化构建android和ios应用">
+                <i class="fa fa-chevron-left"></i> 使用jenkins自动化构建android和ios应用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/26/搭建一个日常好用的linux系统/" rel="prev" title="搭建一个日常好用的linux系统">
+                搭建一个日常好用的linux系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/11/07/Android打包的那些事/"
+           data-title="Android打包的那些事" data-url="http://www.jayfeng.com/2015/11/07/Android打包的那些事/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-替换AndroidManifest中的占位符"><span class="nav-text">1. 替换AndroidManifest中的占位符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-独立配置签名信息"><span class="nav-text">2. 独立配置签名信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-多渠道打包"><span class="nav-text">3. 多渠道打包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-自定义Build-Type"><span class="nav-text">4. 自定义Build Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-build-type中的定制参数"><span class="nav-text">5. build type中的定制参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-多工程全局配置"><span class="nav-text">6. 多工程全局配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-自定义导出的APK名称"><span class="nav-text">7. 自定义导出的APK名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-混淆技巧"><span class="nav-text">8. 混淆技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-第一个技巧"><span class="nav-text">1). 第一个技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-第二个技巧"><span class="nav-text">2). 第二个技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-动态设置一些额外信息"><span class="nav-text">9. 动态设置一些额外信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-给自己留个”后门”-点七下"><span class="nav-text">10. 给自己留个”后门”: 点七下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-自动化构建"><span class="nav-text">11. 自动化构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-小结"><span class="nav-text">12. 小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

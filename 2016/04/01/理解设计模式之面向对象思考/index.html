@@ -1,0 +1,1191 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="设计模式,面向对象,OOP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="面向对象欺我、骂我、笑我、侮我、辱我，我该如何处之？只要读他、试他、理解他、吃透他、运用他，再过几年，你且看他？  面向对象是一种软件开发方法，分析问题时，以对象为单位，考虑它的属性及方法，与传统的面向过程是完全不同的，面向过程在分析问题时，以一个具体的流程（事务过程）为单位，考虑它的实现。当每次把各种设计模式回归到面向对象思想时，我都有一种“运用之妙，存乎一心”的感觉。如果能更多的更深层次的去">
+<meta name="keywords" content="设计模式,面向对象,OOP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解设计模式之面向对象思考">
+<meta property="og:url" content="http://www.jayfeng.com/2016/04/01/理解设计模式之面向对象思考/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="面向对象欺我、骂我、笑我、侮我、辱我，我该如何处之？只要读他、试他、理解他、吃透他、运用他，再过几年，你且看他？  面向对象是一种软件开发方法，分析问题时，以对象为单位，考虑它的属性及方法，与传统的面向过程是完全不同的，面向过程在分析问题时，以一个具体的流程（事务过程）为单位，考虑它的实现。当每次把各种设计模式回归到面向对象思想时，我都有一种“运用之妙，存乎一心”的感觉。如果能更多的更深层次的去">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解设计模式之面向对象思考">
+<meta name="twitter:description" content="面向对象欺我、骂我、笑我、侮我、辱我，我该如何处之？只要读他、试他、理解他、吃透他、运用他，再过几年，你且看他？  面向对象是一种软件开发方法，分析问题时，以对象为单位，考虑它的属性及方法，与传统的面向过程是完全不同的，面向过程在分析问题时，以一个具体的流程（事务过程）为单位，考虑它的实现。当每次把各种设计模式回归到面向对象思想时，我都有一种“运用之妙，存乎一心”的感觉。如果能更多的更深层次的去">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 理解设计模式之面向对象思考 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                理解设计模式之面向对象思考
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-01T12:00:00+08:00" content="2016-04-01">
+              2016-04-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/理解设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">理解设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/01/理解设计模式之面向对象思考/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/01/理解设计模式之面向对象思考/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/04/01/理解设计模式之面向对象思考/" class="leancloud_visitors" data-flag-title="理解设计模式之面向对象思考">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>面向对象欺我、骂我、笑我、侮我、辱我，我该如何处之？<br>只要读他、试他、理解他、吃透他、运用他，再过几年，你且看他？</p>
+</blockquote>
+<p>面向对象是一种软件开发方法，分析问题时，以对象为单位，考虑它的属性及方法，与传统的面向过程是完全不同的，面向过程在分析问题时，以一个具体的流程（事务过程）为单位，考虑它的实现。<br>当每次把各种设计模式回归到面向对象思想时，我都有一种“运用之妙，存乎一心”的感觉。如果能更多的更深层次的去思考面向对象思想，对于学习设计模式将会大有裨益。<br>面向对象和面向过程的核心区别在于，它们是针对不同级别软件工程的。具体的实现问题依然还是需要面向过程，当处理一台复杂的“精密机器”时，使用面向对象则容易的多。当软件的复杂性进一步增长，可能面向对象也会吃力，我们就要考虑面向服务了。</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在80～90年代，大规模软件的复杂性增长到一定程度，如何构建一个高效、可靠的、可维护的复杂软件成了一个难题。面向对象思想在应付这次软件危机中起了很重要的作用，我们应该设计出一个如下系统：</p>
+<blockquote>
+<ol>
+<li>可维护性好</li>
+<li>可复用性好</li>
+<li>可扩展性好</li>
+<li>灵活性好</li>
+</ol>
+</blockquote>
+<p>PS：<a href="#http://www.parallellabs.com/2010/04/01/the-third-software-crisis/">第二次软件危机</a></p>
+<a id="more"></a>
+<h2 id="从抽象说起"><a href="#从抽象说起" class="headerlink" title="从抽象说起"></a>从抽象说起</h2><p>抽象虽然不是面向对象专利，但确是面向对象的核心。不仅如此，语言的发展其实也是抽象的发展，从低级语言到高级语言，从面向过程式到面向对象，从命令式到声明式都是抽象形态的演进。而面向对象就是为解决复杂问题提供了一种新的思维方式和抽象机制。</p>
+<h2 id="三大特征"><a href="#三大特征" class="headerlink" title="三大特征"></a>三大特征</h2><h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4><h2 id="六大原则"><a href="#六大原则" class="headerlink" title="六大原则"></a>六大原则</h2><p>设计原则乃是设计之本，很多人提出了各种各样的设计原则，从不同的角度去理解都是非常有道理的。这里只列举广为流传的六个原则，并稍作说明：</p>
+<h4 id="SRP：单一职责原则"><a href="#SRP：单一职责原则" class="headerlink" title="SRP：单一职责原则"></a>SRP：单一职责原则</h4><h4 id="OCP：开闭原则"><a href="#OCP：开闭原则" class="headerlink" title="OCP：开闭原则"></a>OCP：开闭原则</h4><h4 id="LSP：里氏替换原则"><a href="#LSP：里氏替换原则" class="headerlink" title="LSP：里氏替换原则"></a>LSP：里氏替换原则</h4><h4 id="DIP：依赖倒置原则"><a href="#DIP：依赖倒置原则" class="headerlink" title="DIP：依赖倒置原则"></a>DIP：依赖倒置原则</h4><h4 id="ISP：接口隔离眼则"><a href="#ISP：接口隔离眼则" class="headerlink" title="ISP：接口隔离眼则"></a>ISP：接口隔离眼则</h4><h4 id="LKP：迪米特原则"><a href="#LKP：迪米特原则" class="headerlink" title="LKP：迪米特原则"></a>LKP：迪米特原则</h4><p>除了上述周知，《冒号课堂：编程范式与OOP思想》中总结了更多的设计原则，有些还有很强的操作性，非常具有指导意义，推荐学习。</p>
+<h2 id="更多思考"><a href="#更多思考" class="headerlink" title="更多思考"></a>更多思考</h2><h4 id="分离变化"><a href="#分离变化" class="headerlink" title="分离变化"></a>分离变化</h4><p>分离变化是贯穿在整个面向对象设计中的核心思想，具有非常重要的指导意义。<br>封装内部变化，扩展外部变化。封装内部变化自不必说，通过继承和多态扩展外部变化，这就是面向对象的三大特征啊。面向对象思想很大程度上就是面向变化的思想，把各种各样的变化封装为对象，合理的分配这些对象，当然这里的合理是有技巧的。<br>软件设计应该基于不变的基石，分离变化的意义就在于此，帮助建立稳定模型。<br>分析变化需要一定的经验，if-else语句暗示着变化，扩展的业务暗示着变化…<br>转移变化需要一定的技巧，封装、依赖倒置、增加间接层…</p>
+<h4 id="继承与组合"><a href="#继承与组合" class="headerlink" title="继承与组合"></a>继承与组合</h4><p>面向对象系统功能复用的两大技术包括类继承和对象组合，二者选择有一句“格言”：优先使用对象组合,而不是类继承（Favor object composition over class inheritance）。这句话我很赞同，但我还想强调的是，二者的使用场景不同，并不能相互替换：类继承强调的是抽象复用（属于同一类）而对象组合强调的是实现复用（借用一下其他对象的行为实现）。而在实际项目中类继承常常被滥用于实现复用，我们应该消除此类过度继承，这才是我们强调组合优于继承的最主要原因。</p>
+<p>绝大部分设计模式都基于继承或者组合实现，甚至有的设计模式比如适配器模式使用继承和组合都是正确的，分别为类适配器和对象适配器模式。而有的设计模式比如桥梁模式则是典型的同时使用了继承和组合，分别负责抽象部分和实现部分的复用。</p>
+<h4 id="抽象与扩展"><a href="#抽象与扩展" class="headerlink" title="抽象与扩展"></a>抽象与扩展</h4><p>有抽象的地方就有扩展，需要扩展的地方就需要抽象。<br>面向对象思想在这点上的支持非常好，假如现在有一个Object，抽象一下就变成了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// interface or abstract class</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAbstract</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectA</span> <span class="keyword">implements</span> <span class="title">IAbstract</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectB</span> <span class="keyword">implements</span> <span class="title">IAbstract</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种结构我这边给取个名字”OU结构”，OU的意思是ObjectUnit，面向对象单元的意思，操作起来非常具体，后续文章中会大量用到这种方法。各个设计模式充斥着大量的这类代码，希望大家看到这样的一组结构，可以看成是“一个”类，一个包含着博大精深的面向对象思想的类，这会大大简化你对设计模式的理解。</p>
+<p>从具体的接口与实现角度分析，我们应该面向接口编程而不是面向实现编程。接口本身是抽象，实现就是遵循这种抽象规则的具体扩展。在面向对象中，inteface或者abstract class巧妙的把抽象和扩展连接起来了，这很关键。</p>
+<h4 id="对象关系"><a href="#对象关系" class="headerlink" title="对象关系"></a>对象关系</h4><p>当我们在讨论耦合的时候，很多时候是在讨论对象的关系。对象关系主要包括以下五种：继承、组合、聚合、关联、依赖。这些关系的耦合度依次递减（是不是体现了“组合优于继承”的思想）。<br>应该准确的使用这些对象关系，而避免使用不合适的对象关系。</p>
+<h4 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h4><blockquote>
+<p>设计模式（Design pattern）是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。</p>
+</blockquote>
+<p>学习经典设计模式可以提高面向对象思维和编程实践能力，也更容易去理解其他一些框架，因为设计模式被广泛的应用在它们身上，又间接的加快了你的学习速度，非常有效。<br>23种设计模式是否囊括了所有问题的解决方案？显然这是不可能的，所以创建新的设计模式是完全可能，甚至是非常必要的。<br>已有的设计模式是经验也是桎梏，只要是在解决某些问题，经过反复验证是可行的模式，都可以考虑总结出新的设计模式。<br>事实上，现在有人提出了很多新的设计模式，比如NullObject模式、Gateway模式等等。</p>
+<p>除了基本的设计模式，还有一些特别的设计模式：架构模式。我个人偏向区分开架构模式和设计模式，比如现在火热的架构模式有MVC、MVP、MVVM。它们往往比设计模式要复杂的多（其实Gof列出的23种设计模式仔细想一想，还是很简单的），考虑的工程化的东西非常多，往往要综合多个设计模式，甚至需要以完整的框架形式去支撑。正如郑晖老师所言：“设计模式是软件的战术思想，而架构是软件的战略决策”。</p>
+<p>Anyway，我们的目标就是把设计模式训练成编程的条件反射。</p>
+<h4 id="元素模式"><a href="#元素模式" class="headerlink" title="元素模式"></a>元素模式</h4><blockquote>
+<p>Jason McC.Smith大作《元素模式》提出了16种元素模式：创建对象、检索、继承、抽象接口、委托、重定向、集聚、递归、归复方法、扩展方法、委托型集聚、重定向型递归、信托型委托、信托型重定向、表亲型委托、表亲型重定向。</p>
+</blockquote>
+<p>元素模式和设计模式一样，都是在制定软件系统中共通问题的解决方案。不过，元素模式认为设计模式还是化合物，应该有更基础的元素思想。</p>
+<p>所有的面向对象的程序设计都可以仅使用四个事物来进行建模，它们分别是对象、方法、字段和类型。其中将方法、字段、和类型作为基本建模素材是很显然的，因为它们分别代表着程序设计的三个基本元素：功能、数据存储和数据描述。而对象又是面向对象程序的核心点和关键点，没有对象就没有面向对象程序设计。</p>
+<p>元素模式，从侧面也告诉我们一个道理：模式是活的，不应死搬硬套。</p>
+<h4 id="敏捷开发"><a href="#敏捷开发" class="headerlink" title="敏捷开发"></a>敏捷开发</h4><blockquote>
+<p>敏捷软件开发宣言：</p>
+<p>人和交互　　　　重于　过程和工具<br>可以工作的软件　重于　面面俱到的文档<br>客户合作　　　　重于　合同谈判<br>随时应对变化　　重于　遵循计划</p>
+<p>虽然右项也有其价值，但我们认为左项更加重要。</p>
+</blockquote>
+<p>当我们大谈特谈面向对象在解决复杂软件上的各种思想时，我们有没有矫枉过正？<br>不要迷失在过度架构，过度设计，过度抽象中… …<br>当然敏捷软件开发探索的是整个软件系统的开发方法论，不局限于编码设计阶段，这里只是提醒一下，小步伐，快迭代！</p>
+<h2 id="谈天说地"><a href="#谈天说地" class="headerlink" title="谈天说地"></a>谈天说地</h2><blockquote>
+<p>计算机科学领域的所有问题都可以通过增加一个间接中间层来解决。<br>当你改变关注点时事情就会发生变化。<br>思想出来了，只要一挤，代码就会往外喷起来。<br>程序和现实的冲突。<br>对象关联，解耦场景。<br>模式和简洁性的平衡。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag">#设计模式</a>
+          
+            <a href="/tags/面向对象/" rel="tag">#面向对象</a>
+          
+            <a href="/tags/OOP/" rel="tag">#OOP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/22/Android-Bitmap面面观/" rel="next" title="Android Bitmap面面观">
+                <i class="fa fa-chevron-left"></i> Android Bitmap面面观
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/02/理解设计模式之分类、意图、UML类图/" rel="prev" title="理解设计模式之分类、意图、UML类图">
+                理解设计模式之分类、意图、UML类图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/01/理解设计模式之面向对象思考/"
+           data-title="理解设计模式之面向对象思考" data-url="http://www.jayfeng.com/2016/04/01/理解设计模式之面向对象思考/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从抽象说起"><span class="nav-text">从抽象说起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三大特征"><span class="nav-text">三大特征</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#封装"><span class="nav-text">封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承"><span class="nav-text">继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多态"><span class="nav-text">多态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六大原则"><span class="nav-text">六大原则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SRP：单一职责原则"><span class="nav-text">SRP：单一职责原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OCP：开闭原则"><span class="nav-text">OCP：开闭原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSP：里氏替换原则"><span class="nav-text">LSP：里氏替换原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DIP：依赖倒置原则"><span class="nav-text">DIP：依赖倒置原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISP：接口隔离眼则"><span class="nav-text">ISP：接口隔离眼则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LKP：迪米特原则"><span class="nav-text">LKP：迪米特原则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多思考"><span class="nav-text">更多思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分离变化"><span class="nav-text">分离变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承与组合"><span class="nav-text">继承与组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象与扩展"><span class="nav-text">抽象与扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象关系"><span class="nav-text">对象关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计模式"><span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元素模式"><span class="nav-text">元素模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#敏捷开发"><span class="nav-text">敏捷开发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谈天说地"><span class="nav-text">谈天说地</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1215 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Linux桌面一直是开发者心中的痛，大家都爱linux下的命令行和配置，但是苦于没有一个友好的交互界面满足日常需求，常疲于一些最基础的配置。Mac是一个很好的选择，我使用的是Macbook pro, 但就公司或者工作而言，还是以台式机为主。Mac的硬件配置相对偏低，价格相对偏高，对于很多学生党或者有经济压力的朋友来说，这注定是一个坎，其实这也是为什么mac注定不普及的原因（相对于一些大牛推荐买个m">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建一个日常好用的linux系统">
+<meta property="og:url" content="http://www.jayfeng.com/2015/11/26/搭建一个日常好用的linux系统/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="Linux桌面一直是开发者心中的痛，大家都爱linux下的命令行和配置，但是苦于没有一个友好的交互界面满足日常需求，常疲于一些最基础的配置。Mac是一个很好的选择，我使用的是Macbook pro, 但就公司或者工作而言，还是以台式机为主。Mac的硬件配置相对偏低，价格相对偏高，对于很多学生党或者有经济压力的朋友来说，这注定是一个坎，其实这也是为什么mac注定不普及的原因（相对于一些大牛推荐买个m">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_desktop.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_vim.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_fcitx.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_sougou.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_qq.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_music.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_vpn.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_start_1.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/linux_start_2.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建一个日常好用的linux系统">
+<meta name="twitter:description" content="Linux桌面一直是开发者心中的痛，大家都爱linux下的命令行和配置，但是苦于没有一个友好的交互界面满足日常需求，常疲于一些最基础的配置。Mac是一个很好的选择，我使用的是Macbook pro, 但就公司或者工作而言，还是以台式机为主。Mac的硬件配置相对偏低，价格相对偏高，对于很多学生党或者有经济压力的朋友来说，这注定是一个坎，其实这也是为什么mac注定不普及的原因（相对于一些大牛推荐买个m">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/linux_desktop.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 搭建一个日常好用的linux系统 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                搭建一个日常好用的linux系统
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-26T23:57:51+08:00" content="2015-11-26">
+              2015-11-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/26/搭建一个日常好用的linux系统/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/26/搭建一个日常好用的linux系统/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/11/26/搭建一个日常好用的linux系统/" class="leancloud_visitors" data-flag-title="搭建一个日常好用的linux系统">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong><em>Linux</em></strong>桌面一直是开发者心中的痛，大家都爱linux下的命令行和配置，但是苦于没有一个友好的交互界面满足日常需求，常疲于一些最基础的配置。<br><strong><em>Mac</em></strong>是一个很好的选择，我使用的是Macbook pro, 但就公司或者工作而言，还是以台式机为主。Mac的硬件配置相对偏低，价格相对偏高，对于很多学生党或者有经济压力的朋友来说，这注定是一个坎，其实这也是为什么mac注定不普及的原因（相对于一些大牛推荐买个mac的投资是绝对划算的，我更推荐在现有的基础上安装linux是绝对超值的，谁能有哥这么懂你~）。<br><strong><em>Windows</em></strong>，是一个非常nice的系统（一直是我心中最好用的系统，但不适合开发者），请走出你的舒适区，外面有世界！<br><img src="/images/linux_desktop.png" alt="最终效果界面"></p>
+<h1 id="1-目标"><a href="#1-目标" class="headerlink" title="1. 目标"></a>1. 目标</h1><p>搭建一个日常好用的linux系统。</p>
+<ol>
+<li>这不是一篇linux折腾记；</li>
+<li>搜狗输入法，QQ，深度音乐，Office；</li>
+<li>常见工具的安装和配置。</li>
+</ol>
+<h1 id="2-安装linux-mint-17-2"><a href="#2-安装linux-mint-17-2" class="headerlink" title="2. 安装linux mint 17.2"></a>2. 安装linux mint 17.2</h1><p>相对于ubuntu，我推荐尝试一下linux mint:</p>
+<ol>
+<li>下载linux mint: <a href="http://www.linuxmint.com/" target="_blank" rel="external">http://www.linuxmint.com/</a></li>
+<li>使用unetbootin制作启动U盘<br>接下来即使重启安装了，本文重点不是讲安装系统的，请自行百度。</li>
+</ol>
+<h1 id="3-安装vim"><a href="#3-安装vim" class="headerlink" title="3. 安装vim"></a>3. 安装vim</h1><p>要装qq？不要急，vim大法好，不先装不舒服。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install vim</div></pre></td></tr></table></figure></p>
+<p>vim吸引我的地方有两个，一个是其特别的编辑模式，二是其大量的插件。<br>基于此，我一般从下面两个地方再定制一下vim：</p>
+<ol>
+<li>vim的插件很多，作为一个vim的多年使用者，我也积累一些用的顺手的插件。<br>地址：<a href="https://github.com/openproject/openvims" target="_blank" rel="external">https://github.com/openproject/openvims</a><br>按照上面的配置即可。</li>
+<li>特别的，有一个powerline插件（airline也可以），可大大美化你的vim的状态栏。<br>我刚开始的时候并不配置的出效果，发现网上也有人这样。后面发现其实很简单，第一，安装支持特殊字符的powerline字体；第二，终端字体设置字体为相应的powerline字体。基本上效果就马上出来了~</li>
+</ol>
+<p><img src="/images/linux_vim.png" alt="vim运行界面"></p>
+<a id="more"></a>
+<h1 id="4-安装搜狗输入法"><a href="#4-安装搜狗输入法" class="headerlink" title="4. 安装搜狗输入法"></a>4. 安装搜狗输入法</h1><p>如果是比较新ubuntu版本，直接下载搜狗的deb包，安装重启即可。linux mint比ubuntu多一步安装安装Fcitx，详细步骤如下：</p>
+<ol>
+<li>安装Fcitx<br>搜狗输入法是基于Fcitx的，所以安装搜狗输入法必须先安装Fcitx，而刚好linux mint对输入法的安装提供了很方便的支持，非常简单。<br>点击Menu，搜索Languages，弹出语言设置界面，选择输入法Tab，里面列出可直接安装的输入法，有：IBus，Fctix，SCIM，UIM，gcin，但是默认都没有安装。<br>我们点击Fcitx项的“Add support for Fcitx”，吧唧吧唧吧唧，安装完了，把第一项里的输入法设置为Fcitx。效果图如下：<br><img src="/images/linux_fcitx.png" alt="Fcitx配置"><br>这里切记不要安装Fcitx的可选组件哦，不然一大堆输入法出来，还要手动删除。</li>
+<li>安装搜狗输入法<br>在 <a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a> 下载对应的deb包，双击安装。<br>然后，<br>重启，重启，重启，重要的事情打三遍。<br>默认ctrl + 空格，可以切换输入法。<br>这里我截不了桌面右下角展开的设置界面，本来可以看一下的，也无所谓了，大家都这么厉害。<br><img src="/images/linux_sougou.png" alt="搜狗输入法运行界面"></li>
+</ol>
+<p>PS: 如果输入法跳动，试一下这个配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install im-switch</div><div class="line">im-switch -s fcitx -z default</div></pre></td></tr></table></figure></p>
+<h1 id="5-安装QQ"><a href="#5-安装QQ" class="headerlink" title="5. 安装QQ"></a>5. 安装QQ</h1><p>详情请参考: <a href="http://phpcj.org/wineqq/" target="_blank" rel="external">http://phpcj.org/wineqq/</a> ，下面列出简要的几步：</p>
+<ol>
+<li><p>安装wine1.7<br>系统默认的wine1.6是不行的，必须得添加ppa源安装wine1.7:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:ubuntu-wine/ppa</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install wine1.7</div></pre></td></tr></table></figure>
+</li>
+<li><p>解压网盘下载的WineQQ压缩包<br>网盘地址：<a href="http://pan.baidu.com/s/1qWyPHA8" target="_blank" rel="external">http://pan.baidu.com/s/1qWyPHA8</a> 密码：e2k8</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar xvf wineQQ8.0B16812.tar.xz -C ~/</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>竟然如此简单！<br>几乎全功能正常运行，可以截图，上周末还远程控制对方的计算机了一把。<br><img src="/images/linux_qq.png" alt="QQ运行"></p>
+<h1 id="6-安装深度音乐"><a href="#6-安装深度音乐" class="headerlink" title="6. 安装深度音乐"></a>6. 安装深度音乐</h1><p>如果没有音乐，辣么，人和咸鱼又有什么区别？<br>目前linux上本土化的支持歌词的最好播放器，当属深度音乐了（光支持歌词一条，就把其他全秒）。<br>详细参考：<a href="http://wiki.deepin.org/?title=深度音乐" target="_blank" rel="external">http://wiki.deepin.org/?title=深度音乐</a><br>我安装了百度插件和网易云插件，其中百度插件需要安装javascriptcore，如果安装javascriptcore出现如下错误：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">javascriptcore.c:4:20: fatal error: Python.h: No such file or directory</div><div class="line"><span class="comment">#include "Python.h"</span></div><div class="line">^</div><div class="line">compilation terminated.</div><div class="line">error: <span class="built_in">command</span> <span class="string">'x86_64-linux-gnu-gcc'</span> failed with <span class="built_in">exit</span> status 1</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>请安装一下python的dev包即可：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-dev</div></pre></td></tr></table></figure></p>
+<p><img src="/images/linux_music.png" alt="Deepin Music"></p>
+<h1 id="7-安装homebrew"><a href="#7-安装homebrew" class="headerlink" title="7. 安装homebrew"></a>7. 安装homebrew</h1><p>这里的homebrew是指linux版homebrew，又称linuxbrew。虽然是第一次在linux上尝试homebrew，发现还挺不错的。<br>homebrew是类似于apt-get的一个包管理器，在安装一些软件会特别方便。<br>官网：<a href="https://github.com/Homebrew/linuxbrew" target="_blank" rel="external">https://github.com/Homebrew/linuxbrew</a></p>
+<p>先安装依赖：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev</div></pre></td></tr></table></figure></p>
+<p>再正式安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)</span>"</span></div></pre></td></tr></table></figure></p>
+<p>接下来就可以用brew install来安装各路软件了，哦也。</p>
+<h1 id="8-安装jdk"><a href="#8-安装jdk" class="headerlink" title="8. 安装jdk"></a>8. 安装jdk</h1><p>系统自带的是openjdk，一般会安装oracle版本的jdk（更好的性能），使用homebrew安装jdk是最简单的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 默认安装时jdk8</div><div class="line">brew install jdk</div></pre></td></tr></table></figure></p>
+<p>如果想安装jdk7:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install jdk7</div></pre></td></tr></table></figure></p>
+<h1 id="9-安装zsh"><a href="#9-安装zsh" class="headerlink" title="9. 安装zsh"></a>9. 安装zsh</h1><p>有了bash，为什么要另外装zsh？一句话，比bash好用，牛x。想了解更多请移步：<a href="http://zhuanlan.zhihu.com/mactalk/19556676" target="_blank" rel="external">http://zhuanlan.zhihu.com/mactalk/19556676</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install zsh</div></pre></td></tr></table></figure></p>
+<p>安装完，配置zsh本来是件非常繁琐的事情，为了简化配置，可以使用oh-my-zsh(<a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a>):<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></div></pre></td></tr></table></figure></p>
+<p>一起飞！</p>
+<h1 id="10-安装autojump"><a href="#10-安装autojump" class="headerlink" title="10. 安装autojump"></a>10. 安装autojump</h1><p>是不是受够了cd ../..，想不想在任何地方都能够一键直达某个目录？autojump是也。</p>
+<blockquote>
+<p>autojump - a faster way to navigate your filesystem</p>
+</blockquote>
+<p>官网：<a href="https://github.com/wting/autojump" target="_blank" rel="external">https://github.com/wting/autojump</a><br>建议用homebrew安装autojump，它会给出更多的配置提示:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] &amp;&amp; . $(brew --prefix)/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure></p>
+<h1 id="11-安装其他一些软件"><a href="#11-安装其他一些软件" class="headerlink" title="11. 安装其他一些软件"></a>11. 安装其他一些软件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 安装gradle，默认2.7版本</span></div><div class="line">homebrew install gradle</div><div class="line"><span class="comment"># 安装nodejs</span></div><div class="line">brew install nodejs</div><div class="line"><span class="comment"># 安装hexo</span></div><div class="line">npm install hexo-cli -g</div><div class="line"><span class="comment"># 安装jenkins</span></div></pre></td></tr></table></figure>
+<h1 id="12-配置VPN"><a href="#12-配置VPN" class="headerlink" title="12. 配置VPN"></a>12. 配置VPN</h1><p>不会翻墙的程序员当不了好CEO！<br>这里主要是介绍一个linux mint的坑，它的新建VPN连接不是在网络设置，而是在网络连接里，很容易误导。<br><img src="/images/linux_vpn.png" alt="Vpn"><br>介绍一个一直在用的一个VPN的推广链接，老品牌，值得信任：<a href="http://go.to51.net/34750" target="_blank" rel="external">51VPN</a><br>同时里面也介绍了linux上如何新建VPN（各个系统都大同小异）：<br><a href="https://www.woyaovpn.net/setting/ubuntu.shtml" target="_blank" rel="external">https://www.woyaovpn.net/setting/ubuntu.shtml</a></p>
+<h1 id="13-配置自启动"><a href="#13-配置自启动" class="headerlink" title="13. 配置自启动"></a>13. 配置自启动</h1><p>主要是网上有很多配置自启动的方法，特列此一项说明，其实linux mint自带了自启动程序管理：<br><img src="/images/linux_start_1.png" alt="start in menu"><br>打开即可配置：<br><img src="/images/linux_start_2.png" alt="start config"><br>So easy!</p>
+<h1 id="14-其他软件"><a href="#14-其他软件" class="headerlink" title="14. 其他软件"></a>14. 其他软件</h1><p>相对于几年前，得益于deepin，ubuntukylin国产厂商，这几年linux桌面日常软件得到了极大的丰富，特别是还得到了一些良心企业的支持：</p>
+<ol>
+<li>WPS Office：<a href="http://linux.wps.cn/" target="_blank" rel="external">http://linux.wps.cn/</a></li>
+<li>有道词典：<a href="http://cidian.youdao.com/index-linux.html" target="_blank" rel="external">http://cidian.youdao.com/index-linux.html</a></li>
+<li>为知笔记：<a href="http://www.wiz.cn/download.html" target="_blank" rel="external">http://www.wiz.cn/download.html</a></li>
+</ol>
+<p>欢迎留言补充。</p>
+<h1 id="15-小结"><a href="#15-小结" class="headerlink" title="15. 小结"></a>15. 小结</h1><p>当你的日常需求都满足了，是时候从windows切换到linux了！<br>还有什么比帮助别人学习linux更有linux精神！<br>如有困难，加我qq：673592063。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/07/Android打包的那些事/" rel="next" title="Android打包的那些事">
+                <i class="fa fa-chevron-left"></i> Android打包的那些事
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/29/APK瘦身实践/" rel="prev" title="APK瘦身实践">
+                APK瘦身实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/11/26/搭建一个日常好用的linux系统/"
+           data-title="搭建一个日常好用的linux系统" data-url="http://www.jayfeng.com/2015/11/26/搭建一个日常好用的linux系统/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-目标"><span class="nav-text">1. 目标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-安装linux-mint-17-2"><span class="nav-text">2. 安装linux mint 17.2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-安装vim"><span class="nav-text">3. 安装vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-安装搜狗输入法"><span class="nav-text">4. 安装搜狗输入法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-安装QQ"><span class="nav-text">5. 安装QQ</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-安装深度音乐"><span class="nav-text">6. 安装深度音乐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-安装homebrew"><span class="nav-text">7. 安装homebrew</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-安装jdk"><span class="nav-text">8. 安装jdk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-安装zsh"><span class="nav-text">9. 安装zsh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-安装autojump"><span class="nav-text">10. 安装autojump</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-安装其他一些软件"><span class="nav-text">11. 安装其他一些软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-配置VPN"><span class="nav-text">12. 配置VPN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-配置自启动"><span class="nav-text">13. 配置自启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-其他软件"><span class="nav-text">14. 其他软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-小结"><span class="nav-text">15. 小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

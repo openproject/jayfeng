@@ -1,0 +1,1373 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,util," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="做Android久了，就会踩很多坑，被坑的多了就有经验了，闲暇之余整理了部分，现挑选一些重要或者偏门的“小”经验做个记录。 查看SQLite日志12adb shell setprop log.tag.SQLiteLog Vadb shell setprop log.tag.SQLiteStatements V 因为实现里用了Log.isLoggable(TAG, Log.VERBOSE)做了判断，">
+<meta name="keywords" content="android,util">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你应该知道的那些Android小经验">
+<meta property="og:url" content="http://www.jayfeng.com/2016/03/18/你应该知道的那些Android小经验/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="做Android久了，就会踩很多坑，被坑的多了就有经验了，闲暇之余整理了部分，现挑选一些重要或者偏门的“小”经验做个记录。 查看SQLite日志12adb shell setprop log.tag.SQLiteLog Vadb shell setprop log.tag.SQLiteStatements V 因为实现里用了Log.isLoggable(TAG, Log.VERBOSE)做了判断，">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你应该知道的那些Android小经验">
+<meta name="twitter:description" content="做Android久了，就会踩很多坑，被坑的多了就有经验了，闲暇之余整理了部分，现挑选一些重要或者偏门的“小”经验做个记录。 查看SQLite日志12adb shell setprop log.tag.SQLiteLog Vadb shell setprop log.tag.SQLiteStatements V 因为实现里用了Log.isLoggable(TAG, Log.VERBOSE)做了判断，">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 你应该知道的那些Android小经验 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                你应该知道的那些Android小经验
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-18T12:38:19+08:00" content="2016-03-18">
+              2016-03-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/18/你应该知道的那些Android小经验/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/18/你应该知道的那些Android小经验/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/18/你应该知道的那些Android小经验/" class="leancloud_visitors" data-flag-title="你应该知道的那些Android小经验">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>做Android久了，就会踩很多坑，被坑的多了就有经验了，闲暇之余整理了部分，现挑选一些重要或者偏门的“小”经验做个记录。</p>
+<h2 id="查看SQLite日志"><a href="#查看SQLite日志" class="headerlink" title="查看SQLite日志"></a>查看SQLite日志</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb shell setprop log.tag.SQLiteLog V</div><div class="line">adb shell setprop log.tag.SQLiteStatements V</div></pre></td></tr></table></figure>
+<p>因为实现里用了Log.isLoggable(TAG, Log.VERBOSE)做了判断，LessCode的LogLess中也参考了这种机制：<a href="https://github.com/openproject/LessCode/blob/master/lesscode-core/src/main/java/com/jayfeng/lesscode/core/LogLess.java" target="_blank" rel="external">LogLess</a>。<br>使用这种方法就可以在Release版本也能做到查看应用的打印日志了。</p>
+<h2 id="PNG优化"><a href="#PNG优化" class="headerlink" title="PNG优化"></a>PNG优化</h2><p>APK打包会自动对PNG进行无损压缩，如果自行无损压缩是无效的。<br>当然进行有损压缩是可以的：<a href="https://tinypng.com/" target="_blank" rel="external">https://tinypng.com/</a></p>
+<h2 id="Tcpdump抓包"><a href="#Tcpdump抓包" class="headerlink" title="Tcpdump抓包"></a>Tcpdump抓包</h2><p>有些模拟器比如genymotion自带了tcpdump，如果没有的话，需要下载tcpdump:<br><a href="http://www.strazzere.com/android/tcpdump" target="_blank" rel="external">http://www.strazzere.com/android/tcpdump</a><br>把tcpdump push到/data/local下，抓包命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell  /data/local/tcpdump -i any -p -s <span class="number">0</span> -w /sdcard/capture.pcap</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h2 id="查看签名"><a href="#查看签名" class="headerlink" title="查看签名"></a>查看签名</h2><p>很多开发者服务都需要绑定签名信息，用下面的命令可以查看签名：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">keytool -list -v -keystore release.jks</div></pre></td></tr></table></figure></p>
+<p>注意，这个是需要密码的，可以查看MD5, SHA1，SHA256等等。</p>
+<h2 id="单例模式-懒汉式-的更好的写法"><a href="#单例模式-懒汉式-的更好的写法" class="headerlink" title="单例模式(懒汉式)的更好的写法"></a>单例模式(懒汉式)的更好的写法</h2><p>特别说到这个问题，是因为网上很多这样的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> Singleton();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种写法线程不安全，改进一下，加一个同步锁：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</div><div class="line">            instance = <span class="keyword">new</span> Singleton();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>网上这样的代码更多，可以很好的工作，但是缺点是效率低。<br>实际上，早在JDK1.5就引入volatile关键字，所以又有了一种更好的双重校验锁写法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</div><div class="line">                <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;</div><div class="line">                    singleton = <span class="keyword">new</span> Singleton();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> singleton;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注意，别忘记volatile关键字哦，否则就是10重，100重也可能还是会出问题。<br>上面是用的最多的，还有一种静态内部类写法更推荐：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">publlic <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonLoader</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">new</span> Singleton();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> SingletonLoader.INSTANCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="多进程Application"><a href="#多进程Application" class="headerlink" title="多进程Application"></a>多进程Application</h2><p>是不是经常发现Application里的方法执行了多次？百思不得其解。<br>因为当有多个进程的时候，Application会执行多次，可以通过pid来判断那些方法只执行一次，避免浪费资源。</p>
+<h2 id="隐式启动Service"><a href="#隐式启动Service" class="headerlink" title="隐式启动Service"></a>隐式启动Service</h2><p>这是Android5.0的一个改动，不支持隐式的Service调用。下面的代码在Android 5.0+上会报错：Service Intent must be explicit：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Intent serviceIntent = <span class="keyword">new</span> Intent();</div><div class="line">serviceIntent.setAction(<span class="string">"com.jayfeng.MyService"</span>);</div><div class="line">context.startService(serviceIntent);</div></pre></td></tr></table></figure></p>
+<p>可改成如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 指定具体Service类，或者有packageName也行</span></div><div class="line">Intent serviceIntent = <span class="keyword">new</span> Intent(context, MyService.class);</div><div class="line">context.startService(serviceIntent);</div></pre></td></tr></table></figure></p>
+<h2 id="fill-parent的寿命"><a href="#fill-parent的寿命" class="headerlink" title="fill_parent的寿命"></a>fill_parent的寿命</h2><p>在Android2.2之后，支持使用match_parent。你的布局文件里是不是既有fill_parent和match_parent显得很乱？<br>如果你现在的minSdkVersion是8+的话，就可以忽略fill_parent，统一使用match_parent了，否则请使用fill_parent。</p>
+<h2 id="ListView的局部刷新"><a href="#ListView的局部刷新" class="headerlink" title="ListView的局部刷新"></a>ListView的局部刷新</h2><p>有的列表可能notifyDataSetChanged()代价有点高，最好能局部刷新。<br>局部刷新的重点是，找到要更新的那项的View，然后再根据业务逻辑更新数据即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateItem</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> visiblePosition = listView.getFirstVisiblePosition();</div><div class="line">    <span class="keyword">if</span> (index - visiblePosition &gt;= <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">//得到要更新的item的view</span></div><div class="line">        View view = listView.getChildAt(index - visiblePosition);</div><div class="line"></div><div class="line">        <span class="comment">// 更新界面（示例参考）</span></div><div class="line">        <span class="comment">// TextView nameView = ViewLess.$(view, R.id.name);</span></div><div class="line">        <span class="comment">// nameView.setText("update " + index);</span></div><div class="line">        <span class="comment">// 更新列表数据（示例参考）</span></div><div class="line">        <span class="comment">// list.get(index).setName("Update " + index);</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>强调一下，最后那个列表数据别忘记更新， 不然数据源不变，一滚动可能又还原了。</p>
+<h2 id="系统日志中几个重要的TAG"><a href="#系统日志中几个重要的TAG" class="headerlink" title="系统日志中几个重要的TAG"></a>系统日志中几个重要的TAG</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 查看Activity跳转</div><div class="line">adb logcat -v time | grep ActivityManager</div><div class="line">// 查看崩溃信息</div><div class="line">adb logcat -v time | grep AndroidRuntime</div><div class="line">// 查看Dalvik信息，比如GC</div><div class="line">adb logcat -v time | grep <span class="string">"D\/Dalvik"</span></div><div class="line">// 查看art信息，比如GC</div><div class="line">adb logcat -v time | grep <span class="string">"I\/art"</span></div></pre></td></tr></table></figure>
+<h2 id="一行居中，多行居左的TextView"><a href="#一行居中，多行居左的TextView" class="headerlink" title="一行居中，多行居左的TextView"></a>一行居中，多行居左的TextView</h2><p>这个一般用于提示信息对话框，如果文字是一行就居中，多行就居左。<br>在TextView外套一层wrap_content的ViewGroup即可简单实现：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"</div><div class="line">    android:layout_width="match_parent"</div><div class="line">    android:layout_height="match_parent"&gt;</div><div class="line">    &lt;!-- 套一层wrap_content的ViewGroup --&gt;</div><div class="line">    &lt;LinearLayout</div><div class="line">        android:layout_width="wrap_content"</div><div class="line">        android:layout_height="wrap_content"</div><div class="line">        android:layout_centerInParent="true"&gt;</div><div class="line"></div><div class="line">        &lt;TextView</div><div class="line">            android:layout_width="wrap_content"</div><div class="line">            android:layout_height="wrap_content"</div><div class="line">            android:text="@string/hello_world" /&gt;</div><div class="line">    &lt;/LinearLayout&gt;</div><div class="line">&lt;/RelativeLayout&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="setCompoundDrawablesWithIntrinsicBounds"><a href="#setCompoundDrawablesWithIntrinsicBounds" class="headerlink" title="setCompoundDrawablesWithIntrinsicBounds()"></a>setCompoundDrawablesWithIntrinsicBounds()</h2><p>网上一大堆setCompoundDrawables()方法无效不显示的问题，然后解决方法是setBounds，需要计算大小…<br>不用这么麻烦，用setCompoundDrawablesWithIntrinsicBounds()这个方法最简单！</p>
+<h2 id="计算程序运行时间"><a href="#计算程序运行时间" class="headerlink" title="计算程序运行时间"></a>计算程序运行时间</h2><p>为了计算一段代码运行时间，一般的做法是，在代码的前面加个startTime，在代码的后面把当前时间减去startTime，这个时间差就是运行时间。<br>这里提供一种写起来更方便的方法，完全无时间逻辑，只是加一个打印log就够了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 测试setContentView()的时间</span></div><div class="line">Log.d(<span class="string">"TAG"</span>, <span class="string">"Start"</span>);</div><div class="line">setContentView(R.layout.activity_http);</div><div class="line">Log.d(<span class="string">"TAG"</span>, <span class="string">"End"</span>);</div></pre></td></tr></table></figure></p>
+<p>没有计算时间的逻辑，这能测出来？<br>把日志过滤出来，运行命令“adb logcat -v time | grep TAG”：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">03-18 14:47:25.477 D/TAG     (14600): Start</div><div class="line">03-18 14:47:25.478 D/TAG     (14600): End</div></pre></td></tr></table></figure></p>
+<p>通过-v time参数，可以比较日志左边的时间来算出中间的代码运行的时间。</p>
+<h2 id="JAVA引用类型一览表"><a href="#JAVA引用类型一览表" class="headerlink" title="JAVA引用类型一览表"></a>JAVA引用类型一览表</h2><p>对象引用：强引用 &gt; 软引用 &gt; 弱引用 &gt; 虚引用。</p>
+<table>
+<thead>
+<tr>
+<th>引用类型</th>
+<th>回收时机</th>
+<th>用途</th>
+<th>生存时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>强引用</td>
+<td>从来不会</td>
+<td>对象的一般状态</td>
+<td>JVM停止运行时终止</td>
+</tr>
+<tr>
+<td>软引用</td>
+<td>在内存不足时</td>
+<td>对象缓存</td>
+<td>内存不足时终止</td>
+</tr>
+<tr>
+<td>弱引用</td>
+<td>在垃圾回收时</td>
+<td>对象缓存</td>
+<td>GC运行后终止</td>
+</tr>
+<tr>
+<td>虚引用</td>
+<td>在垃圾回收时</td>
+<td>对象跟踪</td>
+<td>GC运行后终止</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Context使用场景"><a href="#Context使用场景" class="headerlink" title="Context使用场景"></a>Context使用场景</h2><p>为了防止Activity，Service等这样的Context泄漏于一些生命周期更长的对象，可以使用生命周期更长的ApplicationContext，但是不是所有的Context的都能替换为ApplicationContext<br>这是网上流传的一份表格：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Application</th>
+<th>Activity</th>
+<th>Service</th>
+<th>ContentProvider</th>
+<th>BroadcastReceiver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show  Dialog</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Start Activity</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Layout Inflation</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Start Service</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Bind Service</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Send Broadcast</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Regist BroadcastReceiver</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Load Resource Value</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h2 id="图片缓存大小"><a href="#图片缓存大小" class="headerlink" title="图片缓存大小"></a>图片缓存大小</h2><p>现在很多图片库需要给图片设置一个最大缓存，但是这个值设置多少合适呢？<br>高端机和低端机的配置显然应该不同，可以考虑设置一个动态值。<br>建议设置为应用可用内存的1/8:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> memoryCache = (<span class="keyword">int</span>) (Runtime.getRuntime().maxMemory() / <span class="number">8</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="系统内置的一些工具类"><a href="#系统内置的一些工具类" class="headerlink" title="系统内置的一些工具类"></a>系统内置的一些工具类</h2><p>在AOSP源码全局搜了一下包含Util关键字的类，整理出这个列表供大家参考：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 系统</span></div><div class="line">./android/database/DatabaseUtils.java</div><div class="line">./android/transition/TransitionUtils.java</div><div class="line">./android/view/animation/AnimationUtils.java</div><div class="line">./android/view/ViewAnimationUtils.java</div><div class="line">./android/webkit/URLUtil.java</div><div class="line">./android/bluetooth/le/BluetoothLeUtils.java</div><div class="line">./android/gesture/GestureUtils.java</div><div class="line">./android/text/TextUtils.java</div><div class="line">./android/text/format/DateUtils.java</div><div class="line">./android/os/FileUtils.java</div><div class="line">./android/os/CommonTimeUtils.java</div><div class="line">./android/net/NetworkUtils.java</div><div class="line">./android/util/MathUtils.java</div><div class="line">./android/util/TimeUtils.java</div><div class="line">./android/util/ExceptionUtils.java</div><div class="line">./android/util/DebugUtils.java</div><div class="line">./android/drm/DrmUtils.java</div><div class="line">./android/media/ThumbnailUtils.java</div><div class="line">./android/media/ImageUtils.java</div><div class="line">./android/media/Utils.java</div><div class="line">./android/opengl/GLUtils.java</div><div class="line">./android/opengl/ETC1Util.java</div><div class="line">./android/telephony/PhoneNumberUtils.java</div><div class="line"><span class="comment">// 设计和支持库</span></div><div class="line">./design/src/android/support/design/widget/ViewGroupUtils.java</div><div class="line">./design/src/android/support/design/widget/ThemeUtils.java</div><div class="line">./design/src/android/support/design/widget/ViewUtils.java</div><div class="line">./design/lollipop/android/support/design/widget/ViewUtilsLollipop.java</div><div class="line">./design/base/android/support/design/widget/AnimationUtils.java</div><div class="line">./design/base/android/support/design/widget/MathUtils.java</div><div class="line">./design/honeycomb/android/support/design/widget/ViewGroupUtilsHoneycomb.java</div><div class="line">./v7/recyclerview/src/android/support/v7/widget/helper/ItemTouchUIUtil.java</div><div class="line">./v7/recyclerview/src/android/support/v7/widget/helper/ItemTouchUIUtilImpl.java</div><div class="line">./v7/recyclerview/src/android/support/v7/util/MessageThreadUtil.java</div><div class="line">./v7/recyclerview/src/android/support/v7/util/AsyncListUtil.java</div><div class="line">./v7/recyclerview/src/android/support/v7/util/ThreadUtil.java</div><div class="line">./v7/recyclerview/tests/src/android/support/v7/widget/AsyncListUtilLayoutTest.java</div><div class="line">./v7/recyclerview/tests/src/android/support/v7/util/AsyncListUtilTest.java</div><div class="line">./v7/recyclerview/tests/src/android/support/v7/util/ThreadUtilTest.java</div><div class="line">./v7/appcompat/src/android/support/v7/graphics/drawable/DrawableUtils.java</div><div class="line">./v7/appcompat/src/android/support/v7/widget/DrawableUtils.java</div><div class="line">./v7/appcompat/src/android/support/v7/widget/ThemeUtils.java</div><div class="line">./v7/appcompat/src/android/support/v7/widget/ViewUtils.java</div><div class="line">./v4/tests/java/android/support/v4/graphics/ColorUtilsTest.java</div><div class="line">./v4/jellybean-mr1/android/support/v4/text/TextUtilsCompatJellybeanMr1.java</div><div class="line">./v4/jellybean/android/support/v4/app/BundleUtil.java</div><div class="line">./v4/jellybean/android/support/v4/app/NavUtilsJB.java</div><div class="line">./v4/java/android/support/v4/app/NavUtils.java</div><div class="line">./v4/java/android/support/v4/database/DatabaseUtilsCompat.java</div><div class="line">./v4/java/android/support/v4/graphics/ColorUtils.java</div><div class="line">./v4/java/android/support/v4/text/TextUtilsCompat.java</div><div class="line">./v4/java/android/support/v4/util/TimeUtils.java</div><div class="line">./v4/java/android/support/v4/util/DebugUtils.java</div><div class="line">./v4/java/android/support/v4/content/res/TypedArrayUtils.java</div></pre></td></tr></table></figure></p>
+<p>这么多工具类，一定可以找到对你有用的。</p>
+<h2 id="ClipPadding"><a href="#ClipPadding" class="headerlink" title="ClipPadding"></a>ClipPadding</h2><p>这个不多说，ListView的ClipPadding设为false，就能为ListView设置各种padding而不会出现丑陋的滑动“禁区”了。</p>
+<h2 id="强大的dumpsys"><a href="#强大的dumpsys" class="headerlink" title="强大的dumpsys"></a>强大的dumpsys</h2><p>dumpsys可以查看系统服务和状态，非常强大，可通过如下查看所有支持的子命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dumpsys | grep <span class="string">"DUMP OF SERVICE"</span></div></pre></td></tr></table></figure></p>
+<p>这里列举几个稍微常用的：</p>
+<table>
+<thead>
+<tr>
+<th>子命令</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activity</td>
+<td>显示所有的activities的信息</td>
+</tr>
+<tr>
+<td>cpuinfo</td>
+<td>显示CPU信息</td>
+</tr>
+<tr>
+<td>window</td>
+<td>显示键盘，窗口和它们的关系</td>
+</tr>
+<tr>
+<td>meminfo</td>
+<td>内存信息（meminfo $package_name or $pid 使用包名或者进程id显示内存信息）</td>
+</tr>
+<tr>
+<td>alarm</td>
+<td>显示Alarm信息</td>
+</tr>
+<tr>
+<td>statusbar</td>
+<td>显示状态栏相关的信息（找出广告通知属于哪个应用）</td>
+</tr>
+<tr>
+<td>usagestats</td>
+<td>每个界面启动的时间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bugreport命令"><a href="#bugreport命令" class="headerlink" title="bugreport命令"></a>bugreport命令</h2><p>很多人都用过adb logcat，但是如果想要更详细的信息，logcat则无能为力。<br>所以大多数手机厂商测试更多的是用adb bugreport来抓log给开发人员分析。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 除了log，还包括启动后的系统状态,包括进程列表，内存信息，VM信息等等</span></div><div class="line"><span class="comment">// 而且不像logcat是一直打印的，bugreport命令输出到当前时间就停止结束了。</span></div><div class="line">adb bugreport &gt; main.log</div></pre></td></tr></table></figure></p>
+<h2 id="dpi文件夹的换算比例"><a href="#dpi文件夹的换算比例" class="headerlink" title="dpi文件夹的换算比例"></a>dpi文件夹的换算比例</h2><p>之前的ldpi基本可以抛弃了，主流的dpi已经从很早之前的mdip转移到了xhdpi了，特别提醒。</p>
+<table>
+<thead>
+<tr>
+<th>PPI</th>
+<th>RESOLUTION</th>
+<th>DP</th>
+<th>PX</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mdpi(160dp)</td>
+<td>320P</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>hdpi(240dp)</td>
+<td>480P</td>
+<td>1</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>xhdpi(320dp)</td>
+<td>720P</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>xxhdpi(480dpi)</td>
+<td>1080P</td>
+<td>1</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="更新媒体库文件"><a href="#更新媒体库文件" class="headerlink" title="更新媒体库文件"></a>更新媒体库文件</h2><p>以前做ROM的时候经常碰到一些第三方软件（某音乐APP）下载了新文件或删除文件之后，但是媒体库并没有更新，因为这个是需要第三方软件主动触发。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 通知媒体库更新单个文件状态</span></div><div class="line">Uri fileUri = Uri.fromFile(file);</div><div class="line">sendBroadcast(<span class="keyword">new</span> Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,fileUri));</div></pre></td></tr></table></figure></p>
+<p>媒体库会在手机启动，SD卡插拔的情况下进行全盘扫描，不是实时的而且代价比较大，所以单个文件的刷新很有必要。</p>
+<h2 id="Monkey参数"><a href="#Monkey参数" class="headerlink" title="Monkey参数"></a>Monkey参数</h2><p>大家都知道，跑monkey的参数设置有一些要注意的地方，比如太快了不行不切实际，太慢了也不行等等，这里给出一个参考：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell monkey -p &lt;packageName&gt; -s 1000 --ignore-crashes --ignore-timeouts --ignore-security-exceptions  --pct-trackball 0 --pct-nav 0 --pct-majornav 0 --pct-anyevent 0  -v --throttle 300 1200000000</div></pre></td></tr></table></figure></p>
+<p>一边跑monkey，一边抓log吧。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>无论是大经验还是小经验，有用就是好经验。</p>
+<blockquote>
+<p>本文为原创文章，未经允许禁止转载</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/util/" rel="tag">#util</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/16/理解ThumbnailUtils/" rel="next" title="理解ThumbnailUtils">
+                <i class="fa fa-chevron-left"></i> 理解ThumbnailUtils
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/22/Android-Bitmap面面观/" rel="prev" title="Android Bitmap面面观">
+                Android Bitmap面面观 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/18/你应该知道的那些Android小经验/"
+           data-title="你应该知道的那些Android小经验" data-url="http://www.jayfeng.com/2016/03/18/你应该知道的那些Android小经验/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看SQLite日志"><span class="nav-text">查看SQLite日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PNG优化"><span class="nav-text">PNG优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tcpdump抓包"><span class="nav-text">Tcpdump抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看签名"><span class="nav-text">查看签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式-懒汉式-的更好的写法"><span class="nav-text">单例模式(懒汉式)的更好的写法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多进程Application"><span class="nav-text">多进程Application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式启动Service"><span class="nav-text">隐式启动Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fill-parent的寿命"><span class="nav-text">fill_parent的寿命</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ListView的局部刷新"><span class="nav-text">ListView的局部刷新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统日志中几个重要的TAG"><span class="nav-text">系统日志中几个重要的TAG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一行居中，多行居左的TextView"><span class="nav-text">一行居中，多行居左的TextView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setCompoundDrawablesWithIntrinsicBounds"><span class="nav-text">setCompoundDrawablesWithIntrinsicBounds()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算程序运行时间"><span class="nav-text">计算程序运行时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA引用类型一览表"><span class="nav-text">JAVA引用类型一览表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Context使用场景"><span class="nav-text">Context使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片缓存大小"><span class="nav-text">图片缓存大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统内置的一些工具类"><span class="nav-text">系统内置的一些工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClipPadding"><span class="nav-text">ClipPadding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强大的dumpsys"><span class="nav-text">强大的dumpsys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bugreport命令"><span class="nav-text">bugreport命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dpi文件夹的换算比例"><span class="nav-text">dpi文件夹的换算比例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新媒体库文件"><span class="nav-text">更新媒体库文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monkey参数"><span class="nav-text">Monkey参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

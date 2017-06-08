@@ -1,0 +1,1220 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="VIM是编辑神器，尤其是远程编辑无可替代，非常强大。 基础入门安装略 三种模式 命令模式用于输入命令，简单更改 插入模式用于插入文本，修改文本 末行模式用于输入命令，可视化操作，查找替换等  模式切换 命令模式进入到插入模式文本插入命令: i,I,a,A,o,O 插入模式退出到命令模式ESC键 命令模式进入到末行模式冒号(:)键12:set nu       表示行号显示:set nonu   取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim基础到实践">
+<meta property="og:url" content="http://www.jayfeng.com/2017/01/14/Vim基础到实践/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="VIM是编辑神器，尤其是远程编辑无可替代，非常强大。 基础入门安装略 三种模式 命令模式用于输入命令，简单更改 插入模式用于插入文本，修改文本 末行模式用于输入命令，可视化操作，查找替换等  模式切换 命令模式进入到插入模式文本插入命令: i,I,a,A,o,O 插入模式退出到命令模式ESC键 命令模式进入到末行模式冒号(:)键12:set nu       表示行号显示:set nonu   取">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim基础到实践">
+<meta name="twitter:description" content="VIM是编辑神器，尤其是远程编辑无可替代，非常强大。 基础入门安装略 三种模式 命令模式用于输入命令，简单更改 插入模式用于插入文本，修改文本 末行模式用于输入命令，可视化操作，查找替换等  模式切换 命令模式进入到插入模式文本插入命令: i,I,a,A,o,O 插入模式退出到命令模式ESC键 命令模式进入到末行模式冒号(:)键12:set nu       表示行号显示:set nonu   取">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Vim基础到实践 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vim基础到实践
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-14T21:12:19+08:00" content="2017-01-14">
+              2017-01-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/14/Vim基础到实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/14/Vim基础到实践/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/01/14/Vim基础到实践/" class="leancloud_visitors" data-flag-title="Vim基础到实践">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>VIM是编辑神器，尤其是远程编辑无可替代，非常强大。</p>
+<h2 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>略</p>
+<h3 id="三种模式"><a href="#三种模式" class="headerlink" title="三种模式"></a>三种模式</h3><ul>
+<li>命令模式<br>用于输入命令，简单更改</li>
+<li>插入模式<br>用于插入文本，修改文本</li>
+<li>末行模式<br>用于输入命令，可视化操作，查找替换等</li>
+</ul>
+<h3 id="模式切换"><a href="#模式切换" class="headerlink" title="模式切换"></a>模式切换</h3><ul>
+<li>命令模式进入到插入模式<br>文本插入命令: i,I,a,A,o,O</li>
+<li>插入模式退出到命令模式<br>ESC键</li>
+<li>命令模式进入到末行模式<br>冒号(:)键<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">:<span class="built_in">set</span> nu       表示行号显示</div><div class="line">:<span class="built_in">set</span> nonu   取消行号显示</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>(4).末行模式退出到命令模式<br>Enter或者ESC。</p>
+<h3 id="退出和保存"><a href="#退出和保存" class="headerlink" title="退出和保存"></a>退出和保存</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">:q                     退出vim返回到shell，若有修改未被保存，vi在末行给出提示信息并不退出vim到shell</div><div class="line">:q!                    退出vim返回到shell，放弃未保存的修改</div><div class="line">:wq                    先保存，然后退出vim返回到shell</div><div class="line">:x                     和wq命令功能类似，区别是如果是文件没有修改的话，x不会更新文件的修改时间，而wq则会更新文件的修改时间，无论是否有修改。</div><div class="line">:w filename            写入当前文件到filename文件</div></pre></td></tr></table></figure>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><h3 id="常用编辑"><a href="#常用编辑" class="headerlink" title="常用编辑"></a>常用编辑</h3><p>包括删除、复制、粘贴、撤销、移动等<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">dd       删除当前1行</div><div class="line">5dd      删除当前行向下5行</div><div class="line">x        删除光标后字符</div><div class="line">X        删除光标前字符</div><div class="line"></div><div class="line">yy       复制当前1行</div><div class="line">5yy      复制当前行向下5行</div><div class="line"></div><div class="line">p        粘贴</div><div class="line"></div><div class="line">u        撤销</div><div class="line"></div><div class="line">hjkl     向左下上右方向移动光标</div><div class="line">^        光标移动到本行行首</div><div class="line">$        光标移动到本行行尾</div><div class="line">gg       跳到文件首行</div><div class="line">5gg      跳到第5行</div><div class="line">G        跳到文件尾行</div><div class="line"></div><div class="line">Ctrl + f 向后滚一页。</div><div class="line">Ctrl + d 向后滚半页。</div><div class="line">Ctrl + b 向前滚一页。</div><div class="line">Ctrl + u 向前滚半页。</div><div class="line">Ctrl + e 屏幕向下滚一行。</div><div class="line">Ctrl + y 屏幕项上滚一行。</div></pre></td></tr></table></figure></p>
+<h3 id="查找替换"><a href="#查找替换" class="headerlink" title="查找替换"></a>查找替换</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/android                 查找android，然后如果按n，表示向下查找，如果按N，表示向上查找</div><div class="line">?android                 查找android，然后如果按n，表示向上查找，如果按N，表示向下查找</div><div class="line"></div><div class="line">*                  向后搜索当前光标指向的单词</div><div class="line"><span class="comment">#                  向前搜索当前光标指向的单词</span></div><div class="line"></div><div class="line">:%s/old/new/g            将编辑器的缓冲区的<span class="string">"old"</span>替换为new</div><div class="line">:19,20s/old/new/g        将文件的19到20行的的<span class="string">"old"</span>替换为new</div></pre></td></tr></table></figure>
+<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><p>包括一些个别命令、批量操作、组合命令等</p>
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><pre><code>- 单词移动
+b, before,上一个单词(词首)
+w, word,下一个单词(词首)
+</code></pre><p>e,  end,下一个单词(词尾)</p>
+<pre><code>- 首尾行
+gg 首行
+G 尾行,这两个命令用的较多
+- 行首尾
+^/0  到行首,我有时特别喜欢0，非常清晰简明的命令
+$ 到行尾
+- 非空白行首
+-非空白行首向上移动
++非空白行首向下移动
+- 行移动
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">nj                      //向下移动n行</div><div class="line">nk                      //向上移动n行</div><div class="line">nh                      //向左移动n列</div><div class="line">nl                      //向有移动n列</div><div class="line">n_                      //向下移动n-1行，并光标移动到非空白行首</div><div class="line">n-                      //向上移动n行，并光标移动到非空白行首</div></pre></td></tr></table></figure>
+
+- 查找字符
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fx/Fx                   //向后/前查找字符x,行内跳转很有用</div><div class="line">tx/Tx                   //向后/前查找字符x</div></pre></td></tr></table></figure>
+
+注意：fx/Fx和tx/Tx的区别是用f光标停留在x上，用t光标停留在x的前面一个上
+</code></pre><h3 id="插入，替换，删除"><a href="#插入，替换，删除" class="headerlink" title="插入，替换，删除"></a>插入，替换，删除</h3><pre><code>- 学会a和i混用
+不要只会用i进入插入模式，有时a进入插入模式后更方便，比如插入键盘右边的字母符号，用a的话，左右手配合起来效率更高。
+- 学会I和A
+快速进入行首和行尾插入模式，特定时刻用起来超爽!
+这个很好理解，小写的i是光标前，大小的I是整行前面，o/O类似，画面很清晰。
+- 学会o和O混用
+进入上行编辑，大写的O更快，而不是ko,双手比单手要快！
+</code></pre><p>第一行前面想插入一行时，O比其他任何操作更直接和快速(不要先回到开头&lt;+插入模式&gt;+回车)</p>
+<pre><code>- r和s
+r 快速替换字符，最大的好处是不需要切换模式，节省了大量时间，非常有用！
+s 删除光标后一个字符并进入插入模式。该命令提供了r命令+进入插入模式的快速实现方法。
+- c命令
+这个命令很强大，归类说明一下
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">c&lt;m&gt;                     //m指的是前面的移动命令，类似的有dm,ym,g?m,gum,gUm</div><div class="line">//改变内容(m定义了改变范围)并进入插入模式，这里说的改变就是删除，举例说明:</div><div class="line">cw                     //删除光标后一个单词并进入插入模式</div><div class="line">cl                     //删除光标后一个字母并进入插入模式</div></pre></td></tr></table></figure>
+
+补充说明：
+cc和S 修改当前行，意思是删除该行所有字符内容，但保留行首空格
+D和C 删除该行光标后所有内容，无论字符还是空格，这个命令我用的很多：代码审核格式化代码时，删除空行的空格和行尾空格。
+- t命令
+t命令和其他命令结合在一起，非常强大。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">t                      //till的意思,这是我最喜欢的命令之一</div><div class="line">dt<span class="string">"                    //行内删除直到"</span>,<span class="string">"不删除</span></div><div class="line">ct)                    //行内改变直到),)不删除</div><div class="line">... ...</div></pre></td></tr></table></figure>
+
+- 学会x和X混用
+- 分别是向前删除和向后删除字符
+</code></pre><h3 id="更多命令"><a href="#更多命令" class="headerlink" title="更多命令"></a>更多命令</h3><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">    :rd                删除第r行</div><div class="line"><span class="comment">#                      //向下一个查找结果</span></div><div class="line">    *                      //向下一个查找结果</div><div class="line">    //在<span class="comment">#/*之后按n/N可以重复/反向重复它们的命令</span></div><div class="line"></div><div class="line">    //下面这两个命令在编程时，很有用</div><div class="line">    gd                     //跳转到光标变量的定义位置(局部变量)</div><div class="line">    gD                     //跳转到光标变量的定义位置(全局变量)</div><div class="line">    u                      //撤销</div><div class="line">    ctrl + r               //恢复</div><div class="line">    ctrl + e/y             //向下/上一行一行的滚动</div><div class="line">    ctrl + d/u             //向下/上半页半页的滚动</div><div class="line">    ctrl + f/b             //向下/上一页一页的滚动</div></pre></td></tr></table></figure>
+</code></pre><h3 id="可视化模式"><a href="#可视化模式" class="headerlink" title="可视化模式"></a>可视化模式</h3><pre><code>可视模式其实非常有用，它的选择很灵活，而且视觉效果上看着和鼠标选择一样，学习成本低，但是功能强大。
+- 选择模式
+v 进入可视模式
+shift + v 也就是大写的V，可视模式的行选择，整行整行的选择，用于刚好整行或者大篇幅内容的处理比较方便。
+ctrl + v 可视模式的列选择，比行选择模式更加细化，可选择连续的列进入操作
+
+- 选择块
+选择块模式需要和其他命令结合。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">V + G                  //选择当前行一直到文本结尾</div><div class="line">V + G + d              //删除当前行一直到文本结尾</div><div class="line">V + G + y              //复制当前行一直到文本结尾</div><div class="line">V + gg + d             //删除当前行一直到文本开头</div><div class="line">V + gg + y             //复制当前行一直到文本开头</div><div class="line">ctrl+v + &lt;移动&gt;+ d      //删除选择的列</div><div class="line">ctrl+v + &lt;移动&gt;+ y      //复制选择的列</div></pre></td></tr></table></figure>
+
+- 其他
+选中单词，句子，段落等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gv 　　             //选中上次的选中区域</div><div class="line">vaw                   //选中一个单词(word)</div><div class="line">vas                   //选中一个句子(sentence)</div><div class="line">vap                   //选中一个段落(paragraph)</div><div class="line">viw                   //选中一个单词(word)</div><div class="line">vis                   //选中一个句子(sentence)</div><div class="line">vip                   //选中一个段落(paragraph)</div><div class="line">vab                   //选择()里面的内容, 包括小括号</div><div class="line">vaB                   //选择&#123;&#125;里面的内容,包括大括号</div></pre></td></tr></table></figure>
+
+大小写转换
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">～                    //改变当前字符并自动切换到下一个字符，大写变小写，小写变大写，可以一直按</div><div class="line">gum                   //转化为小写，m指移动命令，如：</div><div class="line">//guw   光标后的一个单词小写化</div><div class="line">//guG   光标所在行到最后行全部小写化</div><div class="line">//gut=  光标后直到=之间的字符小写化</div><div class="line">//罗嗦一句，gu还可以与可视模式结合，小写化所选区域</div><div class="line">gUm</div></pre></td></tr></table></figure>
+
+数字增减
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Ctrl + a           //自增1</div><div class="line">Ctrl + x           //自减1</div></pre></td></tr></table></figure>
+</code></pre><h3 id="宏录制"><a href="#宏录制" class="headerlink" title="宏录制"></a>宏录制</h3><pre><code>很强大的功能，需要的时候就特别有用，单独柃出来说一下。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//为操作定义宏或者取别名</div><div class="line">//这个命令的强大之处在于使重复复杂指令的简单化了</div><div class="line">q                     //按下q开始录制</div><div class="line">x                     //x是这个录制的寄存器，x可以是其它字符</div><div class="line">dd                    //删除当前行，这个操作可以自定义其他复杂的操作</div><div class="line">q                     //录制结束，现在dd这个操作被定义到了@x这个命令里了</div></pre></td></tr></table></figure>
+</code></pre><h3 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h3><pre><code>配置文件
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="string">" basic config</span></div><div class="line">set nu</div><div class="line">set hlsearch</div><div class="line">set incsearch</div><div class="line">set autoindent</div><div class="line">set tabstop=4</div><div class="line">set shiftwidth=4</div><div class="line">set expandtab</div><div class="line">set mouse=n</div><div class="line"></div><div class="line">syntax enable</div><div class="line">set background=dark</div><div class="line">colorscheme solarized</div><div class="line"></div><div class="line">... ...</div></pre></td></tr></table></figure>
+</code></pre><h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><h3 id="插件管理器"><a href="#插件管理器" class="headerlink" title="插件管理器"></a>插件管理器</h3><pre><code>pathogen,vundle
+</code></pre><h3 id="现成的打包方案"><a href="#现成的打包方案" class="headerlink" title="现成的打包方案"></a>现成的打包方案</h3><pre><code>https://github.com/Geam/config_vim
+</code></pre><p><a href="https://github.com/openproject/openvims" target="_blank" rel="external">https://github.com/openproject/openvims</a></p>
+<h3 id="常用插件说明"><a href="#常用插件说明" class="headerlink" title="常用插件说明"></a>常用插件说明</h3><ul>
+<li>nerdtree<br>官网：<a href="https://github.com/scrooloose/nerdtree" target="_blank" rel="external">https://github.com/scrooloose/nerdtree</a><br>说明：文件目录树</li>
+<li>nerdcommenter<br>官网：<a href="https://github.com/scrooloose/nerdcommenter" target="_blank" rel="external">https://github.com/scrooloose/nerdcommenter</a><br>说明：注释</li>
+<li>vim-airline<br>官网：<a href="https://github.com/vim-airline/vim-airline" target="_blank" rel="external">https://github.com/vim-airline/vim-airline</a><br>说明：漂亮的状态栏</li>
+<li>space<br>官网：<a href="https://github.com/spiiph/vim-space" target="_blank" rel="external">https://github.com/spiiph/vim-space</a><br>说明：更智能的space支持</li>
+<li>easygrep<br>官网：<a href="https://github.com/vim-scripts/EasyGrep" target="_blank" rel="external">https://github.com/vim-scripts/EasyGrep</a><br>说明：当前目录查找内容</li>
+<li>file-line<br>官网：<a href="https://github.com/vim-scripts/file-line" target="_blank" rel="external">https://github.com/vim-scripts/file-line</a><br>说明：打开文件自动跳转到某一行</li>
+<li>fuzzyfinder<br>官网：<a href="https://github.com/vim-scripts/FuzzyFinder" target="_blank" rel="external">https://github.com/vim-scripts/FuzzyFinder</a><br>说明：目录文件搜索</li>
+<li>snipmate<br>官网：<a href="https://github.com/vim-scripts/snipmate" target="_blank" rel="external">https://github.com/vim-scripts/snipmate</a><br>说明：代码片段快捷缩写</li>
+<li>solarized<br>官网：<a href="https://github.com/vim-scripts/solarized" target="_blank" rel="external">https://github.com/vim-scripts/solarized</a><br>说明：最流行的配色方案</li>
+<li>supertab<br>官网：<a href="https://github.com/vim-scripts/supertab" target="_blank" rel="external">https://github.com/vim-scripts/supertab</a><br>说明：让tab更智能</li>
+<li>tabular<br>官网：<a href="https://github.com/godlygeek/tabular" target="_blank" rel="external">https://github.com/godlygeek/tabular</a><br>说明：对齐</li>
+<li>tagbar<br>官网：<a href="https://github.com/majutsushi/tagbar" target="_blank" rel="external">https://github.com/majutsushi/tagbar</a><br>说明：类的结构图</li>
+<li>visincr<br>官网：<a href="http://www.vim.org/scripts/script.php?script_id=670" target="_blank" rel="external">http://www.vim.org/scripts/script.php?script_id=670</a><br>说明：垂直递增或者递减改变数字、字母、日期等</li>
+</ul>
+<h2 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h2><p>官方仓库：<a href="https://github.com/vim/vim" target="_blank" rel="external">https://github.com/vim/vim</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/14/如何更好的去开发一款APP（新）/" rel="next" title="如何更好的去开发一款APP（新）">
+                <i class="fa fa-chevron-left"></i> 如何更好的去开发一款APP（新）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/15/LessCode系列之Core篇（上）/" rel="prev" title="LessCode系列之Core篇（上）">
+                LessCode系列之Core篇（上） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/14/Vim基础到实践/"
+           data-title="Vim基础到实践" data-url="http://www.jayfeng.com/2017/01/14/Vim基础到实践/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础入门"><span class="nav-text">基础入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三种模式"><span class="nav-text">三种模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式切换"><span class="nav-text">模式切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出和保存"><span class="nav-text">退出和保存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑"><span class="nav-text">编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用编辑"><span class="nav-text">常用编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找替换"><span class="nav-text">查找替换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶使用"><span class="nav-text">进阶使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见命令"><span class="nav-text">常见命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入，替换，删除"><span class="nav-text">插入，替换，删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多命令"><span class="nav-text">更多命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视化模式"><span class="nav-text">可视化模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#宏录制"><span class="nav-text">宏录制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义配置"><span class="nav-text">自定义配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件"><span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插件管理器"><span class="nav-text">插件管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现成的打包方案"><span class="nav-text">现成的打包方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用插件说明"><span class="nav-text">常用插件说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译源码"><span class="nav-text">编译源码</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

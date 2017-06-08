@@ -1,0 +1,1144 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="在上篇中，我们已经能基本使用git了，接下来继续更深入的挖掘一下git。 更多的配置自定义信息除了前面讲的用户名和邮箱的配置，还可以自定义其他配置：1234567# 自定义你喜欢的编辑器，可选git config --global core.editor vim# 自定义差异工具，可选git config --global merge.tool vimdiffgit config --global">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[团队分享]记一次小团队Git实践(下)">
+<meta property="og:url" content="http://www.jayfeng.com/2015/07/27/记一次小团队Git实践(下)/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="在上篇中，我们已经能基本使用git了，接下来继续更深入的挖掘一下git。 更多的配置自定义信息除了前面讲的用户名和邮箱的配置，还可以自定义其他配置：1234567# 自定义你喜欢的编辑器，可选git config --global core.editor vim# 自定义差异工具，可选git config --global merge.tool vimdiffgit config --global">
+<meta property="og:image" content="http://www.jayfeng.com/images/workspace.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/reset.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[团队分享]记一次小团队Git实践(下)">
+<meta name="twitter:description" content="在上篇中，我们已经能基本使用git了，接下来继续更深入的挖掘一下git。 更多的配置自定义信息除了前面讲的用户名和邮箱的配置，还可以自定义其他配置：1234567# 自定义你喜欢的编辑器，可选git config --global core.editor vim# 自定义差异工具，可选git config --global merge.tool vimdiffgit config --global">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/workspace.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> [团队分享]记一次小团队Git实践(下) | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [团队分享]记一次小团队Git实践(下)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-27T23:59:01+08:00" content="2015-07-27">
+              2015-07-27
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/27/记一次小团队Git实践(下)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/27/记一次小团队Git实践(下)/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/07/27/记一次小团队Git实践(下)/" class="leancloud_visitors" data-flag-title="[团队分享]记一次小团队Git实践(下)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在上篇中，我们已经能基本使用git了，接下来继续更深入的挖掘一下git。</p>
+<h2 id="更多的配置自定义信息"><a href="#更多的配置自定义信息" class="headerlink" title="更多的配置自定义信息"></a>更多的配置自定义信息</h2><p>除了前面讲的用户名和邮箱的配置，还可以自定义其他配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 自定义你喜欢的编辑器，可选</span></div><div class="line">git config --global core.editor vim</div><div class="line"><span class="comment"># 自定义差异工具，可选</span></div><div class="line">git config --global merge.tool vimdiff</div><div class="line">git config --global mergetool.prompt <span class="literal">false</span></div><div class="line"><span class="comment"># 为git着色</span></div><div class="line">git config --global color.ui <span class="literal">true</span></div></pre></td></tr></table></figure></p>
+<p>还有一些配置，比如core.autocrlf，core.whitespace等等就点到为止，不做赘述。</p>
+<h2 id="忽略文件-–-使用-gitignore"><a href="#忽略文件-–-使用-gitignore" class="headerlink" title="忽略文件 – 使用.gitignore"></a>忽略文件 – 使用.gitignore</h2><p>git支持使用.gitignore文件定义忽略规则，一行一个。<br>gitignore文件只能忽略非版本库的文件，对于已经添加到版本库的文件，需要先删除掉才能忽略。<br>所以，一般.gitignore文件建议在创建项目的时候就加进来，这样可以减少不必要的麻烦，不必把一些中间生成文件添加到版本库。<br><a id="more"></a><br>以Android为例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># built application files</span></div><div class="line">*.apk</div><div class="line">*.ap_</div><div class="line"></div><div class="line"><span class="comment"># files for the dex VM</span></div><div class="line">*.dex</div><div class="line"></div><div class="line"><span class="comment"># Java class files</span></div><div class="line">*.class</div><div class="line"></div><div class="line"><span class="comment"># generated files</span></div><div class="line">bin/</div><div class="line">gen/</div><div class="line"></div><div class="line"><span class="comment"># Local configuration file (sdk path, etc)</span></div><div class="line">local.properties</div><div class="line"></div><div class="line"><span class="comment"># Eclipse project files</span></div><div class="line">.classpath</div><div class="line">.project</div><div class="line"></div><div class="line"><span class="comment"># Android Studio</span></div><div class="line">.idea/</div><div class="line">.gradle</div><div class="line">/*/local.properties</div><div class="line">/*/out</div><div class="line">build</div><div class="line">/*/*/production</div><div class="line">*.iml</div><div class="line">*.iws</div><div class="line">*.ipr</div><div class="line">*~</div><div class="line">*.swp</div></pre></td></tr></table></figure></p>
+<h2 id="两个重要概念"><a href="#两个重要概念" class="headerlink" title="两个重要概念"></a>两个重要概念</h2><p>git最基础也是最重要的两个概念：对象模型和版本跟踪结构。</p>
+<ol>
+<li><p>对象模型定义了git版本存储的方式。<br>每一次提交git会根据内容生成一个SHA1值，作为对象名。</p>
+</li>
+<li><p>版本跟踪结构分为4个部分：工作区，暂存区，本地仓库，远程仓库。<br><img src="/images/workspace.png" alt="git reset 的几个参数区别示意图"></p>
+</li>
+</ol>
+<h2 id="修改提交"><a href="#修改提交" class="headerlink" title="修改提交"></a>修改提交</h2><p>难免在提交之后发现一些错误，希望能亡羊补牢补救一下，这就需要使用如下命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 修改上次的提交</span></div><div class="line">git commit --amend</div><div class="line"><span class="comment"># 合并本地所有未提交的提交, 在弹出的交互界面， 保留一行的pick，把其他每行提交的pick改为fixup或者squuash</span></div><div class="line"><span class="comment"># 其实从上面的操作上看，如果你想保留几个提交，就保留几个pick即可</span></div><div class="line">git rebase -i origin/master</div><div class="line"><span class="comment"># 合并最后两个提交, 在弹出的交互界面，操作同上</span></div><div class="line">git rebase -i HEAD~2</div></pre></td></tr></table></figure></p>
+<p>简单的修改提交可能是合理的，但是合并提交，就需要考虑到提交的目的，不建议把完全独立的提交硬是合并在一起, 从工程上会降低版本管理的意义，同时增大了合并到其他分支出错的可能性。</p>
+<h2 id="cherry-pick-–-分支之间的smart-merge"><a href="#cherry-pick-–-分支之间的smart-merge" class="headerlink" title="cherry-pick – 分支之间的smart merge"></a>cherry-pick – 分支之间的smart merge</h2><p>前面讲到了branch，它的使用场景下，有一种常见的操作，就是把某个commit也合并到另外一个分支B，怎么做呢？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 切换到分支B</div><div class="line">git checkout B</div><div class="line">// 把之前的commit使用cherry-pick命令到当前分支</div><div class="line">git cherry-pick 5d1c8562cd3d6b902e7d1542940ba39a97179017</div></pre></td></tr></table></figure></p>
+<h2 id="reset的艺术"><a href="#reset的艺术" class="headerlink" title="reset的艺术"></a>reset的艺术</h2><p>git reset的艺术就在于它的几个参数的使用。<br>当了解上面定义的版本库，暂存区，工作区概念之后，reset的几个参数的区别就非常好说明了，我画了一张图：<br><img src="/images/reset.png" alt="git reset 的几个参数区别示意图"></p>
+<h2 id="二分法定位问题-–-git-bisect的使用"><a href="#二分法定位问题-–-git-bisect的使用" class="headerlink" title="二分法定位问题 – git bisect的使用"></a>二分法定位问题 – git bisect的使用</h2><p>如果一个项目的提交非常对，面对一个不知道什么时候出现的bug，git借用了二分法平均时间最快的思想，提供了git bisect命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 开始查找, 对应最后面的结束查找</div><div class="line">git bisect start</div><div class="line">// 标记当前版本为错误</div><div class="line">git bisect bad</div><div class="line">// 标记5d1c8562cd3d6b902e为正确的版本</div><div class="line">git bisect good 5d1c8562cd3d6b902e</div><div class="line">// 现在git会自动选取bad和good的中间版本</div><div class="line">// ...</div><div class="line">// 我们能做的就是不断的测试并标记这些中间版本时good还是bad，直到找到问题</div><div class="line">// git bisect good 或者git bisect bad</div><div class="line">// ...</div><div class="line">// 结束查找，回到开始查找之前的状态</div><div class="line">git bisect reset</div></pre></td></tr></table></figure></p>
+<h2 id="这行代码是谁加的-–-git-blame助你火眼金睛"><a href="#这行代码是谁加的-–-git-blame助你火眼金睛" class="headerlink" title="这行代码是谁加的 – git blame助你火眼金睛"></a>这行代码是谁加的 – git blame助你火眼金睛</h2><p>git blame命令可以查看每个文件的每一行的版本信息，包括提交SHA，日期，作者：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git blame ./lesscode-core/src/main/java/com/jayfeng/lesscode/core/AdapterLess.java</div></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>   <span class="number">1</span>) <span class="keyword">package</span> com.jayfeng.lesscode.core;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>   <span class="number">2</span>)</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>   <span class="number">3</span>) <span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="number">8</span>ee8388a (Jay      <span class="number">2015</span>-<span class="number">05</span>-<span class="number">23</span> <span class="number">18</span>:<span class="number">20</span>:<span class="number">40</span> +<span class="number">0800</span>   <span class="number">4</span>) <span class="keyword">import</span> android.support.v4.app.Fragment;</div><div class="line"><span class="number">8</span>ee8388a (Jay      <span class="number">2015</span>-<span class="number">05</span>-<span class="number">23</span> <span class="number">18</span>:<span class="number">20</span>:<span class="number">40</span> +<span class="number">0800</span>   <span class="number">5</span>) <span class="keyword">import</span> android.support.v4.app.FragmentManager;</div><div class="line"><span class="number">8</span>ee8388a (Jay      <span class="number">2015</span>-<span class="number">05</span>-<span class="number">23</span> <span class="number">18</span>:<span class="number">20</span>:<span class="number">40</span> +<span class="number">0800</span>   <span class="number">6</span>) <span class="keyword">import</span> android.support.v4.app.FragmentPagerAdapter;</div><div class="line">a03f8aa3 (Jay      <span class="number">2015</span>-<span class="number">05</span>-<span class="number">23</span> <span class="number">16</span>:<span class="number">59</span>:<span class="number">05</span> +<span class="number">0800</span>   <span class="number">7</span>) <span class="keyword">import</span> android.support.v4.view.PagerAdapter;</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>   <span class="number">8</span>) <span class="keyword">import</span> android.support.v7.widget.RecyclerView;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>   <span class="number">9</span>) <span class="keyword">import</span> android.util.SparseArray;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">10</span>) <span class="keyword">import</span> android.view.LayoutInflater;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">11</span>) <span class="keyword">import</span> android.view.View;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">12</span>) <span class="keyword">import</span> android.view.ViewGroup;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">13</span>) <span class="keyword">import</span> android.widget.BaseAdapter;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">14</span>)</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">15</span>) <span class="keyword">import</span> java.util.List;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">16</span>)</div><div class="line"><span class="number">4719215f</span> (think    <span class="number">2015</span>-<span class="number">02</span>-<span class="number">06</span> <span class="number">22</span>:<span class="number">06</span>:<span class="number">50</span> +<span class="number">0800</span>  <span class="number">17</span>) <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AdapterLess</span> </span>&#123;</div><div class="line"><span class="number">406962f</span>0 (Jay      <span class="number">2015</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">19</span>:<span class="number">31</span>:<span class="number">17</span> +<span class="number">0800</span>  <span class="number">18</span>)</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">19</span>)     <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; RecyclerView.Adapter&lt;RecycleViewHolder&gt; $recycle(<span class="keyword">final</span> Context context,</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">20</span>)                                                                        <span class="keyword">final</span> List&lt;T&gt; list,</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">21</span>)                                                                        <span class="keyword">final</span> <span class="keyword">int</span> layoutId,</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">22</span>)                                                                        <span class="keyword">final</span> RecycleCallBack recycleCallBack) &#123;</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">23</span>)         RecyclerView.Adapter&lt;RecycleViewHolder&gt; result = <span class="keyword">new</span> RecyclerView.Adapter&lt;RecycleViewHolder&gt;() &#123;</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">24</span>)             <span class="meta">@Override</span></div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">25</span>)             <span class="function"><span class="keyword">public</span> RecycleViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup viewGroup, <span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">26</span>)                 View view = LayoutInflater.from(context)</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">27</span>)                         .inflate(layoutId, viewGroup, <span class="keyword">false</span>);</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">28</span>)                 RecycleViewHolder recycleViewHolder = <span class="keyword">new</span> RecycleViewHolder(view);</div><div class="line"><span class="number">2</span>cf7bb1c (Jay      <span class="number">2015</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">11</span>:<span class="number">59</span>:<span class="number">18</span> +<span class="number">0800</span>  <span class="number">44</span>)    ... ...</div></pre></td></tr></table></figure></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>git作为小而美的工具，开创了一个版本控制的新时代。<br>学习git是一个循序渐进的过程，通过结合基本使用方法和实践场景的练习，达到熟练使用的程度，可成！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag">#git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/25/记一次小团队Git实践(中)/" rel="next" title="[团队分享]记一次小团队Git实践(中)">
+                <i class="fa fa-chevron-left"></i> [团队分享]记一次小团队Git实践(中)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/11/谈响应式编程/" rel="prev" title="[团队分享]谈响应式编程">
+                [团队分享]谈响应式编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/27/记一次小团队Git实践(下)/"
+           data-title="[团队分享]记一次小团队Git实践(下)" data-url="http://www.jayfeng.com/2015/07/27/记一次小团队Git实践(下)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#更多的配置自定义信息"><span class="nav-text">更多的配置自定义信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件-–-使用-gitignore"><span class="nav-text">忽略文件 – 使用.gitignore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两个重要概念"><span class="nav-text">两个重要概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改提交"><span class="nav-text">修改提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cherry-pick-–-分支之间的smart-merge"><span class="nav-text">cherry-pick – 分支之间的smart merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reset的艺术"><span class="nav-text">reset的艺术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二分法定位问题-–-git-bisect的使用"><span class="nav-text">二分法定位问题 – git bisect的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这行代码是谁加的-–-git-blame助你火眼金睛"><span class="nav-text">这行代码是谁加的 – git blame助你火眼金睛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

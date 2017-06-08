@@ -1,0 +1,1217 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,gc,dalvik,art,heap," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="讲GC原理很简单，但是把GC原理讲的简单就不简单了。本文力求简单透彻，让所有Android开发人员都能明白基本的GC原理。 Jvm(Java虚拟机)内存模型从Jvm内存模型中入手对于理解GC会有很大的帮助，不过这里只需要了解一个大概，说多了反而混淆视线。  Jvm(Java虚拟机)主要管理两种类型内存：堆和非堆。堆是运行时数据区域，所有类实例和数组的内存均从此处分配。非堆是JVM留给自己用的，包含">
+<meta name="keywords" content="java,gc,dalvik,art,heap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Java垃圾回收机制">
+<meta property="og:url" content="http://www.jayfeng.com/2016/03/11/理解Java垃圾回收机制/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="讲GC原理很简单，但是把GC原理讲的简单就不简单了。本文力求简单透彻，让所有Android开发人员都能明白基本的GC原理。 Jvm(Java虚拟机)内存模型从Jvm内存模型中入手对于理解GC会有很大的帮助，不过这里只需要了解一个大概，说多了反而混淆视线。  Jvm(Java虚拟机)主要管理两种类型内存：堆和非堆。堆是运行时数据区域，所有类实例和数组的内存均从此处分配。非堆是JVM留给自己用的，包含">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_jvm_memory.gif">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_heap.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_recycled_object.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_root_object.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_mark_sweep.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_copying.png">
+<meta property="og:image" content="http://www.jayfeng.com/images/gc_mark_compact.png">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Java垃圾回收机制">
+<meta name="twitter:description" content="讲GC原理很简单，但是把GC原理讲的简单就不简单了。本文力求简单透彻，让所有Android开发人员都能明白基本的GC原理。 Jvm(Java虚拟机)内存模型从Jvm内存模型中入手对于理解GC会有很大的帮助，不过这里只需要了解一个大概，说多了反而混淆视线。  Jvm(Java虚拟机)主要管理两种类型内存：堆和非堆。堆是运行时数据区域，所有类实例和数组的内存均从此处分配。非堆是JVM留给自己用的，包含">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/gc_jvm_memory.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 理解Java垃圾回收机制 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                理解Java垃圾回收机制
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T14:13:40+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/11/理解Java垃圾回收机制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/11/理解Java垃圾回收机制/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/11/理解Java垃圾回收机制/" class="leancloud_visitors" data-flag-title="理解Java垃圾回收机制">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>讲GC原理很简单，但是把GC原理讲的简单就不简单了。<br>本文力求简单透彻，让所有Android开发人员都能明白基本的GC原理。</p>
+<h2 id="Jvm-Java虚拟机-内存模型"><a href="#Jvm-Java虚拟机-内存模型" class="headerlink" title="Jvm(Java虚拟机)内存模型"></a>Jvm(Java虚拟机)内存模型</h2><p>从Jvm内存模型中入手对于理解GC会有很大的帮助，不过这里只需要了解一个大概，说多了反而混淆视线。</p>
+<blockquote>
+<p>Jvm(Java虚拟机)主要管理两种类型内存：堆和非堆。<br>堆是运行时数据区域，所有类实例和数组的内存均从此处分配。<br>非堆是JVM留给自己用的，包含方法区、JVM内部处理或优化所需的内存（如 JIT Compiler，Just-in-time Compiler，即时编译后的代码缓存）、每个类结构（如运行时常数池、字段和方法数据）以及方法和构造方法的代码。</p>
+</blockquote>
+<p>简言之，Java程序内存主要（这里强调主要二字）分两部分，堆和非堆。大家一般new的对象和数组都是在堆中的，而GC主要回收的内存也是这块堆内存。</p>
+<p>配一张示意图总结一下：</p>
+<blockquote>
+<p>堆内存（Heap Memory）： 存放Java对象<br>非堆内存（Non-Heap Memory）： 存放类加载信息和其它meta-data<br>其它（Other）： 存放JVM 自身代码等</p>
+</blockquote>
+<p><img src="/images/gc_jvm_memory.gif" alt="Java内存模型"></p>
+<a id="more"></a>
+<h2 id="堆内存模型"><a href="#堆内存模型" class="headerlink" title="堆内存模型"></a>堆内存模型</h2><p>既然重点是堆内存，我们就再看看堆的内存模型。</p>
+<blockquote>
+<p>堆内存由垃圾回收器的自动内存管理系统回收。<br>堆内存分为两大部分：新生代和老年代。比例为1：2。<br>老年代主要存放应用程序中生命周期长的存活对象。<br>新生代又分为三个部分：一个Eden区和两个Survivor区，比例为8：1：1。<br>Eden区存放新生的对象。<br>Survivor存放每次垃圾回收后存活的对象。</p>
+</blockquote>
+<p><img src="/images/gc_heap.png" alt="堆内存模型"></p>
+<p>看晕了吧，关注这几个问题：</p>
+<blockquote>
+<ol>
+<li>为什么要分新生代和老年代？</li>
+<li>新生代为什么分一个Eden区和两个Survivor区?</li>
+<li>一个Eden区和两个Survivor区的比例为什么是8:1:1？</li>
+</ol>
+</blockquote>
+<p>现在还不能解释为什么，但这几个问题都是垃圾回收机制所采用的算法决定的。<br>所以问题转化为，是何种算法？为什么要采用此种算法？</p>
+<h2 id="可回收对象的判定"><a href="#可回收对象的判定" class="headerlink" title="可回收对象的判定"></a>可回收对象的判定</h2><p>讲算法之前，我们先要搞清楚一个问题，什么样的对象是垃圾（无用对象），需要被回收？<br>目前市面上有两种算法用来判定一个对象是否为垃圾。</p>
+<h4 id="1-引用计数算法"><a href="#1-引用计数算法" class="headerlink" title="1. 引用计数算法"></a>1. 引用计数算法</h4><p>给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对象就是不可能再被使用的。<br><img src="/images/gc_recycled_object.png" alt="引用计数算法"><br>优点是简单，高效，现在的objective-c用的就是这种算法。<br>缺点是很难处理循环引用，比如图中相互引用的两个对象则无法释放。<br>这个缺点很致命，有人可能会问，那objective-c不是用的好好的吗？<br>我个人并没有觉得objective-c好好的处理了这个循环引用问题，它其实是把这个问题抛给了开发者。</p>
+<h4 id="2-可达性分析算法（根搜索算法）"><a href="#2-可达性分析算法（根搜索算法）" class="headerlink" title="2. 可达性分析算法（根搜索算法）"></a>2. 可达性分析算法（根搜索算法）</h4><p>为了解决上面的循环引用问题，Java采用了一种新的算法：可达性分析算法。<br>从GC Roots（每种具体实现对GC Roots有不同的定义）作为起点，向下搜索它们引用的对象，可以生成一棵引用树，树的节点视为可达对象，反之视为不可达。<br><img src="/images/gc_root_object.png" alt="可达性分析算法"><br>OK，即使循环引用了，只要没有被GC Roots引用了依然会被回收，完美！<br>但是，这个GC Roots的定义就要考究了，Java语言定义了如下GC Roots对象：</p>
+<blockquote>
+<p>虚拟机栈（帧栈中的本地变量表）中引用的对象。<br>方法区中静态属性引用的对象。<br>方法区中常量引用的对象。<br>本地方法栈中JNI引用的对象。</p>
+</blockquote>
+<h2 id="Stop-The-World"><a href="#Stop-The-World" class="headerlink" title="Stop The World"></a>Stop The World</h2><p>有了上面的垃圾对象的判定，我们还要考虑一个问题，请大家做好心里准备，那就是Stop The World。<br>因为垃圾回收的时候，需要整个的引用状态保持不变，否则判定是判定垃圾，等我稍后回收的时候它又被引用了，这就全乱套了。所以，GC的时候，其他所有的程序执行处于暂停状态，卡住了。<br>幸运的是，这个卡顿是非常短（尤其是新生代），对程序的影响微乎其微 （关于其他GC比如并发GC之类的，在此不讨论）。<br>所以GC的卡顿问题由此而来，也是情有可原，暂时无可避免。</p>
+<h2 id="几种垃圾回收算法"><a href="#几种垃圾回收算法" class="headerlink" title="几种垃圾回收算法"></a>几种垃圾回收算法</h2><p>有了上面两个大基础，我们的GC才能开始。<br>那么问题来了，已经知道哪些是垃圾对象了，怎么回收呢？目前主流有以下几种算法。<br><em>PS：大家可以先猜猜Java虚拟机（这里默认指Hotspot）采用的是那种算法，…，答对了，是分代回收算法，现在是不是明白了前面堆内存为什么要分新生代和老年代了吧。但是即使猜对了，也要看其他几种算法哦，不然不要说我没提醒你，你会直接看不懂分代回收算法的。</em></p>
+<h4 id="1-标记清除算法-Mark-Sweep"><a href="#1-标记清除算法-Mark-Sweep" class="headerlink" title="1. 标记清除算法 (Mark-Sweep)"></a>1. 标记清除算法 (Mark-Sweep)</h4><p>标记-清除算法分为两个阶段：标记阶段和清除阶段。标记阶段的任务是标记出所有需要被回收的对象，清除阶段就是回收被标记的对象所占用的空间。<br>优点是简单，容易实现。<br>缺点是容易产生内存碎片，碎片太多可能会导致后续过程中需要为大对象分配空间时无法找到足够的空间而提前触发新的一次垃圾收集动作。<br>示意图如下（不用我解说了吧）：<br><img src="/images/gc_mark_sweep.png" alt="标记清除算法示意图"></p>
+<h4 id="2-复制算法-Copying"><a href="#2-复制算法-Copying" class="headerlink" title="2. 复制算法 (Copying)"></a>2. 复制算法 (Copying)</h4><p>复制算法将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用的内存空间一次清理掉，这样一来就不容易出现内存碎片的问题。<br>优缺点就是，实现简单，运行高效且不容易产生内存碎片，但是却对内存空间的使用做出了高昂的代价，因为能够使用的内存缩减到原来的一半。<br>从算法原理我们可以看出，Copying算法的效率跟存活对象的数目多少有很大的关系，如果存活对象很多，那么Copying算法的效率将会大大降低。<br>示意图如下（不用我解说了吧）：<br><img src="/images/gc_copying.png" alt="复制算法示意图"></p>
+<h4 id="3-标记整理算法-Mark-Compact"><a href="#3-标记整理算法-Mark-Compact" class="headerlink" title="3. 标记整理算法 (Mark-Compact)"></a>3. 标记整理算法 (Mark-Compact)</h4><p>该算法标记阶段和Mark-Sweep一样，但是在完成标记之后，它不是直接清理可回收对象，而是将存活对象都向一端移动，然后清理掉端边界以外的内存。<br>所以，特别适用于存活对象多，回收对象少的情况下。<br>示意图如下（不用我解说了吧）：<br><img src="/images/gc_mark_compact.png" alt="标记整理算法示意图"></p>
+<h4 id="4-分代回收算法"><a href="#4-分代回收算法" class="headerlink" title="4. 分代回收算法"></a>4. 分代回收算法</h4><p>分代回收算法其实不算一种新的算法，而是根据复制算法和标记整理算法的的特点综合而成。这种综合是考虑到java的语言特性的。<br>这里重复一下两种老算法的适用场景：</p>
+<blockquote>
+<p>复制算法：适用于存活对象很少。回收对象多<br>标记整理算法: 适用用于存活对象多，回收对象少</p>
+</blockquote>
+<p>刚好互补！不同类型的对象生命周期决定了更适合采用哪种算法。<br>于是，我们根据对象存活的生命周期将内存划分为若干个不同的区域。一般情况下将堆区划分为老年代（Old Generation）和新生代（Young Generation），老年代的特点是每次垃圾收集时只有少量对象需要被回收，而新生代的特点是每次垃圾回收时都有大量的对象需要被回收，那么就可以根据不同代的特点采取最适合的收集算法。<br>这就是分代回收算法。<br>现在回头去看堆内存为什么要划分新生代和老年代，是不是觉得如此的清晰和自然了？</p>
+<p>我们再说的细一点：</p>
+<blockquote>
+<ol>
+<li>对于新生代采取Copying算法，因为新生代中每次垃圾回收都要回收大部分对象，也就是说需要复制的操作次数较少，采用Copying算法效率最高。但是，但是，但是，实际中并不是按照上面算法中说的1：1的比例来划分新生代的空间的，而是将新生代划分为一块较大的Eden空间和两块较小的Survivor空间，比例为8：1：1.。为什么？下一节深入分析。</li>
+<li>由于老年代的特点是每次回收都只回收少量对象，一般使用的是Mark-Compact算法。</li>
+</ol>
+</blockquote>
+<h2 id="深入理解分代回收算法"><a href="#深入理解分代回收算法" class="headerlink" title="深入理解分代回收算法"></a>深入理解分代回收算法</h2><p>对于这个算法，我相信很多人还是有疑问的，我们来各个击破，说清楚了就很简单。</p>
+<h4 id="为什么不是一块Survivor空间而是两块？"><a href="#为什么不是一块Survivor空间而是两块？" class="headerlink" title="为什么不是一块Survivor空间而是两块？"></a>为什么不是一块Survivor空间而是两块？</h4><p>这里涉及到一个新生代和老年代的存活周期的问题，比如一个对象在新生代经历15次（仅供参考）GC，就可以移到老年代了。问题来了，当我们第一次GC的时候，我们可以把Eden区的存活对象放到Survivor A空间，但是第二次GC的时候，Survivor A空间的存活对象也需要再次用Copying算法，放到Survivor B空间上，而把刚刚的Survivor A空间和Eden空间清除。第三次GC时，又把Survivor B空间的存活对象复制到Survivor A空间，如此反复。<br>所以，这里就需要两块Survivor空间来回倒腾。</p>
+<h4 id="为什么Eden空间这么大而Survivor空间要分的少一点？"><a href="#为什么Eden空间这么大而Survivor空间要分的少一点？" class="headerlink" title="为什么Eden空间这么大而Survivor空间要分的少一点？"></a>为什么Eden空间这么大而Survivor空间要分的少一点？</h4><p>新创建的对象都是放在Eden空间，这是很频繁的，尤其是大量的局部变量产生的临时对象，这些对象绝大部分都应该马上被回收，能存活下来被转移到survivor空间的往往不多。所以，设置较大的Eden空间和较小的Survivor空间是合理的，大大提高了内存的使用率，缓解了Copying算法的缺点。<br>我看8：1：1就挺好的，当然这个比例是可以调整的，包括上面的新生代和老年代的1：2的比例也是可以调整的。<br>新的问题又来了，从Eden空间往Survivor空间转移的时候Survivor空间不够了怎么办？直接放到老年代去。</p>
+<h4 id="Eden空间和两块Survivor空间的工作流程"><a href="#Eden空间和两块Survivor空间的工作流程" class="headerlink" title="Eden空间和两块Survivor空间的工作流程"></a>Eden空间和两块Survivor空间的工作流程</h4><p>这里本来简单的Copying算法被划分为三部分后很多朋友一时理解不了，也确实不好描述，下面我来演示一下Eden空间和两块Survivor空间的工作流程。</p>
+<p>现在假定有新生代Eden，Survivor A， Survivor B三块空间和老生代Old一块空间。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 分配了一个又一个对象</span></div><div class="line">放到Eden区</div><div class="line"><span class="comment">// 不好，Eden区满了，只能GC(新生代GC：Minor GC)了</span></div><div class="line">把Eden区的存活对象copy到Survivor A区，然后清空Eden区（本来Survivor B区也需要清空的，不过本来就是空的）</div><div class="line"><span class="comment">// 又分配了一个又一个对象</span></div><div class="line">放到Eden区</div><div class="line"><span class="comment">// 不好，Eden区又满了，只能GC(新生代GC：Minor GC)了</span></div><div class="line">把Eden区和Survivor A区的存活对象copy到Survivor B区，然后清空Eden区和Survivor A区</div><div class="line"><span class="comment">// 又分配了一个又一个对象</span></div><div class="line">放到Eden区</div><div class="line"><span class="comment">// 不好，Eden区又满了，只能GC(新生代GC：Minor GC)了</span></div><div class="line">把Eden区和Survivor B区的存活对象copy到Survivor A区，然后清空Eden区和Survivor B区</div><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="comment">// 有的对象来回在Survivor A区或者B区呆了比如15次，就被分配到老年代Old区</span></div><div class="line"><span class="comment">// 有的对象太大，超过了Eden区，直接被分配在Old区</span></div><div class="line"><span class="comment">// 有的存活对象，放不下Survivor区，也被分配到Old区</span></div><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="comment">// 在某次Minor GC的过程中突然发现：</span></div><div class="line"><span class="comment">// 不好，老年代Old区也满了，这是一次大GC(老年代GC：Major GC)</span></div><div class="line">Old区慢慢的整理一番，空间又够了</div><div class="line"><span class="comment">// 继续Minor GC</span></div><div class="line"><span class="comment">// ...</span></div><div class="line"><span class="comment">// ...</span></div></pre></td></tr></table></figure></p>
+<p>从这段流程中，我相信大家应该有了一个清晰的认识了，当然为了说明原理，这只是最简化版本。</p>
+<h2 id="触发GC的类型"><a href="#触发GC的类型" class="headerlink" title="触发GC的类型"></a>触发GC的类型</h2><p>了解这些是为了解决实际问题，Java虚拟机会把每次触发GC的信息打印出来来帮助我们分析问题，所以掌握触发GC的类型是分析日志的基础。</p>
+<blockquote>
+<p>GC_FOR_MALLOC: 表示是在堆上分配对象时内存不足触发的GC。<br>GC_CONCURRENT: 当我们应用程序的堆内存达到一定量，或者可以理解为快要满的时候，系统会自动触发GC操作来释放内存。<br>GC_EXPLICIT: 表示是应用程序调用System.gc、VMRuntime.gc接口或者收到SIGUSR1信号时触发的GC。<br>GC_BEFORE_OOM: 表示是在准备抛OOM异常之前进行的最后努力而触发的GC。</p>
+</blockquote>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>了解Java虚拟机GC原理，应该对于Dalvik虚拟机和Art虚拟机的GC原理有很大帮助，至于这三者的GC有什么区别，只能一步一步来了。<br>而知晓这些知识，我相信在做Android GC优化的时候一定会用的上。<br>如果看到这里还没理解，加我微信673592063，手把手免费教会！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/gc/" rel="tag">#gc</a>
+          
+            <a href="/tags/dalvik/" rel="tag">#dalvik</a>
+          
+            <a href="/tags/art/" rel="tag">#art</a>
+          
+            <a href="/tags/heap/" rel="tag">#heap</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/10/由Android-65K方法数限制引发的思考/" rel="next" title="由Android 65K方法数限制引发的思考">
+                <i class="fa fa-chevron-left"></i> 由Android 65K方法数限制引发的思考
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/16/理解ThumbnailUtils/" rel="prev" title="理解ThumbnailUtils">
+                理解ThumbnailUtils <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/11/理解Java垃圾回收机制/"
+           data-title="理解Java垃圾回收机制" data-url="http://www.jayfeng.com/2016/03/11/理解Java垃圾回收机制/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jvm-Java虚拟机-内存模型"><span class="nav-text">Jvm(Java虚拟机)内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆内存模型"><span class="nav-text">堆内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可回收对象的判定"><span class="nav-text">可回收对象的判定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-引用计数算法"><span class="nav-text">1. 引用计数算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可达性分析算法（根搜索算法）"><span class="nav-text">2. 可达性分析算法（根搜索算法）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stop-The-World"><span class="nav-text">Stop The World</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几种垃圾回收算法"><span class="nav-text">几种垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-标记清除算法-Mark-Sweep"><span class="nav-text">1. 标记清除算法 (Mark-Sweep)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-复制算法-Copying"><span class="nav-text">2. 复制算法 (Copying)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-标记整理算法-Mark-Compact"><span class="nav-text">3. 标记整理算法 (Mark-Compact)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-分代回收算法"><span class="nav-text">4. 分代回收算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入理解分代回收算法"><span class="nav-text">深入理解分代回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么不是一块Survivor空间而是两块？"><span class="nav-text">为什么不是一块Survivor空间而是两块？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Eden空间这么大而Survivor空间要分的少一点？"><span class="nav-text">为什么Eden空间这么大而Survivor空间要分的少一点？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Eden空间和两块Survivor空间的工作流程"><span class="nav-text">Eden空间和两块Survivor空间的工作流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发GC的类型"><span class="nav-text">触发GC的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>

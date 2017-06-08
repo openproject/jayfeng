@@ -1,0 +1,1188 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,65k,64k,方法数," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="前言没想到，65536真的很小。1Unable to execute dex: method ID not in [0, 0xffff]: 65536 PS:本文只是纯探索一下这个65K的来源，仅此而已。 到底是65k还是64k?都没错，同一个问题，不同的说法而已。65536按1000算的话，是65k ~ 65  1000;65536按1024算的话，是64k = 64  1024。重点是6553">
+<meta name="keywords" content="android,65k,64k,方法数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="由Android 65K方法数限制引发的思考">
+<meta property="og:url" content="http://www.jayfeng.com/2016/03/10/由Android-65K方法数限制引发的思考/index.html">
+<meta property="og:site_name" content="杰风居">
+<meta property="og:description" content="前言没想到，65536真的很小。1Unable to execute dex: method ID not in [0, 0xffff]: 65536 PS:本文只是纯探索一下这个65K的来源，仅此而已。 到底是65k还是64k?都没错，同一个问题，不同的说法而已。65536按1000算的话，是65k ~ 65  1000;65536按1024算的话，是64k = 64  1024。重点是6553">
+<meta property="og:image" content="http://www.jayfeng.com/images/65k_jack.gif">
+<meta property="og:updated_time" content="2017-06-08T10:01:50.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="由Android 65K方法数限制引发的思考">
+<meta name="twitter:description" content="前言没想到，65536真的很小。1Unable to execute dex: method ID not in [0, 0xffff]: 65536 PS:本文只是纯探索一下这个65K的来源，仅此而已。 到底是65k还是64k?都没错，同一个问题，不同的说法而已。65536按1000算的话，是65k ~ 65  1000;65536按1024算的话，是64k = 64  1024。重点是6553">
+<meta name="twitter:image" content="http://www.jayfeng.com/images/65k_jack.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 由Android 65K方法数限制引发的思考 | 杰风居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?feb5f5f79310346f22b48370584403b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">杰风居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">风无所居，杰行天下</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                由Android 65K方法数限制引发的思考
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-10T15:50:24+08:00" content="2016-03-10">
+              2016-03-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/10/由Android-65K方法数限制引发的思考/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/10/由Android-65K方法数限制引发的思考/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/10/由Android-65K方法数限制引发的思考/" class="leancloud_visitors" data-flag-title="由Android 65K方法数限制引发的思考">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>没想到，65536真的很小。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Unable to execute dex: method ID not in [0, 0xffff]: 65536</div></pre></td></tr></table></figure></p>
+<p>PS:本文只是纯探索一下这个65K的来源，仅此而已。</p>
+<h2 id="到底是65k还是64k"><a href="#到底是65k还是64k" class="headerlink" title="到底是65k还是64k?"></a>到底是65k还是64k?</h2><p>都没错，同一个问题，不同的说法而已。<br>65536按1000算的话，是65k ~ 65 <em> 1000;<br>65536按1024算的话，是64k = 64 </em> 1024。<br>重点是65536=2^16，请大家记住这个数字。</p>
+<h2 id="时间点"><a href="#时间点" class="headerlink" title="时间点"></a>时间点</h2><p>从大家的经历和这篇文章：<br><a href="http://developer.android.com/tools/building/multidex.html" target="_blank" rel="external">http://developer.android.com/tools/building/multidex.html</a><br>来看，这个错误是发生在构建时期。</p>
+<h2 id="65536是怎么算出来的？"><a href="#65536是怎么算出来的？" class="headerlink" title="65536是怎么算出来的？"></a>65536是怎么算出来的？</h2><p>65536网上众说纷纭，有对的，有不全对的，也有错的。<br>下面将跟踪最新的AOSP源码来顺藤摸瓜，但是探索问题必然迂回冗余，仅作记录，读者可直接跳过看结果。</p>
+<a id="more"></a>
+<h4 id="1-首先，查找Dex的结构定义。"><a href="#1-首先，查找Dex的结构定义。" class="headerlink" title="1. 首先，查找Dex的结构定义。"></a>1. 首先，查找Dex的结构定义。</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * Direct-mapped "header_item" struct.</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DexHeader</span> &#123;</span></div><div class="line">    u1  magic[<span class="number">8</span>];</div><div class="line">    u4  checksum;</div><div class="line">    u1  signature[kSHA1DigestLen];</div><div class="line">    u4  fileSize;</div><div class="line">    u4  headerSize;</div><div class="line">    u4  endianTag;</div><div class="line">    u4  linkSize;</div><div class="line">    u4  linkOff;</div><div class="line">    u4  mapOff;</div><div class="line">    u4  stringIdsSize;</div><div class="line">    u4  stringIdsOff;</div><div class="line">    u4  typeIdsSize;</div><div class="line">    u4  typeIdsOff;</div><div class="line">    u4  protoIdsSize;</div><div class="line">    u4  protoIdsOff;</div><div class="line">    u4  fieldIdsSize;</div><div class="line">    u4  fieldIdsOff;</div><div class="line">    u4  methodIdsSize; <span class="comment">// 这里存放了方法字段索引的大小，methodIdsSize的类型为u4</span></div><div class="line">    u4  methodIdsOff;</div><div class="line">    u4  classDefsSize;</div><div class="line">    u4  classDefsOff;</div><div class="line">    u4  dataSize;</div><div class="line">    u4  dataOff;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>u4的类型定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * These match the definitions in the VM specification.</div><div class="line"> */</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">uint8_t</span>             u1;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">uint16_t</span>            u2;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">uint32_t</span>            u4;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">uint64_t</span>            u8;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int8_t</span>              s1;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int16_t</span>             s2;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int32_t</span>             s4;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int64_t</span>             s8;</div></pre></td></tr></table></figure></p>
+<p>进一步推出，methodIdsSize的类型是uint32_t，但它的限制为2^32 = 65536 * 65536，比65536大的多。<br>所以，65k不是dex文件结构本身限制造成的。<br>PS：Dex文件中存储方法ID用的并不是short类型，无论最新的DexFile.h新定义的u4是uint32_t，还是老版本DexFile引用的vm/Common.h里定义的u4是uint32或者unsigned int，都不是short类型，特此说明。</p>
+<h4 id="2-DexOpt优化造成？"><a href="#2-DexOpt优化造成？" class="headerlink" title="2. DexOpt优化造成？"></a>2. DexOpt优化造成？</h4><p>这个说法源自：</p>
+<blockquote>
+<p>当Android系统启动一个应用的时候，有一步是对Dex进行优化，这个过程有一个专门的工具来处理，叫DexOpt。DexOpt的执行过程是在第一次加载Dex文件的时候执行的。这个过程会生成一个ODEX文件，即Optimised Dex。执行ODex的效率会比直接执行Dex文件的效率要高很多。但是在早期的Android系统中，DexOpt有一个问题，也就是这篇文章想要说明并解决的问题。DexOpt会把每一个类的方法id检索起来，存在一个链表结构里面。但是这个链表的长度是用一个short类型来保存的，导致了方法id的数目不能够超过65536个。当一个项目足够大的时候，显然这个方法数的上限是不够的。尽管在新版本的Android系统中，DexOpt修复了这个问题，但是我们仍然需要对老系统做兼容。</p>
+</blockquote>
+<p>鉴于我能力有限，没有找到这块逻辑对应的代码。<br>但我有个疑问，这个限制是在Android启动一个应用的时候发生的，但从前面的“时间点”章节，65k问题是在构建的时候就发生了，还没到启动或者运行这一步。<br>我不敢否定这种说法，但说明65k至少还有其他地方限制。</p>
+<h4 id="3-DexMerger的检测"><a href="#3-DexMerger的检测" class="headerlink" title="3. DexMerger的检测"></a>3. DexMerger的检测</h4><p>只能在dalvik目录下搜索关键字”methid ID not in”，在DexMergger里找到了抛出异常的地方：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Combine two dex files into one.</div><div class="line">  */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DexMerger</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">mergeMethodIds</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">new</span> IdMerger&lt;MethodId&gt;(idsDefsOut) &#123;</div><div class="line">            <span class="meta">@Override</span> TableOfContents.<span class="function">Section <span class="title">getSection</span><span class="params">(TableOfContents tableOfContents)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> tableOfContents.methodIds;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span> <span class="function">MethodId <span class="title">read</span><span class="params">(Dex.Section in, IndexMap indexMap, <span class="keyword">int</span> index)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> indexMap.adjust(in.readMethodId());</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span> <span class="function"><span class="keyword">void</span> <span class="title">updateIndex</span><span class="params">(<span class="keyword">int</span> offset, IndexMap indexMap, <span class="keyword">int</span> oldIndex, <span class="keyword">int</span> newIndex)</span> </span>&#123;</div><div class="line">                <span class="keyword">if</span> (newIndex &lt; <span class="number">0</span> || newIndex &gt; <span class="number">0xffff</span>) &#123;</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> DexIndexOverflowException(</div><div class="line">                            <span class="string">"method ID not in [0, 0xffff]: "</span> + newIndex);</div><div class="line">                &#125;</div><div class="line">                indexMap.methodIds[oldIndex] = (<span class="keyword">short</span>) newIndex;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span> <span class="function"><span class="keyword">void</span> <span class="title">write</span><span class="params">(MethodId methodId)</span> </span>&#123;</div><div class="line">                methodId.writeTo(idsDefsOut);</div><div class="line">            &#125;</div><div class="line">        &#125;.mergeSorted();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里定义了indexMap的methodIds的单项值要强转short，所以在存放之前check一下范围是不是0 ~ 0xffff。<br>我们看看IndexMap的定义：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Maps the index offsets from one dex file to those in another. For example, if</div><div class="line"> * you have string #5 in the old dex file, its position in the new dex file is</div><div class="line"> * &#123;<span class="doctag">@code</span> strings[5]&#125;.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexMap</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dex target;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span>[] stringIds;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">short</span>[] typeIds;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">short</span>[] protoIds;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">short</span>[] fieldIds;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">short</span>[] methodIds;</div><div class="line"></div><div class="line">    <span class="comment">// ... ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看上去是对了，可是这个DexMerger是合并两个dex的，默认情况下我们只有一个dex的，那么这个65k是哪里限制的呢？再查！</p>
+<h4 id="4-回归DexFile"><a href="#4-回归DexFile" class="headerlink" title="4. 回归DexFile"></a>4. 回归DexFile</h4><p>基本上前面基本是一个摸着石头过河、反复验证网络说法的一个过程，虽然回想起来傻傻的，但是这种记录还是有必要的。<br>前面看到DexFile的存放方法数大小的类型是uint32，但是根据后面的判断，我们确定是打包的过程中产生了65k问题，所以我们得回过头老老实实研究一下dx的打包流程。<br>… 此处省略分析流程5000字 …<br>OK，我把dx打包涉及到流程记录下来：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 源码目录：dalvik/dx</span></div><div class="line"><span class="comment">// Main.java</span></div><div class="line">-&gt; main() -&gt; run() -&gt; runMonoDex()(或者runMultiDex()) -&gt; writeDex()</div><div class="line"><span class="comment">// DexFile</span></div><div class="line">-&gt; toDex() -&gt; toDex0()</div><div class="line"><span class="comment">// MethodIdsSection extends MemberIdsSection extends UniformItemSection extends  Section</span></div><div class="line">-&gt; prepare() -&gt; prepare0() -&gt; orderItems() -&gt; getTooManyMembersMessage()</div><div class="line"><span class="comment">// Main.java</span></div><div class="line">-&gt; getTooManyIdsErrorMessage()</div></pre></td></tr></table></figure></p>
+<p>最终狐狸的尾巴是在MemberIdsSection漏出来了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.android.dx.dex.file;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.android.dex.DexException;</div><div class="line"><span class="keyword">import</span> com.android.dex.DexFormat;</div><div class="line"><span class="keyword">import</span> com.android.dex.DexIndexOverflowException;</div><div class="line"><span class="keyword">import</span> com.android.dx.command.dexer.Main;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Formatter;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.TreeMap;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Member (field or method) refs list section of a &#123;<span class="doctag">@code</span> .dex&#125; file.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberIdsSection</span> <span class="keyword">extends</span> <span class="title">UniformItemSection</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Constructs an instance. The file offset is initially unknown.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> name &#123;<span class="doctag">@code</span> null-ok;&#125; the name of this instance, for annotation</div><div class="line">     * purposes</div><div class="line">     * <span class="doctag">@param</span> file &#123;<span class="doctag">@code</span> non-null;&#125; file that this instance is part of</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MemberIdsSection</span><span class="params">(String name, DexFile file)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(name, file, <span class="number">4</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** &#123;<span class="doctag">@inheritDoc</span>&#125; */</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">orderItems</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">int</span> idx = <span class="number">0</span>;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (items().size() &gt; DexFormat.MAX_MEMBER_IDX + <span class="number">1</span>) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> DexIndexOverflowException(getTooManyMembersMessage());</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">for</span> (Object i : items()) &#123;</div><div class="line">                ((MemberIdItem) i).setIndex(idx);</div><div class="line">                idx++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getTooManyMembersMessage</span><span class="params">()</span> </span>&#123;</div><div class="line">        Map&lt;String, AtomicInteger&gt; membersByPackage = <span class="keyword">new</span> TreeMap&lt;String, AtomicInteger&gt;();</div><div class="line">        <span class="keyword">for</span> (Object member : items()) &#123;</div><div class="line">            String packageName = ((MemberIdItem) member).getDefiningClass().getPackageName();</div><div class="line">            AtomicInteger count = membersByPackage.get(packageName);</div><div class="line">            <span class="keyword">if</span> (count == <span class="keyword">null</span>) &#123;</div><div class="line">                count = <span class="keyword">new</span> AtomicInteger();</div><div class="line">                membersByPackage.put(packageName, count);</div><div class="line">            &#125;</div><div class="line">            count.incrementAndGet();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        Formatter formatter = <span class="keyword">new</span> Formatter();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            String memberType = <span class="keyword">this</span> <span class="keyword">instanceof</span> MethodIdsSection ? <span class="string">"method"</span> : <span class="string">"field"</span>;</div><div class="line">            formatter.format(<span class="string">"Too many %s references: %d; max is %d.%n"</span> +</div><div class="line">                    Main.getTooManyIdsErrorMessage() + <span class="string">"%n"</span> +</div><div class="line">                    <span class="string">"References by package:"</span>,</div><div class="line">                    memberType, items().size(), DexFormat.MAX_MEMBER_IDX + <span class="number">1</span>);</div><div class="line">            <span class="keyword">for</span> (Map.Entry&lt;String, AtomicInteger&gt; entry : membersByPackage.entrySet()) &#123;</div><div class="line">                formatter.format(<span class="string">"%n%6d %s"</span>, entry.getValue().get(), entry.getKey());</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> formatter.toString();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            formatter.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>里面有一段：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果方法数大于0xffff就提示65k错误</span></div><div class="line"><span class="keyword">if</span> (items().size() &gt; DexFormat.MAX_MEMBER_IDX + <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> DexIndexOverflowException(getTooManyMembersMessage());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 这个DexFormat.MAX_MEMBER_IDX就是0xFFFF</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Maximum addressable field or method index.</div><div class="line"> * The largest addressable member is 0xffff, in the "instruction formats" spec as field@CCCC or</div><div class="line"> * meth@CCCC.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_MEMBER_IDX = <span class="number">0xFFFF</span>;</div></pre></td></tr></table></figure></p>
+<p>至此，真相大白！</p>
+<h4 id="5-根本原因"><a href="#5-根本原因" class="headerlink" title="5. 根本原因"></a>5. 根本原因</h4><p>为什么定义DexFormat.MAX_MEMBER_IDX为0xFFFF?<br>虽然我们找到了65k报错的地方，但是为什么程序中方法数超过0xFFFF就要报错呢？<br>通过搜索”instruction formats”, 我最终查到了Dalvik VM Bytecode，找到最新的官方说明：<br><a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html" target="_blank" rel="external">https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html</a><br>里面说明了上面的@CCCC的范围必须在0～65535之间，这是dalvik bytecode的限制。<br>所以，65536是bytecode的16位限制算出来的：2^16。<br>PS：以上分析得到群里很多朋友的讨论和帮忙。</p>
+<h4 id="6-回顾"><a href="#6-回顾" class="headerlink" title="6. 回顾"></a>6. 回顾</h4><p>我好像明白了什么：</p>
+<blockquote>
+<ol>
+<li>65k问题是dx打包单个Dex时报的错，所以只要用dx打包单个dex就可能有这个问题。</li>
+<li>不仅方法数，字段数也有65k问题。</li>
+<li>目前来说，65k问题和系统无关。</li>
+<li>目前来说，65k问题和art无关。</li>
+<li>即使分包MultiDex，当主Dex的方法数超过65k依然会报错。</li>
+<li>MultiDex方案不是从根本上解决了65k问题，但是大大缓解甚至说基本解决了65k问题。</li>
+</ol>
+</blockquote>
+<h2 id="新的Jack能否解决65k问题？"><a href="#新的Jack能否解决65k问题？" class="headerlink" title="新的Jack能否解决65k问题？"></a>新的Jack能否解决65k问题？</h2><blockquote>
+<p>Jack (Java Android Compiler Kit) is a new Android toolchain that comprises a compiler from Java programming language source to the Android dex file format.</p>
+</blockquote>
+<p><img src="/images/65k_jack.gif" alt="Jack and Jill Application Build"><br>新的编译器目前还不了解实现的细节，网上的资料是说解决了65k问题，但看了最新的图，我觉得并不能终结65k问题，暂无法评论。</p>
+<p><a href="http://tools.android.com/tech-docs/jackandjill" target="_blank" rel="external">Experimental New Android Tool Chain - Jack and Jill</a></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>了解65k问题不会对工作有什么帮助，工作偶遇，略做梳理，做一总结！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag">#android</a>
+          
+            <a href="/tags/65k/" rel="tag">#65k</a>
+          
+            <a href="/tags/64k/" rel="tag">#64k</a>
+          
+            <a href="/tags/方法数/" rel="tag">#方法数</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/01/谈谈Android中的Divider/" rel="next" title="谈谈Android中的Divider">
+                <i class="fa fa-chevron-left"></i> 谈谈Android中的Divider
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/11/理解Java垃圾回收机制/" rel="prev" title="理解Java垃圾回收机制">
+                理解Java垃圾回收机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/10/由Android-65K方法数限制引发的思考/"
+           data-title="由Android 65K方法数限制引发的思考" data-url="http://www.jayfeng.com/2016/03/10/由Android-65K方法数限制引发的思考/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="冯建" />
+          <p class="site-author-name" itemprop="name">冯建</p>
+          <p class="site-description motion-element" itemprop="description">Android探索者</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/openproject" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/xiaofengjian/" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Android参考链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://go.to51.net/34750" target="_blank">51VPN</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androiddevtools.cn/" target="_blank">DevTools</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gank.io/" target="_blank">干货集中营</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://liaohuqiu.net/" target="_blank">秋百万</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.daimajia.com/" target="_blank">代码家</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://drakeet.me/" target="_blank">Drakeet博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.race604.com/" target="_blank">Android笔记</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidperformance.com/" target="_blank">Gracker</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.oasisfeng.com/" target="_blank">OasisFeng</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.androidweekly.cn/" target="_blank">Android周报</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://droidyue.com/" target="_blank">技术小黑屋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.easydone.cn/" target="_blank">Fulgens</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yifeiyuan.me/" target="_blank">程序亦非猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mouxuejie.com/" target="_blank">某学姐</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/guolin_blog" target="_blank">郭霖的专栏</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/singwhatiwanna" target="_blank">任玉刚</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.codekk.com" target="_blank">CodeKK</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://android-arsenal.com/" target="_blank">Arsenal</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">Stormzhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zmywly8866.github.io/" target="_blank">张明云</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.kymjs.com/" target="_blank">张涛</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.feeyan.cn/" target="_blank">朱罗锋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://yanghui.name/" target="_blank">杨辉</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.zhaiyifan.cn/" target="_blank">翟一帆</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jcodecraeer.com/" target="_blank">泡在网上日子</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://baoyz.com/" target="_blank">鲍永章</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuxiaolong.me/" target="_blank">吴小龙</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wxtlife.com/" target="_blank">梦想特工队</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/eclipsexys" target="_blank">徐医生</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lmj623565791/" target="_blank">鸿洋</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.importnew.com/" target="_blank">ImportNew</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/luoshengyang" target="_blank">老罗</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/innost" target="_blank">邓凡平</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://androidweekly.net/" target="_blank">AndroidWeek</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.chengyunfeng.com/" target="_blank">云在千峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/wondertwo/" target="_blank">哈皮小猿</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://sixwolf.net/" target="_blank">Klojure</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.piasy.com/" target="_blank">PiasyXu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/2ce7b74b592b/latest_articles" target="_blank">牛晓伟</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/ec95b5891948/latest_articles" target="_blank">D-clock</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://gityuan.com/" target="_blank">Gityuan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrpeak.cn/" target="_blank">MrPeak技术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://lijianxinchina.github.io/" target="_blank">TmWork</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.stay4it.com/" target="_blank">Stay</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://zjutkz.net/" target="_blank">Zjutkz</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://linzh.top/" target="_blank">Mr.Monkey</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.figotan.org/" target="_blank">figo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mrfu.me/" target="_blank">MrFu Blog</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.wangchenlong.org/" target="_blank">C.L.Wang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.dreamtobe.cn/" target="_blank">Jacksgong</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weishu.me/" target="_blank">田维术</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://kvh.io/" target="_blank">KVH</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.desmondyao.com/" target="_blank">姚家艺</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank"> ==========</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" target="_blank">========== </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://coolshell.cn/" target="_blank">酷壳</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.infoq.com/cn/" target="_blank">InfoQ中文站</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.oschina.net/" target="_blank">开源中国</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.cnblogs.com/" target="_blank">博客园</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#到底是65k还是64k"><span class="nav-text">到底是65k还是64k?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间点"><span class="nav-text">时间点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#65536是怎么算出来的？"><span class="nav-text">65536是怎么算出来的？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-首先，查找Dex的结构定义。"><span class="nav-text">1. 首先，查找Dex的结构定义。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-DexOpt优化造成？"><span class="nav-text">2. DexOpt优化造成？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-DexMerger的检测"><span class="nav-text">3. DexMerger的检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-回归DexFile"><span class="nav-text">4. 回归DexFile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-根本原因"><span class="nav-text">5. 根本原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-回顾"><span class="nav-text">6. 回顾</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新的Jack能否解决65k问题？"><span class="nav-text">新的Jack能否解决65k问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">冯建 • 鄂ICP备15013583号-1</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"jayfeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jUXzzM9YkWQnxoxDeYEdFEF4-gzGzoHsz", "8H06InS1JFH9JvCU6Gnf2EQI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>
