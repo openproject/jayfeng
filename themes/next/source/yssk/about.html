@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+
+    <script language="javascript">
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+    </script>
+    <title>关于我们</title>
+    <style type="text/css">
+        html {
+            width: 100vw;
+        }
+
+        body {
+            padding: 0 0.46875rem;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .wraper {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .logo {
+            background-image: url(image/logo@3x.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            height: 2.34375rem;
+            width: 2.34375rem;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .title .name {
+            font-size: 16px;
+            color: #4B4B4B;
+            margin-top: 0.28125rem;
+        }
+
+        [data-dpr="2"] .title .name {
+            font-size: 32px;
+        }
+
+        [data-dpr="3"] .title .name {
+            font-size: 48px;
+        }
+
+        .content p {
+            font-size: 14px;
+            color: #808080;
+            line-height: 160%;
+            margin-top: 0.5625rem;
+        }
+
+        [data-dpr="2"] .content p {
+            font-size: 28px;
+        }
+
+        [data-dpr="3"] .content p {
+            font-size: 42px;
+        }
+
+        .service {
+            font-size: 12px;
+            color: #4B4B4B;
+            letter-splitacing: 0.2em;
+            margin-top: 0.78125rem;
+        }
+
+        [data-dpr="2"] .service {
+            font-size: 24px;
+        }
+
+        [data-dpr="3"] .service {
+            font-size: 36px;
+        }
+
+        .service div {
+            padding: 0.2em 0;
+        }
+
+        .service a {
+            text-decoration: none;
+            color: #4B4B4B;
+            letter-spacing: 0.1em;
+        }
+
+        .service .time {
+            margin-top: 1em;
+        }
+
+        margin#version {
+            margin-top: 0.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        <div class="wraper"><a class="logo"></a></div>
+        <div class="name">一时三刻</div>
+        <p id="version" style="color: #9b9b9b">
+        </p>
+    </div>
+    <div class="content">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;一时三刻是一款基于大数据的资讯聚合APP，每天提供最新最热的头条资讯，让您精彩常伴，永不错过！</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;汇聚社会、娱乐、美女、搞笑、科技、健康、财经、时尚、文化等等资讯，一有尽有；实时发放搞笑、美女、微电影、音乐、娱乐、纪录、体育、生活等等视频，眼花缭乱！</p>
+    </div>
+    <div class="service">
+    </div>
+    <Script language="javascript">
+        var Request = new Object();
+        Request = GetRequest();
+        var version;
+        version = Request['version'];
+        if (version != undefined) {
+            document.getElementById("version").innerHTML = version;
+        } else {
+            document.getElementById("version").innerHTML = "";
+        }
+    </Script>
+</body>
+
+</html>
