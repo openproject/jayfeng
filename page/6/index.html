@@ -246,6 +246,139 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/22/Android-Bitmap面面观/" itemprop="url">
+                  Android Bitmap面面观
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-22T01:10:19+08:00" content="2016-03-22">
+              2016-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/22/Android-Bitmap面面观/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/22/Android-Bitmap面面观/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/22/Android-Bitmap面面观/" class="leancloud_visitors" data-flag-title="Android Bitmap面面观">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在日常开发中，可以说和Bitmap低头不见抬头见，基本上每个应用都会直接或间接的用到，而这里面又涉及到大量的相关知识。<br>所以这里把Bitmap的常用知识做个梳理，限于经验和能力，不做太深入的分析。</p>
+<h2 id="1-区别decodeResource-和decodeFile"><a href="#1-区别decodeResource-和decodeFile" class="headerlink" title="1. 区别decodeResource()和decodeFile()"></a>1. 区别decodeResource()和decodeFile()</h2><p>这里的区别不是指方法名和参数的区别，而是对于解码后图片尺寸在处理上的区别：</p>
+<blockquote>
+<p>decodeFile()用于读取SD卡上的图，得到的是图片的原始尺寸<br>decodeResource()用于读取Res、Raw等资源，得到的是图片的原始尺寸 * 缩放系数</p>
+</blockquote>
+<p>可以看的出来，decodeResource()比decodeFile()多了一个缩放系数，缩放系数的计算依赖于屏幕密度，当然这个参数也是可以调整的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 通过BitmapFactory.Options的这几个参数可以调整缩放系数</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BitmapFactory</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Options</span> </span>&#123;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">boolean</span> inScaled;     <span class="comment">// 默认true</span></div><div class="line">        <span class="keyword">public</span> <span class="keyword">int</span> inDensity;        <span class="comment">// 无dpi的文件夹下默认160</span></div><div class="line">        <span class="keyword">public</span> <span class="keyword">int</span> inTargetDensity;  <span class="comment">// 取决具体屏幕</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们分具体情况来看，现在有一张720x720的图片:</p>
+<h4 id="inScaled属性"><a href="#inScaled属性" class="headerlink" title="inScaled属性"></a>inScaled属性</h4><p>如果inScaled设置为false，则不进行缩放，解码后图片大小为720x720; 否则请往下看。<br>如果inScaled设置为true或者不设置，则根据inDensity和inTargetDensity计算缩放系数。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/22/Android-Bitmap面面观/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/18/你应该知道的那些Android小经验/" itemprop="url">
                   你应该知道的那些Android小经验
                 </a>
@@ -1007,134 +1140,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/08/Android HTTP必知必会/" itemprop="url">
-                  Android HTTP必知必会
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-08T14:57:36+08:00" content="2016-01-08">
-              2016-01-08
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/08/Android HTTP必知必会/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/08/Android HTTP必知必会/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/01/08/Android HTTP必知必会/" class="leancloud_visitors" data-flag-title="Android HTTP必知必会">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>HTTP协议使用如此广泛，开发者务必要做到“知”，“会”。</p>
-<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>用curl请求百度首页全解析的过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">@feng ➜  jayfeng.com (master) ✗ curl -v http://www.baidu.com &gt; ~/http_get.txt</div><div class="line">* Rebuilt URL to: http://www.baidu.com/</div><div class="line">% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</div><div class="line">Dload  Upload   Total   Spent    Left  Speed</div><div class="line">0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 119.75.217.109...</div><div class="line">* Connected to www.baidu.com (119.75.217.109) port 80 (#0)</div><div class="line">&gt; GET / HTTP/1.1</div><div class="line">&gt; Host: www.baidu.com</div><div class="line">&gt; User-Agent: curl/7.43.0</div><div class="line">&gt; Accept: */*</div><div class="line">&gt;</div><div class="line">&lt; HTTP/1.1 200 OK</div><div class="line">&lt; Date: Thu, 28 Jan 2016 14:53:51 GMT</div><div class="line">&lt; Content-Type: text/html; charset=utf-8</div><div class="line">&lt; Transfer-Encoding: chunked</div><div class="line">&lt; Connection: Keep-Alive</div><div class="line">&lt; Vary: Accept-Encoding</div><div class="line">&lt; Set-Cookie: BAIDUID=D75C20ED3D7551221E1C32F79C698867:FG=1; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: BIDUPSID=D75C20ED3D7551221E1C32F79C698867; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: PSTM=1453992831; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com</div><div class="line">&lt; Set-Cookie: BDSVRTM=0; path=/</div><div class="line">&lt; Set-Cookie: BD_HOME=0; path=/</div><div class="line">&lt; Set-Cookie: H_PS_PSSID=18880_1458_18879_12824_18205_18777_17000_17072_15544_11476_10634; path=/; domain=.baidu.com</div><div class="line">&lt; P3P: CP=&quot; OTI DSP COR IVA OUR IND COM &quot;</div><div class="line">&lt; Cache-Control: private</div><div class="line">&lt; Cxy_all: baidu+1257c154f891fc3a17374fed141622bd</div><div class="line">&lt; Expires: Thu, 28 Jan 2016 14:53:00 GMT</div><div class="line">&lt; X-Powered-By: HPHP</div><div class="line">&lt; Server: BWS/1.1</div><div class="line">&lt; X-UA-Compatible: IE=Edge,chrome=1</div><div class="line">&lt; BDPAGETYPE: 1</div><div class="line">&lt; BDQID: 0xe5ff10b4000dd380</div><div class="line">&lt; BDUSERID: 0</div><div class="line">&lt;</div><div class="line">&#123; [2880 bytes data]</div><div class="line">100 98345    0 98345    0     0   665k      0 --:--:-- --:--:-- --:--:--  671k</div><div class="line">* Connection #0 to host www.baidu.com left intact</div></pre></td></tr></table></figure></p>
-<h2 id="示意图"><a href="#示意图" class="headerlink" title="示意图"></a>示意图</h2><p>把上面的过程画成示意图如下：<br><img src="/images/http_request_and_response.gif" alt="http 请求和响应过程"><br>但是那些代码到底是什么意思呢？<br>听我慢慢说来。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/08/Android HTTP必知必会/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1180,7 +1185,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

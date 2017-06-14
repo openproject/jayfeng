@@ -246,6 +246,121 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/21/初探React-Native/" itemprop="url">
+                  初探React Native
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T15:00:33+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/10/21/初探React-Native/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/21/初探React-Native/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2015/10/21/初探React-Native/" class="leancloud_visitors" data-flag-title="初探React Native">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><ol>
+<li>安装homebrew</li>
+<li>安装nodejs</li>
+<li>安装watchman、flow</li>
+<li>安装react-native</li>
+</ol>
+<h1 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">react-native init JustNoCode</div></pre></td></tr></table></figure>
+<p>执行之后，一直卡在Installing react-native package from npm…，但是，<br>我等了两天，终于成功了：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">@feng ➜  github  react-native init JustNoCode</div><div class="line">prompt: Directory JustNoCode already exist. Continue?:  (no) y</div><div class="line">This will walk you through creating a new React Native project <span class="keyword">in</span> /Users/fengjian/Code/github/JustNoCode</div><div class="line">Installing react-native package from npm...</div><div class="line">Setting up new React Native app <span class="keyword">in</span> /Users/fengjian/Code/github/JustNoCode</div><div class="line">create .gitignore</div><div class="line">create .watchmanconfig</div><div class="line">create index.ios.js</div><div class="line">create index.android.js</div><div class="line">create ios/main.jsbundle</div><div class="line">create ios/JustNoCode/AppDelegate.h</div><div class="line">create ios/JustNoCode/AppDelegate.m</div><div class="line">create ios/JustNoCode/Base.lproj/LaunchScreen.xib</div><div class="line">create ios/JustNoCode/Images.xcassets/AppIcon.appiconset/Contents.json</div><div class="line">create ios/JustNoCode/Info.plist</div><div class="line">create ios/JustNoCode/main.m</div><div class="line">create ios/JustNoCodeTests/JustNoCodeTests.m</div><div class="line">create ios/JustNoCodeTests/Info.plist</div><div class="line">create ios/JustNoCode.xcodeproj/project.pbxproj</div><div class="line">create ios/JustNoCode.xcodeproj/xcshareddata/xcschemes/JustNoCode.xcscheme</div><div class="line">create android/app/build.gradle</div><div class="line">create android/app/proguard-rules.pro</div><div class="line">create android/app/src/main/AndroidManifest.xml</div><div class="line">create android/app/src/main/res/values/strings.xml</div><div class="line">create android/app/src/main/res/values/styles.xml</div><div class="line">create android/build.gradle</div><div class="line">create android/gradle.properties</div><div class="line">create android/settings.gradle</div><div class="line">create android/app/src/main/res/mipmap-hdpi/ic_launcher.png</div><div class="line">create android/app/src/main/res/mipmap-mdpi/ic_launcher.png</div><div class="line">create android/app/src/main/res/mipmap-xhdpi/ic_launcher.png</div><div class="line">create android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png</div><div class="line">create android/gradle/wrapper/gradle-wrapper.jar</div><div class="line">create android/gradle/wrapper/gradle-wrapper.properties</div><div class="line">create android/gradlew</div><div class="line">create android/gradlew.bat</div><div class="line">create android/app/src/main/java/com/justnocode/MainActivity.java</div><div class="line">To run your app on iOS:</div><div class="line">Open /Users/fengjian/Code/github/JustNoCode/ios/JustNoCode.xcodeproj <span class="keyword">in</span> Xcode</div><div class="line">Hit Run button</div><div class="line">To run your app on Android:</div><div class="line">Have an Android emulator running, or a device connected</div><div class="line"><span class="built_in">cd</span> /Users/fengjian/Code/github/JustNoCode</div><div class="line">react-native run-android</div></pre></td></tr></table></figure></p>
+<h1 id="运行Android"><a href="#运行Android" class="headerlink" title="运行Android"></a>运行Android</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">react-native run-android</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/21/初探React-Native/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/11/谈响应式编程/" itemprop="url">
                   [团队分享]谈响应式编程
                 </a>
@@ -711,7 +826,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

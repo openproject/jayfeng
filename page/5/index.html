@@ -246,6 +246,136 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/" itemprop="url">
+                  理解设计模式之组合模式、迭代器模式、访问者模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-07T12:00:00+08:00" content="2016-04-07">
+              2016-04-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/理解设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">理解设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/" class="leancloud_visitors" data-flag-title="理解设计模式之组合模式、迭代器模式、访问者模式">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h2><blockquote>
+<p>提供一种方法顺序访问一个聚合对象中各个元素, 而又不需暴露该对象的内部表示。</p>
+</blockquote>
+<p>如果要对所有集合提供统一的for循环操作，首先要抽象出Iterator接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</div><div class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>集合类实现迭代接口，有两种方式：继承和组合。那是继承Iterator好还是组合一个Iterator的实现类好呢？这里很难分清isA和hasA的关系，也就是说都可以。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/07/理解设计模式之组合模式、迭代器模式、访问者模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/06/理解设计模式之代理模式、外观模式、中介者模式/" itemprop="url">
                   理解设计模式之代理模式、外观模式、中介者模式
                 </a>
@@ -1030,139 +1160,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/22/Android-Bitmap面面观/" itemprop="url">
-                  Android Bitmap面面观
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-22T01:10:19+08:00" content="2016-03-22">
-              2016-03-22
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/22/Android-Bitmap面面观/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/22/Android-Bitmap面面观/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/03/22/Android-Bitmap面面观/" class="leancloud_visitors" data-flag-title="Android Bitmap面面观">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在日常开发中，可以说和Bitmap低头不见抬头见，基本上每个应用都会直接或间接的用到，而这里面又涉及到大量的相关知识。<br>所以这里把Bitmap的常用知识做个梳理，限于经验和能力，不做太深入的分析。</p>
-<h2 id="1-区别decodeResource-和decodeFile"><a href="#1-区别decodeResource-和decodeFile" class="headerlink" title="1. 区别decodeResource()和decodeFile()"></a>1. 区别decodeResource()和decodeFile()</h2><p>这里的区别不是指方法名和参数的区别，而是对于解码后图片尺寸在处理上的区别：</p>
-<blockquote>
-<p>decodeFile()用于读取SD卡上的图，得到的是图片的原始尺寸<br>decodeResource()用于读取Res、Raw等资源，得到的是图片的原始尺寸 * 缩放系数</p>
-</blockquote>
-<p>可以看的出来，decodeResource()比decodeFile()多了一个缩放系数，缩放系数的计算依赖于屏幕密度，当然这个参数也是可以调整的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 通过BitmapFactory.Options的这几个参数可以调整缩放系数</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BitmapFactory</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Options</span> </span>&#123;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">boolean</span> inScaled;     <span class="comment">// 默认true</span></div><div class="line">        <span class="keyword">public</span> <span class="keyword">int</span> inDensity;        <span class="comment">// 无dpi的文件夹下默认160</span></div><div class="line">        <span class="keyword">public</span> <span class="keyword">int</span> inTargetDensity;  <span class="comment">// 取决具体屏幕</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>我们分具体情况来看，现在有一张720x720的图片:</p>
-<h4 id="inScaled属性"><a href="#inScaled属性" class="headerlink" title="inScaled属性"></a>inScaled属性</h4><p>如果inScaled设置为false，则不进行缩放，解码后图片大小为720x720; 否则请往下看。<br>如果inScaled设置为true或者不设置，则根据inDensity和inTargetDensity计算缩放系数。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/22/Android-Bitmap面面观/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1208,7 +1205,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

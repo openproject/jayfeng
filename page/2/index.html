@@ -246,6 +246,110 @@
             
               
                 
+                <a class="post-title-link" href="/2017/01/15/LessCode系列之Core篇（下）/" itemprop="url">
+                  LessCode系列之Core篇（下）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-15T05:49:51+08:00" content="2017-01-15">
+              2017-01-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/15/LessCode系列之Core篇（下）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/15/LessCode系列之Core篇（下）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/01/15/LessCode系列之Core篇（下）/" class="leancloud_visitors" data-flag-title="LessCode系列之Core篇（下）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/01/15/LessCode系列之Core篇（上）/" itemprop="url">
                   LessCode系列之Core篇（上）
                 </a>
@@ -1051,138 +1155,6 @@ ctrl + v 可视模式的列选择，比行选择模式更加细化，可选择�
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/10/Retrofit源码设计模式分析/" itemprop="url">
-                  Retrofit2源码设计模式分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-10T11:20:11+08:00" content="2016-12-10">
-              2016-12-10
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/12/10/Retrofit源码设计模式分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/Retrofit源码设计模式分析/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/10/Retrofit源码设计模式分析/" class="leancloud_visitors" data-flag-title="Retrofit2源码设计模式分析">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Retrofit2是Square公司刚出品不久的“类型安全的Http Client”，非常强大。</p>
-<p>官网：<a href="http://square.github.io/retrofit/" target="_blank" rel="external">http://square.github.io/retrofit/</a><br>github: <a href="https://github.com/square/retrofit" target="_blank" rel="external">https://github.com/square/retrofit</a></p>
-<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>略</p>
-<h2 id="探索设计模式"><a href="#探索设计模式" class="headerlink" title="探索设计模式"></a>探索设计模式</h2><h4 id="1-外观模式"><a href="#1-外观模式" class="headerlink" title="1. 外观模式"></a>1. 外观模式</h4><p>Retrofit使用的第一个认知的类就是Retrofit，这是一个入口类，也可以说是一个全局类，对于开发者来说，基本上都是围绕这个类就够了。<br>这样的一个对外统一的类就是外观类，使用的就是设计模式的外观模式的思想：<br>第一，简化了开发者的学习成本，易于使用。<br>第二，封装了系统内部类的关系，对内是高内聚的，对外是松耦合的。</p>
-<p>这是一种良好的设计规范，值得借鉴！</p>
-<h4 id="2-建造者模式"><a href="#2-建造者模式" class="headerlink" title="2. 建造者模式"></a>2. 建造者模式</h4><p>虽然我们现在只需要关注这一个Retrofit类，但是Retrofit承载的东西比我们要的要多，大家看它的结构，有很多方法是用不到的，如果让我们去直接创建一个Retrofit将会在碰到这些用不到的方法上困惑，建造者模式提供了一个很好的思路，我们把这个Retrofit的创建分离出来为一个Retrofit.Builder（最简单的建造者模型），在这个Retrofit里面就只做“构建”这一件事情，顺理成章的这个Builder也应该只包含构建所需的方法，用户的学习成本由一个需要了解大类简化成了只需要了解这个Builder，大大降低。</p>
-<p>从这个Builder的使用来看，采用的是流式接口风格，这个体验比传很多参数要好很多。很多人把流式接口当成是建造者模式的特性了，这里简单的补充一下，不是这样的，两者本没有直接关系。但是我们要反思一个问题，为什么在Builder上这么喜欢使用流式风格而在其他的类上却很少这么做？答案就是，Builder是一个很特殊的类，职责非常单一，而且就是构建，这样的类能否非常自然非常统一的结合流式风格，如果直接在Retrofit上使用流式接口的话，很多其他的业务方法则无法使用了。</p>
-<h4 id="3-代理模式"><a href="#3-代理模式" class="headerlink" title="3. 代理模式"></a>3. 代理模式</h4><p>前面的基本使用中，我们都是用Retrofit.create方法得到具体的Api Service实现，然后调这个Service相应的方法就能拿到网络返回的结果。<br>Retrofit对每个Api Service的调用都是封装在create方法里，看看create方法会发现，从结构上这是一个典型的动态代理实现。我们看看具体实现，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">(T) Proxy.newProxyInstance(service.getClassLoader(), <span class="keyword">new</span> Class&lt;?&gt;[] &#123; service &#125;,</div><div class="line">        <span class="keyword">new</span> InvocationHandler() &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">final</span> Platform platform = Platform.get();</div><div class="line"></div><div class="line">        <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object... args)</span></span></div><div class="line">        <span class="keyword">throws</span> Throwable &#123;</div><div class="line">        <span class="comment">// If the method is a method from Object then defer to normal invocation.</span></div><div class="line">        <span class="keyword">if</span> (method.getDeclaringClass() == Object.class) &#123;</div><div class="line">        <span class="keyword">return</span> method.invoke(<span class="keyword">this</span>, args);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (platform.isDefaultMethod(method)) &#123;</div><div class="line">        <span class="keyword">return</span> platform.invokeDefaultMethod(method, service, proxy, args);</div><div class="line">        &#125;</div><div class="line">        ServiceMethod serviceMethod = loadServiceMethod(method);</div><div class="line">        OkHttpCall okHttpCall = <span class="keyword">new</span> OkHttpCall&lt;&gt;(serviceMethod, args);</div><div class="line">        <span class="keyword">return</span> serviceMethod.callAdapter.adapt(okHttpCall);</div><div class="line">        &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure></p>
-<p>如果是Object的方法，就按照正常调用。<br>如果是静态方法（java8），基本上也是正常调用。<br>接下来是重点了：ServiceMethod。</p>
-<p>这个ServiceMethod是干嘛的呢？专门处理Api Service上定义的注解，参数等等，同时还有CallAdapter等。<br>得到这个ServiceMethod之后，传给OkHttpCall，这个OkHttpCall就是对okhttp的网络请求封装的一个类。现在把ServiceMethod传给OkHttpCall实际上就是把网络接口所需要的url，参数等所有条件传给了OkHttpCall，也就是说，已经可以基本进行网络请求了。</p>
-<p>如果不配置CallAdapter，则使用默认的DefaultCallAdapterFactory, 得到的结果是Call&lt;?&gt;。</p>
-<p>所以这里的代理模式和正常的代理模式还有点不一样，正常的代理模式只是对真实实现对象的一层控制，这个真实对象是实现对应的接口的，而这里并没有真实的对象，它把方法调用最终全部转发到了OKHttp上面去了，很有意思，把代理模式灵活的变成了一个好用的工具类一样。虽然不一样，但是思想都是想通的。</p>
-<h4 id="4-简单工厂"><a href="#4-简单工厂" class="headerlink" title="4. 简单工厂"></a>4. 简单工厂</h4><p>这里的Platform里面的判断就是一个简单工厂，不过是一个自动判断的简单工厂，findPlatform方法自己判断系统的类型。</p>
-<h4 id="5-享元模式"><a href="#5-享元模式" class="headerlink" title="5. 享元模式"></a>5. 享元模式</h4><p>大家看ServiceMethod是通过loadServiceMethod方法返回的。我们看看这个方法的实现:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Method, ServiceMethod&gt; serviceMethodCache = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</div><div class="line"></div><div class="line"><span class="function">ServiceMethod <span class="title">loadServiceMethod</span><span class="params">(Method method)</span> </span>&#123;</div><div class="line">    ServiceMethod result;</div><div class="line">    <span class="keyword">synchronized</span> (serviceMethodCache) &#123;</div><div class="line">        result = serviceMethodCache.get(method);</div><div class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</div><div class="line">            result = <span class="keyword">new</span> ServiceMethod.Builder(<span class="keyword">this</span>, method).build();</div><div class="line">            serviceMethodCache.put(method, result);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这个方法做了缓存处理，这个是很好理解的，大家定义的接口就那么几十个，但是不停的请求，每天几百几千次都是很正常的，把这些接口的信息缓存起来是非常有必要的一个优化手段。把这些创建后的ServiceMethod放到一个缓存池serviceMethodCache中，这个缓存池是一个hash结构。像loadServiceMethod这样的实现方式就是享元工厂的使用，是享元模式。不过这里没有涉及到内部状态外部状态，是一个简单版本的享元模式，但是用的非常多。</p>
-<h4 id="6-适配器模式"><a href="#6-适配器模式" class="headerlink" title="6. 适配器模式"></a>6. 适配器模式</h4><p>我们再分析一下CallAdapter，CallAdapter是干嘛的？默认的情况下，把返回的T转化为Call<t>。Call<t>是方便我们开发者调用的，包含一个成功和失败的结果返回，是给开发者统一适配的一个结果，实现代码在内置的DefaultCallAdapterFactory，同理，如果集成了Rxjava的RxJavaCallAdapterFactory则返回的是Observable<t>，方便使用Rxjava的同学使用。</t></t></t></p>
-<p>这就是一个适配器模式，对结果适配，想要用那个就调用哪个适配器。</p>
-<h4 id="7-工厂方法"><a href="#7-工厂方法" class="headerlink" title="7. 工厂方法"></a>7. 工厂方法</h4><p>这个CallAdapter都是由对应的适配器工厂生产的，DefaultCallAdapterFactory生产CallAdapter<call<?>&gt;, RxJavaCallAdapterFactory生产CallAdapter<observable<?>&gt;，GuavaCallAdapterFactory生产CallAdapter<listenablefuture<?>&gt;, Java8CallAdapterFactory生产CallAdapter<completablefuture<?>&gt;,这些工厂都是由开发者自行选择配置在Retrofit.Builder中的，这是不是一个典型的工厂方法呢？<br>后面我们加入需要新的返回值，是不是只需要增加新的工厂，生产新的CallAdapter就行了？完全不需要修改现有的一行代码一个字母，非常灵活。</completablefuture<?></listenablefuture<?></observable<?></call<?></p>
-<h4 id="8-策略模式"><a href="#8-策略模式" class="headerlink" title="8. 策略模式"></a>8. 策略模式</h4><p>不同的CallAdapter是不是代表着不同的策略，当我们调用这些不同的适配器的方法时，就能得到不同的结果，这个是策略模式。</p>
-<p>这里大家可能会分不清工厂方法和策略模式，其实区别很明显。<br>工厂方法强调的是生产不同的对象。策略模式强调的是这些不同对象的那个方法的具体实现，是在创建对象之后。<br>所以这两个模式，是应用在不同阶段的。</p>
-<h4 id="9-抽象工厂"><a href="#9-抽象工厂" class="headerlink" title="9. 抽象工厂"></a>9. 抽象工厂</h4><p>CallAdapter是T转化成了另外一个结构，这个T是怎么来的？是由json解析而来。<br>有一个专门的Convert类，里面也有一个抽象的Factory，包含两个抽象方法：responseBodyConverter, requestBodyConverter，分别负责把okhttp返回的ResponseBody转为T, 把请求的信息转化okhttp的RequestBody。<br>这个Converter.Factory有很多扩展的实现，在retrofit-converters中，有gson，jackson等等。<br>这个和前面的工厂方法是不是很像，但是注意，这里生产的是相关的两个对象，所以这里是抽象工厂。</p>
-<p>为什么这个地方一定不要用抽象工厂，用工厂方法不行吗？用工厂方法可以做到，但是非常不好。<br>因为，我们希望网络请求和响应的转化应该是内聚的，如果用工厂方法，则分离开来，客户端则需要传2个工厂，破坏了内聚，同时增加了开发者的复杂度。</p>
-<h4 id="10-单例模式"><a href="#10-单例模式" class="headerlink" title="10 .单例模式"></a>10 .单例模式</h4><p>针对RequestBody，ResponseBody的转化，系统内置了一些转化器在BuildInConverters里，用到了大量的单例模式。<br>其他很多地方还有一些单例模式，这些模式基本都æesponseBodyConverter, requestBodyConverter，分别负责把okhttp返回的Re¼¨retrofit-converters中，有gson，jackson等等。<br>这个和前面的工厂方法是不是很像，但是注意，豉模式。而对一些启动就需要的，或者明显全局经常用且不会对系统造成压力的对象则可用饿汉式，以前一直讲懒汉式，饿汉式也有它的优点，第一，饿汉式是线程安全的；第二，形式简单，写起来干净。</p>
-<h4 id="11-原型模式"><a href="#11-原型模式" class="headerlink" title="11. 原型模式"></a>11. 原型模式</h4><p>前面使用的OkHttpCall类，其实是实现Call<t>接口的，这个Call<t>又是继承了Cloneable接口的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> OkHttpCall&lt;T&gt; <span class="title">clone</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> OkHttpCall&lt;&gt;(serviceMethod, args);</div><div class="line">&#125;</div></pre></td></tr></table></figure></t></t></p>
-<p>OkHttpCall对这个clone的实现就是重新new了一个一样的对象，用于其他地方重用相同的Call，在ExecutorCallbackCall中有用到。<br>这是原型模式在Retrofit中的应用。</p>
-<h4 id="12-观察者模式"><a href="#12-观察者模式" class="headerlink" title="12. 观察者模式"></a>12. 观察者模式</h4><p>这个Call支持enqueue(Callback<t> callback)注册一个回调进去，当执行完毕，则会调用这个回调，这个enqueue是异步的。<br>这是一个简单的注册-被通知的模型，在异步环境中的经典应用。<br>注意：这个回调最终是传给了Okhttp的call，然后在那边负责通知回来。</t></p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>这些基本上是Retrofit包含的一些设计模式，无论包含多少种设计模式，我希望大家的焦点不是它设计模式有多少个，而是这些设计模式是起了什么作用？理解每个模式在其中发挥的作用而不是每个模式本身的作用。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1228,7 +1200,7 @@ ctrl + v 可视模式的列选择，比行选择模式更加细化，可选择�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

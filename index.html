@@ -246,6 +246,123 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/14/Git使用和规范/" itemprop="url">
+                  Git使用和规范
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-14T15:31:55+08:00" content="2017-06-14">
+              2017-06-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/14/Git使用和规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/Git使用和规范/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/06/14/Git使用和规范/" class="leancloud_visitors" data-flag-title="Git使用和规范">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用流程预览"><a href="#使用流程预览" class="headerlink" title="使用流程预览"></a>使用流程预览</h1><p>git clone<br>git add .<br>git commit .<br>git push<br>git fetch<br>git rebase origin/master<br>git commit –amend</p>
+<h1 id="一、环境搭建"><a href="#一、环境搭建" class="headerlink" title="一、环境搭建"></a>一、环境搭建</h1><h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git</div><div class="line">sudo apt-get install openssh-server</div></pre></td></tr></table></figure>
+<p>ssh配置相关操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 编辑ssh配置</span></div><div class="line">sudo vim /etc/ssh/sshd_config</div><div class="line"><span class="comment"># 查看ssh server是否启动</span></div><div class="line"><span class="comment"># 如果只有ssh-agent那ssh-server还没有启动，如果看到sshd那说明ssh-server已经启动了</span></div><div class="line">ps -e | grep ssh</div><div class="line"><span class="comment"># 启动ssh服务</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line"><span class="comment"># 重启ssh服务</span></div><div class="line">sudo /etc/init.d/ssh resart</div><div class="line"><span class="comment"># 停止ssh服务</span></div><div class="line">sudo /etc/init.d/ssh stop</div></pre></td></tr></table></figure></p>
+<h2 id="创建git用户"><a href="#创建git用户" class="headerlink" title="创建git用户"></a>创建git用户</h2><p>专门创建git用户，便于控制权限和管理<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加git用户</span></div><div class="line">sudo adduser git</div><div class="line"><span class="comment"># 设置git密码为jayfeng</span></div><div class="line">sudo passwd jayfeng</div></pre></td></tr></table></figure></p>
+<h2 id="初始化仓库"><a href="#初始化仓库" class="headerlink" title="初始化仓库"></a>初始化仓库</h2><p>以android为例子，创建一个对应的仓库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 以git用户身份登陆后，切换到主目录</span></div><div class="line"><span class="built_in">cd</span></div><div class="line"><span class="comment"># 创建所有git仓库的总目录</span></div><div class="line">mkdir git-repo</div><div class="line"><span class="built_in">cd</span> git-repo</div><div class="line"><span class="comment"># 为android创建ANDROID_CODE仓库</span></div><div class="line">git init --bare ANDROID_CODE.git</div></pre></td></tr></table></figure></p>
+<h2 id="配置ssh-key"><a href="#配置ssh-key" class="headerlink" title="配置ssh key"></a>配置ssh key</h2><p>如果不做这一步，后面从局域网clone代码的时候每次都要输入git用户的密码，所以这一步的目的是通过配置ssh认证，实现免密码同步代码。<br>下图展示了如何生成ssh key的私钥和公钥:<br><img src="https://gitcafe-image.b0.upaiyun.com/212ed973319ea57ec769dec0a29c157d.gif" alt="如何生成ssh key的私钥和公钥"><br>私钥id_rsa自己用，把公钥id_rsa.pub配置到服务器端git用户的~/.ssh/authorized_keys(即，把id_rsa.pub的内容添加到authorized_keys新一行)，同时配置权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod 700 ~/.ssh</div><div class="line">chmod 600 ~/.ssh/authorized_keys</div></pre></td></tr></table></figure></p>
+<p>并把生成的私钥id_rsa共享给团队的开发人员。</p>
+<h2 id="局域网访问"><a href="#局域网访问" class="headerlink" title="局域网访问"></a>局域网访问</h2><p>如果服务器的IP是192.168.1.18，那么局域网的机器就可以通过下面的方式访问了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 拷贝私钥id_rsa到.ssh目录</span></div><div class="line">mv id_rsa ~/.ssh</div><div class="line"><span class="comment"># 如果提示权限不对（bad permission 或者 permission too open），请按如下配置</span></div><div class="line"><span class="built_in">cd</span> ~/.ssh</div><div class="line">chmod 700 id_rsa</div><div class="line"><span class="comment"># 团队成员访问git仓库</span></div><div class="line">git <span class="built_in">clone</span> git@192.168.1.18:~/git-repo/ANDROID_CODE.git</div></pre></td></tr></table></figure></p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>安装git自不必说，mac已经内置了git，linux下一个命令就能搞定，windows下需要下载一个客户端安装，一切尽在官方网站：<br><a href="http://git-scm.com/" target="_blank" rel="external">http://git-scm.com/</a></p>
+<h2 id="配置自定义信息"><a href="#配置自定义信息" class="headerlink" title="配置自定义信息"></a>配置自定义信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 配置用户名和密码，标识用户，且可以为后续提交钩子发送邮件, 必填</span></div><div class="line">git config --global user.name <span class="string">"Jayfeng"</span></div><div class="line">git config --global user.email jayfeng@gmail.com</div></pre></td></tr></table></figure>
+<h2 id="同步仓库代码"><a href="#同步仓库代码" class="headerlink" title="同步仓库代码"></a>同步仓库代码</h2><p>假设服务器IP是192.168.1.18：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> git@192.168.1.18:~/git-repo/ANDROID_CODE.git</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/14/Git使用和规范/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/17/Xposed开发实践/" itemprop="url">
                   Xposed开发实践
                 </a>
@@ -892,110 +1009,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/15/LessCode系列之Core篇（下）/" itemprop="url">
-                  LessCode系列之Core篇（下）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-15T05:49:51+08:00" content="2017-01-15">
-              2017-01-15
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/01/15/LessCode系列之Core篇（下）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/15/LessCode系列之Core篇（下）/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/01/15/LessCode系列之Core篇（下）/" class="leancloud_visitors" data-flag-title="LessCode系列之Core篇（下）">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1041,7 +1054,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
