@@ -140,7 +140,7 @@ links:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
     type: git
-    # repo: https://openproject@github.com/openproject/jayfeng.git
-    # branch: gh-pages
-    repo: https://git.coding.net/jayfeng/blog.git
-    branch: coding-pages
+    repo: https://openproject@github.com/openproject/jayfeng.git
+    branch: gh-pages
+    # repo: https://git.coding.net/jayfeng/blog.git
+    # branch: coding-pages
